@@ -1,7 +1,7 @@
 ---
 name: leancode
-description: "Use for any coding task — implementing a feature, fixing a bug, refactoring, reviewing code, or resuming interrupted work. Enforces plan-first (including greenfield work and reference lookups), lean implementation (reuse over duplication, security/perf awareness), a maximum-effort self-review (correctness, fit, cross-stack contracts), a structure check (a new boundary is named before the edit and matched on the diff; a refactor keeps the structure already there), one tighten pass on the finished diff (remove, collapse, bound a cost the change introduced — no unmeasured speed rewrite), a closing audit of the walk itself, a risk-assessed split across subagents for speed when slices are independent and do not repeat another in-flight task, evidence-based completion, ask-first doc hygiene, and a handoff note that survives across sessions. Engages on implementation intent without needing to be named, and returns open decisions to whoever handed the work over rather than guessing or re-routing. Scales down for trivial single-file edits and steps aside for non-coding requests."
-version: 4.0.0
+description: "Use for any coding task — implementing a feature, fixing a bug, refactoring, reviewing code, or resuming interrupted work. Enforces plan-first, lean implementation (reuse over duplication, security/perf awareness), a maximum-effort self-review (correctness, fit, cross-stack contracts), a structure check, one tighten pass on the finished diff, a closing audit of the walk itself, a risk-assessed split across subagents, evidence-based completion, ask-first doc hygiene, and a handoff note that survives across sessions. Autopilot mode (on "autopilot", "run it all", "รันให้จบ") runs a whole task list in one go: each task verified, reviewed and committed locally, reversible decisions picked and logged, blocked tasks parked, one report at the end. Engages on implementation intent without needing to be named, and returns open decisions to whoever handed the work over rather than guessing or re-routing. Scales down for trivial single-file edits and steps aside for non-coding requests."
+version: 4.1.0
 ---
 
 # Lean Code Workflow
@@ -23,6 +23,7 @@ Every threshold this skill uses lives here and is referenced by name from the se
 | `optimize.passes` | 1 | Optimize — one pass on the finished diff; leftovers are named, not re-hunted |
 | `parallel.max_agents` | 3 | §5 — agents running at once, any shape |
 | `parallel.min_slice` | ~1 sitting's worth | §5 — smallest slice worth handing to its own builder |
+| `autopilot.max_parked` | 3 | §10 — parked tasks that end an autopilot run early |
 
 A project can override any of these in its own `CLAUDE.md`; the project's value wins — except that `review.max_rounds` always wins over `review.rounds`, a ceiling that config can exceed is not a ceiling.
 
@@ -40,7 +41,7 @@ A project can override any of these in its own `CLAUDE.md`; the project's value 
 
 - Returning is not failing. A question returned now costs one message; the same question guessed at costs the whole change, discovered at §4.
 - Return the question, keep the work. Everything already built and verified stays; when the answer comes back, resume at the step you stopped at and leave locked decisions locked.
-- Picking *which* work is the caller's call too. Handed a map, a backlog, or a pile of tickets with no slice named? That's not a menu to choose from — ask which one. Choosing for them feels helpful and costs exactly what guessing an answer costs.
+- Picking *which* work is the caller's call too. Handed a map, a backlog, or a pile of tickets with no slice named? That's not a menu to choose from — ask which one. Choosing for them feels helpful and costs exactly what guessing an answer costs. The one exception is autopilot (§10): the user asked for the whole list, so the order is yours.
 - Only when there is no caller to return to — the user invoked you directly, and the question is about how the work should be *shaped* rather than what they want — reach for a planning pass yourself, and say which one you reached for and why.
 
 ## 1. Plan before touching code
@@ -203,6 +204,7 @@ What to walk:
 - §5 — work was split only after the risk pass was written down, and no two agents touched the same file or shared surface.
 - §5 — per-slice results were re-verified on the integrated tree; nothing was reported green on a slice's word alone.
 - §6 — `HANDOFF.md` matches where the work actually is, or is gone because the work finished here.
+- §10 — autopilot only: every ✅ task has its own commit, holding only its files, verified green, with its own §4 round. Every pick is in Decisions, its commit, and the report. Every parked task's work is in a named stash with its question in Blockers. Nothing pushed, amended, or rebased. The integration round ran on base..HEAD.
 - Never — no claim in the report rests on a search you cut short or a document you didn't run.
 - **Friction** — this skill's own log lives beside this file, `FRICTION.md` next to `SKILL.md`. At the *end* of every task, append one dated line: what the task was, the §1 tier (typo, small, full), the wall time, and how it ended. Take the time from `date` (or the harness's clock) once at §1 and once here; none taken at §1 → write `?`, never an estimate. Tier and time are the measurement a speed change to this skill needs. Add a second line only when a rule here failed you — didn't fire when it should have, fired wrongly, or there was simply no rule. Logging only the failures gives a numerator with no denominator, and no rate can be read from it. Never edit the rules themselves from inside a task: the session that just got burned is the worst judge of what the rule should be. This one file is exempt from §9's ask-first rule because it only records observations and changes no behaviour; `FRICTION.md` carries its own bar for what may later be promoted into a rule.
 
@@ -227,6 +229,36 @@ If this change affects documented behavior (a route, an API contract, a decision
 - Scratch or agent-only artifacts that aren't meant for human discovery (self-review notes, in-progress splits, working drafts) → keep them in a `.leancode/` folder at the repo root instead of scattering them into the docs tree. `HANDOFF.md` (§6) is the one exception — it stays at the repo root itself, precisely so it's the first thing found when resuming interrupted work.
 - New doc → use the minimal skeleton in `references/doc-skeleton.md` beside this file (Topic line, Rule, Why, Related, Open — skip what doesn't apply), adapted to whatever doc convention the project already has.
 
+## 10. Autopilot — the whole list in one run
+
+**On only when the user asks for it** — "autopilot", "run it all", "รันให้จบ", "ทำให้หมด", or a task list handed over with the instruction to do all of it. Never switched on by guess: a list with no such instruction is still §0's "ask which one". Every section above still applies to each task. This section changes three things only: who answers open decisions, when the run stops, and what gets committed.
+
+**Start.**
+- Take the tasks as given, or break the goal into tasks that each fit the small or full tier. Put a task after anything it depends on. Write the queue into the harness's todo tool and into `HANDOFF.md` (§6 — a queue is never single-sitting work), say it out loud once, and start. Don't wait for the queue to be approved.
+- Take `date` once for the run. Note the start commit: it is the run's base and its way back.
+- On the default branch → create `autopilot/<date>` first. Uncommitted changes already in the tree belong to someone else: list them in `HANDOFF.md` and never commit them. A task that needs one of those files is parked.
+
+**Per task — the walk, then a commit.**
+1. §1: goal sentence, tier, Structure case. Mark the task current.
+2. §2 and §3. The first task runs the baseline. After that, the previous task's green check is this task's baseline — re-run it first only when this task touches something that check did not cover.
+3. §4 on this task's diff alone (`git diff` against the previous task's commit). In autopilot the delegated round runs at the small tier too; only the typo tier gets a self-read.
+4. Structure check, Optimize, re-run §3. §7's lines for this task.
+5. Commit locally, one task one commit, staging only the files this task touched (`git add <paths>`, never `-A` or `.`). Message: the goal sentence, then `Verified: <command> → <result>`, then any autopilot picks. Never push, amend, rebase, or rewrite an earlier commit.
+6. Update `HANDOFF.md` (task done, last commit, next task), post one status line — `✅ 2/5 <goal> · <short sha>` — and go straight to the next task.
+
+**Decisions — pick or park, never stop to ask.** For the length of the run this replaces §0's "return it": the caller answers once, at the end. It holds even when the harness is interactive.
+- *Reversible* — a name, which of two already-installed options, a default value, a UI detail, a spec line with one obvious reading → pick the option you'd recommend, write `autopilot pick: X over Y — <why>` under `HANDOFF.md` Decisions and in the task's commit message, and carry on.
+- *Not cheaply reversible* — a foundational choice (§1), a new boundary whose interface is still open (Structure), a new dependency, a clash with a repo constraint, anything irreversible or a one-way change to shared data (§2), a guard block → **park the task**: `git stash push -u -m "autopilot-parked: <task>" -- <this task's paths>` its partial work (the paths keep someone else's uncommitted changes out of the stash), write the question, the options and your pick under `HANDOFF.md` Blockers, mark it ⏸ in the queue, and move on. Tasks that depend on it are parked with it.
+- A task that hits `build.max_cycles` or `review.max_rounds` is parked the same way. Parking returns the tree to the last green commit, so the next task never builds on red. It stops the task, not the run.
+
+**Stop the run early only when** `autopilot.max_parked` tasks are parked — that many open decisions means the list itself needs the user — or §6's context trigger fires with tasks left. Either way `HANDOFF.md` is current. `autopilot: resume` in a new session runs §6's resume check, then continues from the first task that isn't ✅. A parked task stays parked until its question has an answer; it then resumes from its stash (`git stash apply`), and a conflict there goes back to the user (§0).
+
+**End of run.**
+- Re-run §3's full check on the final tree, then one §4 round on the whole run's diff (base..HEAD), aimed at what per-task rounds cannot see: two tasks that each look right but disagree on a type, a route, or a config key. Fixes go in one last commit, `autopilot: integration fixes`. A fix that needs a decision is parked.
+- §8 once, for the whole run: each task ✅ with its short sha, or ⏸ with its question; every autopilot pick, so the user can overrule it (`git revert <sha>` undoes one task); the doc updates §8 and §9 would have asked about, collected here as questions and not made; the base commit.
+- `HANDOFF.md` stays while any task is parked — its Blockers are the open questions. Delete it only when every task is ✅.
+- `FRICTION.md`: one line per task, tier written `autopilot/<small|full>`, plus a rule-failure line where one applies.
+
 ## Never
 
 - Declare done without having run something.
@@ -242,3 +274,4 @@ If this change affects documented behavior (a route, an API contract, a decision
 - Rewrite for speed without a measurement named in the §8 report.
 - Invent a new folder, layer, or pattern on a refactor.
 - Edit this file without bumping `version` and adding a `CHANGELOG.md` line.
+- In autopilot: stop mid-run to ask in chat, push, amend, rebase, or stage with `git add -A`. Turn autopilot on without being asked.

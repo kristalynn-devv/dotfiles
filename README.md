@@ -26,6 +26,7 @@ pointer into `references/` carries a short fallback in case the file can't be re
 | §7 Audit | Re-read the **session**, not the diff. A step that never happened leaves nothing in a diff to see |
 | §8 Report | What changed, why, how it was verified, and what was deliberately skipped |
 | §9 Doc hygiene | Docs are edited only on the user's go-ahead |
+| §10 Autopilot | On request ("autopilot", "รันให้จบ"): the whole task list in one run. Each task gets the walk, its own review and a local commit; reversible decisions are picked and logged, the rest parked; one report at the end |
 
 Two design decisions carry most of the weight:
 
@@ -124,6 +125,7 @@ from the section that uses it. Change the number there; don't hunt for it in the
 | `review.rounds` | 1 | Delegated self-review passes |
 | `review.max_rounds` | 2 | Hard ceiling; past this, hand back to the caller |
 | `optimize.passes` | 1 | One pass on the finished diff; leftovers are named, not re-hunted |
+| `autopilot.max_parked` | 3 | Parked tasks that end an autopilot run early |
 
 ### Update / remove
 
