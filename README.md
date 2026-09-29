@@ -147,7 +147,3 @@ decisions are settled and the next move is editing code. Pair it with whatever y
 in: a planning skill, an issue tracker, your own head. When it hits something it cannot
 decide, it returns the question to whoever called it rather than routing on to a skill
 of its own choosing.
-
-## License
-
-MIT. See [LICENSE](./LICENSE).
