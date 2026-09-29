@@ -13,7 +13,7 @@ covers what native rules can't express.
 
 | Harness | Default (native) | Extra, if needed |
 | --- | --- | --- |
-| Claude Code | Nothing to install. Auto mode's built-in `soft_deny` rules already cover every entry in `patterns.txt`: they block without prompting and tell Claude which rule fired. Check with `claude auto-mode defaults`. | Extend with your own prose rules under `autoMode.soft_deny`, keeping `"$defaults"` in the list |
+| Claude Code | Nothing to install. Auto mode's built-in `soft_deny` rules cover most of `patterns.txt` (force-push, remote deletes, `reset --hard`, `clean`, `checkout -- .`, `rm -r`, DROP/TRUNCATE, kubectl delete/drain, helm uninstall, terraform on shared infrastructure): they block without prompting and tell Claude which rule fired. `git branch -D` and `helm rollback` are not named in them (checked 2026-09-29). Check with `claude auto-mode defaults`. | Extend with your own prose rules under `autoMode.soft_deny`, keeping `"$defaults"` in the list, e.g. for the two entries the defaults don't name |
 | Codex CLI | `codex/default.rules`: execpolicy `forbidden` rules, which block without prompting. Copy to `~/.codex/rules/`. | `guard.sh codex` as a `PreToolUse` hook on `Bash`, for flag orders a token prefix misses |
 | Cursor | `cursor/hooks.example.json`: `guard.sh cursor` on `beforeShellExecution`. The IDE has no hard denylist of its own. Merge into `~/.cursor/hooks.json` or `<project>/.cursor/hooks.json`. | The Cursor CLI also takes `permissions.deny` rules in `cli-config.json` |
 
