@@ -1,33 +1,34 @@
 # dotfiles — agent instructions
 
-แหล่งความจริงเดียวสำหรับคำสั่งที่ agent ทุกตัวต้องอ่าน
+The single source of truth for the instructions every agent reads.
 
-## โครงสร้าง
+## Layout
 
-- `claude/` — ไฟล์ต้นฉบับ (แก้ที่นี่เท่านั้น) · `~/.claude/CLAUDE.md` เป็น symlink มาที่ `claude/CLAUDE.md`
-  และ `@import` ในนั้น resolve จาก path จริงใน `claude/`
-  - `CLAUDE.md` — ตัว entry ที่ `@import` ไฟล์อื่น
-  - `IDENTITY.md` — เรียก dev ว่าอะไร + กติกา leancode
-  - `GIT.md` — คำว่า "push": เอางานลง branch dev ของ repo (merge `--no-ff`) แล้ว push
-  - `WORKING-RULES.md` — กติกาการทำงานทั่วไป (HANDOFF, การหาคำตอบ, agents, auto mode, leancode)
-    ย้ายมาจาก Claude auto-memory
+- `claude/` — the source files (edit here only) · `~/.claude/CLAUDE.md` is a symlink to `claude/CLAUDE.md`, and its
+  `@import`s resolve from the real path in `claude/`
+  - `CLAUDE.md` — the entry point that `@import`s the others
+  - `IDENTITY.md` — how to address the dev + the leancode greeting
+  - `GIT.md` — the word "push": put the work on the repo's dev branch (merge `--no-ff`) and push
+  - `CROSS-REPO-DOCS.md` — sending docs to another repo: write them there + in its `HANDOFF.md`, then the sender is done
+  - `WORKING-RULES.md` — general working rules (HANDOFF, finding answers, agents, auto mode, leancode), moved out of
+    Claude auto-memory
   - `RTK.md`, `WAYFINDER-LEANCODE.md`
-- `agents/AGENTS.md` — **generated** ไฟล์แบนสำหรับ agent ที่ไม่รองรับ `@import` (Codex, Gemini) — อย่าแก้มือ ·
-  inline เฉพาะไฟล์ในรายชื่อของ `sync.sh` (ตอนนี้ `IDENTITY.md`, `RTK.md`, `WAYFINDER-LEANCODE.md`)
+- `agents/AGENTS.md` — **generated** flat file for agents without `@import` support (Codex, Gemini) — don't edit by
+  hand · inlines only the files listed in `sync.sh` (currently `IDENTITY.md`, `RTK.md`, `WAYFINDER-LEANCODE.md`)
 
-## ใช้งาน
+## Usage
 
-repo เป็น private — `gh auth login` ก่อน clone
+The repo is private — run `gh auth login` before cloning.
 
 ```bash
 git clone https://github.com/kristalynn-devv/dotfiles.git ~/dotfiles && bash ~/dotfiles/sync.sh
 ```
 
-รัน `sync.sh` ซ้ำทุกครั้งหลังแก้ไฟล์ใน `claude/` เพื่อ regenerate `agents/AGENTS.md`
+Re-run `sync.sh` after every edit under `claude/` to regenerate `agents/AGENTS.md`.
 
-## เพิ่มไฟล์กติกาใหม่
+## Adding a rule file
 
-1. เขียน `claude/<NAME>.md` — กติกาที่ใช้ทุกโปรเจกต์เขียนที่นี่ ไม่ใช่ใน Claude auto-memory
-2. เพิ่ม `@<NAME>.md` ใน `claude/CLAUDE.md` — Claude Code เห็นตั้งแต่ session ถัดไป ไม่ต้อง link เพิ่ม
-3. ให้ Codex/Gemini เห็นด้วย → เพิ่มชื่อในลูปที่สร้าง `AGENTS.md` ใน `sync.sh` แล้วรัน `sync.sh`
-4. เพิ่มบรรทัดในหัวข้อ "โครงสร้าง" ด้านบน
+1. Write `claude/<NAME>.md` — rules that apply to every project go here, not in Claude auto-memory.
+2. Add `@<NAME>.md` to `claude/CLAUDE.md` — Claude Code picks it up from the next session; no extra link needed.
+3. To make Codex/Gemini see it too → add the name to the loop in `sync.sh` that builds `AGENTS.md`, then run `sync.sh`.
+4. Add a line under "Layout" above.

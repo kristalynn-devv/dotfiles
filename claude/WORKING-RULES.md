@@ -1,56 +1,62 @@
-# กติกาการทำงาน (รวมจาก memory)
+# Working rules (moved out of memory)
 
-ใช้กับทุกโปรเจกต์ ทุก session ทุก subagent — ไม่ผูกกับงานใดงานหนึ่ง
-ย้ายมาจาก auto-memory ของ workspace `~/Documents/GitLab` เมื่อ 2026-09-29
-(merge `--no-ff` อยู่ใน `GIT.md` · ข้อเท็จจริง GitLab/CI อยู่ใน `~/Documents/GitLab/CLAUDE.md` §Environments)
+These apply to every project, every session, every subagent — not tied to any one task.
+Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09-29
+(the `--no-ff` merge rule is in `GIT.md` · GitLab/CI facts are in `~/Documents/GitLab/CLAUDE.md` §Environments)
 
-## การติดตามงาน
+## Tracking work
 
-1. **`HANDOFF.md` อยู่ใน git ทุก repo** — เป็นตัว tracking งานของทีม ห้าม gitignore, commit ไปพร้อมงาน ·
-   repo ไหน ignore ไว้ให้ลบ rule ออก · ตอน "push" ถือว่า HANDOFF.md ที่ session นี้แก้เป็นไฟล์ของ session นี้ ·
-   `.wayfinder/` ไม่เกี่ยว ปล่อยตามที่ repo ตั้งไว้ — ผู้ใช้: "เปิดให้ handoff ขึ้น git ได้เพราะเอาไว้ tracking งาน"
+1. **`HANDOFF.md` is in git in every repo** — it is the team's work tracker. Never gitignore it; commit it with the
+   work it describes · a repo that ignores it → remove the rule · on "push", HANDOFF.md edits made by this session
+   count as this session's files · `.wayfinder/` is not covered; leave it as each repo has it —
+   the user: "let handoff go into git, it's there for tracking work"
 
-## การหาคำตอบ
+## Finding answers
 
-2. **business rule ดูจาก PRD แรก ๆ + โค้ดตั้งต้น ไม่ใช่ client ที่มีอยู่** — ถามว่าฟีเจอร์ควรทำอะไรได้ ให้ไล่
-   PRD/spec ฉบับเก่าสุดก่อน แล้วดู commit แรก / legacy snapshot · client (web/app) ใช้อ้างอิงได้แค่เรื่อง wiring
-   (เรียก API ไหน หน้าไหน) ตอน port ระหว่าง client · ไม่มีเอกสารเก่ากว่านี้ให้บอกตรง ๆ —
-   ผู้ใช้: "web ไม่ได้เป็นตัวตั้ง ต้องดูว่า prd แรกๆ มายังไง"
+2. **Business rules come from the earliest PRDs + the original code, not from an existing client** — for what a
+   feature is supposed to allow, trace the oldest PRD/spec first, then the first commits / legacy snapshot · a client
+   (web/app) is a reference only for wiring (which API, which screen) when porting between clients · no document
+   older than the current one → say so plainly —
+   the user: "web isn't the reference, look at how the early PRDs had it"
 
 ## Agents
 
-3. **เรียก agent พร้อมกันได้ไม่จำกัด** (override `parallel.max_agents` = 3 ของ leancode) — ยกแค่เพดาน กติกาแบ่งงาน
-   ยังอยู่: slice ที่รอผลของอีก slice ต้องรอ · หนึ่งเจ้าของต่อ repo/worktree · ห้ามสอง agent บน branch/tree
-   เดียวกัน · builder แต่ละตัวมี worktree ของตัวเอง — ผู้ใช้: "เรียก agents ได้ไม่จำกัด"
-4. **งานใหม่ที่ไม่ต่อเนื่อง → agent ใหม่เสมอ** ไม่ resume ตัวเดิม · resume ได้แค่เพื่อทำต่อ/ขยายงานเดิมโดยตรง ·
-   agent ใหม่ได้ brief สั้น (repo, worktree, branch, contracts, queue) · session หลักก็เหมือนกัน แต่ `/clear`
-   ได้แค่ผู้ใช้ — บอกเมื่อถึงจังหวะที่ควรตัด — ผู้ใช้: "เมื่อเป็นงานใหม่ที่ไม่ต่อเนื่องให้ clear session ทุกครั้ง"
-5. **review ตามความเสี่ยง** — task เสี่ยงสูง (พลาดแล้วแก้ย้อนยาก หรือกระทบความปลอดภัย/เงิน/ข้อมูลผู้ใช้) review
-   แยกทีละ task · task อื่นรวม review ครั้งเดียวตอนจบรอบ (ใช้แทน default ของ leancode ที่ review ทุก task)
-6. **ระหว่างแก้รันเฉพาะ test ที่เกี่ยวข้อง** (`--filter`, path) · full suite ครั้งเดียวก่อน commit ของแต่ละ task
-   และอีกครั้งตอนจบรอบ · ข้อ 5–6 ใส่ใน brief ของ builder ทุกตัว
-7. **รายงานความคืบหน้าทุกครั้งมีตาราง agent ทั้งหมดที่เรียกมา** — ทำอะไร อยู่ repo/worktree ไหน สถานะ
-   (running / done / parked) รวม agent ที่ builder เรียกต่อ · เรียก `ListAgents` ก่อนเขียน · บอก session อื่นที่ทำ
-   repo เดียวกันเมื่อมีผล — ผู้ใช้: "ตอนทำงานให้แสดง agent ที่ summon ทั้งหมดด้วย"
+3. **No cap on parallel agents** (overrides leancode's `parallel.max_agents` = 3) — only the cap is lifted; the split
+   rules stay: a slice that needs another slice's output waits · one owner per repo/worktree · never two agents on the
+   same branch/tree · each builder gets its own worktree — the user: "call as many agents as you want"
+4. **New, non-continuous work → always a fresh agent**, never a resumed one · resume only to finish or directly extend
+   what it was doing · a fresh agent gets a compact brief (repo, worktree, branch, contracts, queue) · the main session
+   is the same, but only the user can `/clear` — say when it's a good moment for a clean break —
+   the user: "when it's new work that doesn't continue from before, clear the session every time"
+5. **Review by risk** — high-risk tasks (hard to undo if wrong, or touching security/money/user data) are reviewed one
+   task at a time · other tasks share one review at the end of the run (replaces leancode's default of reviewing every task)
+6. **While iterating, run only the relevant tests** (`--filter`, a path) · the full suite once before each task's
+   commit and once more at the end of the run · put items 5–6 in every builder's brief
+7. **Every progress update carries a table of all summoned agents** — what each does, which repo/worktree, status
+   (running / done / parked), including agents a builder spawned · call `ListAgents` before writing · mention other
+   sessions working in the same repos when it matters — the user: "while working, show every agent you summoned"
 
 ## Auto mode
 
-8. **auto mode: คำสั่งทำลายของ → บล็อก ไม่ถาม** — `soft_deny` ในตัว (`claude auto-mode defaults`) บล็อก
-   force-push, `reset --hard`, `rm -rf`, DROP/TRUNCATE, kubectl/helm/terraform อยู่แล้ว —
-   ผู้ใช้: "auto mode มันต้องทำเองไม่ถามแล้ว ไม่ใช่หมวดแพลน หรือ ask"
-9. **auto mode: คำสั่งที่ใช้ key/secret ของ dev → ให้ยืนยัน ไม่บล็อก** (kubectl exec, get/patch Secret) ผ่าน rule
-   `permissions.ask` ที่ผู้ใช้เพิ่มเอง — ผู้ใช้: "auto mode ไม่ต้องบล็อกการใช้คีย์ แค่ให้ยืนยัน" ·
-   ข้อเท็จจริงที่ทดสอบแล้ว: `permissions.ask` ถามจริงใน auto mode (อย่าใช้กับงานไม่มีคนเฝ้า) · PreToolUse hook
-   ที่คืน "ask" ไม่ถาม · Claude แก้ settings เองไม่ได้ (โดนบล็อกเป็น Self-Modification) → ส่ง rule ที่ต้องเพิ่มให้ผู้ใช้
+8. **Auto mode: destructive commands → blocked, not asked** — the built-in `soft_deny` (`claude auto-mode defaults`)
+   already blocks force-push, `reset --hard`, `rm -rf`, DROP/TRUNCATE, kubectl/helm/terraform —
+   the user: "auto mode should just do it without asking — it isn't plan mode or ask"
+9. **Auto mode: commands that use dev keys/secrets → confirm, don't block** (kubectl exec, get/patch Secret) via a
+   `permissions.ask` rule the user adds — the user: "auto mode doesn't need to block key use, just confirm" · tested
+   facts: `permissions.ask` does prompt in auto mode (don't rely on it for unattended runs) · a PreToolUse hook
+   returning "ask" does not prompt · Claude can't edit settings itself (blocked as Self-Modification) → give the user
+   the rule to add
 
 ## Skill leancode
 
-10. **เรียก `leancode` เฉพาะงานที่เหมาะ** (ใช้แทน description ของ skill ที่บอก "Use for any coding task") —
-    เหมาะ: งาน build หลายขั้น/หลายไฟล์ เช่น ฟีเจอร์, bug ที่ต้องไล่หลายจุด, refactor, ทำต่อจาก HANDOFF, autopilot ·
-    ไม่ต้องใช้: ตอบคำถาม, แก้ config/เอกสาร/memory, แก้จุดเดียวที่ทางชัด, งาน git/shell ทั่วไป — ทำตรง ๆ ·
-    งานไหนผู้ใช้อยากใช้ ผู้ใช้เรียก `/leancode` เอง — ผู้ใช้: "ปรับให้งานที่เหมาะสมค่อยเรียก leancode
-    หรืองานที่อยากเรียกก็เรียกเองได้"
-11. **แก้ตัว skill `leancode` ต้องเป็นกลาง** (`~/.claude/skills/leancode`, public GitHub repo) — ใช้ได้ทุก harness
-    ไม่ใส่กฎของ repo ในเครื่อง · เรื่องเฉพาะ harness เขียนแบบ "ถ้า harness มี X ไม่งั้น Y" · enforcement อยู่ใน
-    `adapters/` · แก้ SKILL.md ทุกครั้ง bump `version` + Changelog และใส่ version ใน subject ของ commit —
-    ผู้ใช้: "ไม่ต้องล็อคกฏของ repo ในเครื่อง ให้เป็นกลางๆ"
+10. **Call `leancode` only for work that suits it** (overrides the skill's description "Use for any coding task") —
+    suits: multi-step / multi-file build work such as features, bugs that need tracing through several places,
+    refactors, resuming from HANDOFF, autopilot · not needed: answering questions, editing config/docs/memory, a
+    one-spot edit with a clear path, routine git/shell work — do those directly · for anything else the user wants it
+    on, the user calls `/leancode` · the user saying "รันให้จบ" or "ทำให้หมด" = leancode autopilot (§10) —
+    the user: "adjust it so leancode is called for suitable work, and for work I want it on I can call it myself"
+11. **Edits to the `leancode` skill itself stay neutral** (`~/.claude/skills/leancode`, public GitHub repo) — usable on
+    any harness and in any language (English only, no language-specific rules), no local repo rules ·
+    harness-specific points are worded "if the harness has X, otherwise Y" · enforcement lives in `adapters/` · every
+    SKILL.md edit bumps `version` + CHANGELOG and puts the version in the commit subject —
+    the user: "don't lock in the local repos' rules, keep it neutral"

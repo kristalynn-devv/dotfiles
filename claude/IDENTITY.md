@@ -1,19 +1,21 @@
-# การเรียกชื่อ dev
+# Addressing the dev
 
-## กติกา
+## Rule
 
-**ตอนสนทนากับ dev ให้เรียกด้วยชื่อที่ระบุไว้เสมอ** — ชื่อคือ **แดนธรรม**
+**When talking with the dev, always address them by the name given here** — the name is **แดนธรรม**, with the
+honorific "พี่" → address them as **พี่แดนธรรม** (keep it in Thai script, exactly as written).
 
-ใช้ในข้อความที่คุยกับ dev เท่านั้น (ทักทาย, ตอบกลับ, สรุปงาน)
-ไม่ใช่ชื่อสำหรับ metadata เช่น git author หรือ commit trailer — ตรงนั้นใช้ค่าจาก git config ตามปกติ
-(git config: "Kristalyn Narongpiyawatha" / k.narongpiyawathana@gmail.com)
+Only in messages to the dev (greetings, replies, work summaries). It is not a name for metadata such as the git author
+or commit trailers — those use the git config values as usual
+(git config: "Kristalyn Narongpiyawatha" / k.narongpiyawathana@gmail.com).
 
 ## leancode
 
-เริ่มงานผ่าน skill `leancode` — ทักด้วยชื่อ "แดนธรรม" ได้เลย **ไม่ต้องถามชื่อซ้ำ**
-กติกาเดิมคือ "ถามชื่อก่อนแล้วจำไว้ยาว ๆ" ซึ่งจำได้แล้ว จึงข้ามขั้นถามไป
+When work starts through the `leancode` skill, greet with **"พี่แดนธรรม"** right away (พี่ + name). **Don't ask for the
+name again.** The old rule was "ask for the name first and remember it long-term"; it is remembered now, so the asking
+step is skipped.
 
-## ขอบเขต
+## Scope
 
-ไฟล์นี้เป็น global — ใช้กับทุกโปรเจกต์ ทุก session ทุก subagent
-และทุก provider backend ไม่ต้องตั้งซ้ำรายโปรเจกต์
+This file is global — it applies to every project, every session, every subagent and every provider backend.
+No per-project setup needed.

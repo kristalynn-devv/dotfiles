@@ -1,23 +1,23 @@
-# คำว่า "push"
+# The word "push"
 
-## กติกา
+## Rule
 
-**ผู้ใช้บอก "push" = เอางานของ session นี้ลง branch dev ของ repo แล้ว push** ใช้กับทุก repo
+**When the user says "push", put this session's work on the repo's dev branch and push it.** Applies to every repo.
 
-- branch dev คือ branch หลักที่ทีมใช้ของ repo นั้น เช่น `development` หรือ `develop` ให้ดูจาก repo
-  ไม่ต้องเดา (`git symbolic-ref refs/remotes/origin/HEAD` หรือ CLAUDE.md ของ repo)
-- งานอยู่บน branch อื่น → อัปเดต branch dev ใน local แล้ว `git merge --no-ff <branch>` แล้ว
-  `git push origin <dev>` · ห้าม fast-forward และห้าม `git push origin HEAD:<dev>` แม้จะ ff ได้สะอาด
-- งานยังไม่ได้ commit → commit **เฉพาะไฟล์ที่ session นี้แก้** บน branch dev (ระบุ path ทีละไฟล์
-  ห้าม `git add -A` / `.`) แล้ว push · คำว่า "push" นับเป็นคำสั่งให้ commit ด้วย ไม่ต้องถามซ้ำ
+- The dev branch is the repo's main working branch for the team, e.g. `development` or `develop`. Look it up in the
+  repo, don't guess (`git symbolic-ref refs/remotes/origin/HEAD` or the repo's CLAUDE.md).
+- Work is on another branch → update the local dev branch, `git merge --no-ff <branch>`, then
+  `git push origin <dev>` · never fast-forward and never `git push origin HEAD:<dev>`, even when a fast-forward is clean.
+- Work is not committed yet → commit **only the files this session changed** on the dev branch (name each path;
+  never `git add -A` / `.`), then push · "push" counts as the instruction to commit too; don't ask again.
 
-## ขอบเขต
+## Scope
 
-- ไฟล์ที่ session อื่นแก้ค้างไว้ไม่เอาเข้า commit
-- commit ของ session อื่นที่ค้างอยู่ใน local จะติดขึ้นไปตอน push → บอกในรายงานเสมอ ไม่ต้องหยุดรอ
-- แยก commit ตามงาน ไม่ใส่ AI trailer (`Co-Authored-By`) ตามกฎของแต่ละ repo/memory
-- แตก branch ใหม่ยังต้องมีเหตุผลจริง · "push" ไม่ได้แปลว่า force-push หรือ rebase ของที่ push ไปแล้ว
-- push ไป remote ที่ไม่ใช่ branch dev (เช่น main/production) ยังต้องถามก่อน
+- Files other sessions left modified stay out of the commit.
+- Other sessions' commits waiting in local history go up with the push → always say so in the report; don't stop to wait.
+- One commit per piece of work. No AI trailer (`Co-Authored-By`), following each repo's / memory's rules.
+- A new branch still needs a real reason · "push" never means force-push or rebasing what is already pushed.
+- Pushing to a remote branch that is not the dev branch (e.g. main/production) still needs asking first.
 
-บันทึก 2026-09-28 จากผู้ใช้: "ถ้าบอก push คือ merge branch or code changes in session to dev and
-push" · "ไม่ใช่แค่ repo นี้ ทุก repo" · เรื่อง `--no-ff` (2026-09-24): "ต่อไปไม่ต้อง ff ให้ push ปกติ"
+Recorded 2026-09-28 from the user: "if I say push, it means merge the branch or the session's code changes to dev
+and push" · "not only this repo, every repo" · on `--no-ff` (2026-09-24): "from now on don't fast-forward, push normally"
