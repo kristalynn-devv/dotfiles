@@ -18,8 +18,6 @@ The single source of truth for the instructions every agent reads.
 
 ## Usage
 
-The repo is private — run `gh auth login` before cloning.
-
 ```bash
 git clone https://github.com/kristalynn-devv/dotfiles.git ~/dotfiles && bash ~/dotfiles/sync.sh
 ```
