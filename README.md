@@ -3,7 +3,7 @@
 A coding-workflow skill for agents. It turns "implement this" from a single leap into
 a walk with nine steps plus a structure check and one tighten pass on the finished diff, and (the part most
 workflows leave out) it **audits whether the walk actually happened** before it
-reports anything back.
+reports anything back. On request, autopilot (§10) runs a whole task list that way in one go.
 
 Written for [Claude Code](https://claude.com/claude-code) skills, but it is plain
 Markdown: `SKILL.md` with YAML frontmatter, plus `references/` it reads only when a
@@ -17,14 +17,14 @@ pointer into `references/` carries a short fallback in case the file can't be re
 | §0 Entry and return | Note who handed the work over. Hit a decision you cannot make → hand it **back**, don't guess and don't pick the next skill for them |
 | §1 Plan first | Say the goal out loud before the first edit; read the code this touches; read the repo's standing constraints, not just the scope-matched docs |
 | Structure | Name the case before the edit. A new boundary is checked against that decision. A refactor keeps the structure already there |
-| §2 Build lean | Reuse before adding; no new abstraction until there are real call sites for it |
+| §2 Build lean | Reuse before adding; no new abstraction until there are real call sites for it. Anything irreversible is confirmed first: by the user in an interactive mode, by the harness's guard in an autonomous one, and by the user in every mode for a one-way change to shared data |
 | §3 Verify with evidence | A baseline run *before* the change; the new test seen red; the full diff read. Never "should work" |
 | §4 Self-review | A delegated review round, findings checked against the code, rejected ones named |
 | Optimize | One pass on the finished diff: remove, collapse, bound a cost this change introduced. No speed rewrite without a measurement |
 | §5 Split across agents | Subagents are authorized for speed. Analyse the risk *before* splitting; never repeat an in-flight task; fan out only onto slices that cannot touch each other; the main session owns the merge |
-| §6 Continuity | `HANDOFF.md` once the session is close to running out, so the next one doesn't start cold |
+| §6 Continuity | `HANDOFF.md` for work that spans more than one sitting, written early (steps still open, context running low, before anything irreversible), not at the moment it's needed. Resuming checks the note against git first |
 | §7 Audit | Re-read the **session**, not the diff. A step that never happened leaves nothing in a diff to see |
-| §8 Report | What changed, why, how it was verified, and what was deliberately skipped |
+| §8 Report | What changed, why, how it was verified, and what was deliberately skipped. Emoji only as status signals; every technical term glossed once per message, Thai and English |
 | §9 Doc hygiene | Docs are edited only on the user's go-ahead |
 | §10 Autopilot | On request ("autopilot", "รันให้จบ"): the whole task list in one run. Each task gets the walk, its own review and a local commit; reversible decisions are picked and logged, the rest parked; one report at the end |
 
@@ -115,16 +115,22 @@ Codex, a shell hook for Cursor. The skill works without it.
 
 Every threshold lives in one table at the top of `SKILL.md` and is referenced by name
 from the section that uses it. Change the number there; don't hunt for it in the prose.
+A project can override any of them in its own `CLAUDE.md` and the project's value wins,
+except that `review.max_rounds` always wins over `review.rounds`.
 
 | Name | Default | What it gates |
 | --- | --- | --- |
 | `handoff.steps_left` | 3 | Steps still open before `HANDOFF.md` is required |
 | `handoff.context_left` | 20% | Remaining context budget that triggers the note |
+| `handoff.compactions` | 1 | Compactions this session before the note is required |
 | `abstraction.call_sites` | 3 | Real call sites required before a new abstraction exists |
 | `build.max_cycles` | 3 | Build→verify cycles before stopping to rethink |
 | `review.rounds` | 1 | Delegated self-review passes |
 | `review.max_rounds` | 2 | Hard ceiling; past this, hand back to the caller |
+| `review.effort` | maximum (`ultrathink`) | Reasoning depth the review runs at |
 | `optimize.passes` | 1 | One pass on the finished diff; leftovers are named, not re-hunted |
+| `parallel.max_agents` | 3 | Agents running at once, any shape |
+| `parallel.min_slice` | ~1 sitting's worth | Smallest slice worth handing to its own builder |
 | `autopilot.max_parked` | 3 | Parked tasks that end an autopilot run early |
 
 ### Update / remove
