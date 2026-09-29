@@ -1,7 +1,7 @@
 ---
 name: leancode
-description: "Use for any coding task — implementing a feature, fixing a bug, refactoring, reviewing code, or resuming interrupted work. Enforces plan-first, lean implementation (reuse over duplication, security/perf awareness), a maximum-effort self-review (correctness, fit, cross-stack contracts), a structure check, one tighten pass on the finished diff, a closing audit of the walk itself, a risk-assessed split across subagents, evidence-based completion, ask-first doc hygiene, and a handoff note that survives across sessions. Autopilot mode (on "autopilot", "run it all", "รันให้จบ") runs a whole task list in one go: each task verified, reviewed and committed locally, reversible decisions picked and logged, blocked tasks parked, one report at the end. Engages on implementation intent without needing to be named, and returns open decisions to whoever handed the work over rather than guessing or re-routing. Scales down for trivial single-file edits and steps aside for non-coding requests."
-version: 4.1.0
+description: "Use for any coding task — implementing a feature, fixing a bug, refactoring, reviewing code, or resuming interrupted work. Enforces plan-first, lean implementation (reuse over duplication, security/perf awareness), a maximum-effort self-review (correctness, fit, cross-stack contracts), a structure check, one tighten pass on the finished diff, a closing audit of the walk itself, a risk-assessed split across subagents, evidence-based completion, ask-first doc hygiene, and a handoff note that survives across sessions. Autopilot mode (on "autopilot", "run it all", or the same ask in the user's language) runs a whole task list in one go: each task verified, reviewed and committed locally, reversible decisions picked and logged, blocked tasks parked, one report at the end. Engages on implementation intent without needing to be named, and returns open decisions to whoever handed the work over rather than guessing or re-routing. Scales down for trivial single-file edits and steps aside for non-coding requests."
+version: 4.1.1
 ---
 
 # Lean Code Workflow
@@ -215,7 +215,7 @@ What changed (files), why, and how it was verified — in a few lines. §7 alrea
 **How the output reads** — this applies to every message that reaches the user, not only this section: reports, questions, and returns (§0).
 
 - Emoji are signal, not decoration. One on a heading, a status, or a question, where it tells the reader at a glance what kind of thing they are looking at — ✅ done · ⚠️ risk · ❓ needs an answer · 🔴 blocked · 📋 plan. Never inside code, file paths, commands, or command output.
-- **Gloss every technical term the first time it appears in a message.** An English term carries the Thai in parentheses — `rollback (ย้อนกลับ)`; a Thai term carries the English — `ขอบเขตชื่อบนคลัสเตอร์ (namespace)`. Use whichever order reads naturally; the point is that neither language is the one the reader has to guess at.
+- **Gloss every technical term the first time it appears in a message, when the user writes in a different language from the term.** Pair the term with its equivalent in the user's language, in parentheses, in whichever order reads naturally — `rollback (<the user's word>)` or `<the user's word> (namespace)`. The point is that neither language is the one the reader has to guess at.
 - Gloss for meaning, not word-for-word. A translation more confusing than the term it explains is worse than none — leave such a term bare rather than inventing a word nobody uses.
 - Gloss once per message, not on every mention.
 
@@ -231,7 +231,7 @@ If this change affects documented behavior (a route, an API contract, a decision
 
 ## 10. Autopilot — the whole list in one run
 
-**On only when the user asks for it** — "autopilot", "run it all", "รันให้จบ", "ทำให้หมด", or a task list handed over with the instruction to do all of it. Never switched on by guess: a list with no such instruction is still §0's "ask which one". Every section above still applies to each task. This section changes three things only: who answers open decisions, when the run stops, and what gets committed.
+**On only when the user asks for it** — "autopilot", "run it all", the same ask in the user's language, or a task list handed over with the instruction to do all of it. Never switched on by guess: a list with no such instruction is still §0's "ask which one". Every section above still applies to each task. This section changes three things only: who answers open decisions, when the run stops, and what gets committed.
 
 **Start.**
 - Take the tasks as given, or break the goal into tasks that each fit the small or full tier. Put a task after anything it depends on. Write the queue into the harness's todo tool and into `HANDOFF.md` (§6 — a queue is never single-sitting work), say it out loud once, and start. Don't wait for the queue to be approved.

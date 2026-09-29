@@ -24,9 +24,9 @@ pointer into `references/` carries a short fallback in case the file can't be re
 | §5 Split across agents | Subagents are authorized for speed. Analyse the risk *before* splitting; never repeat an in-flight task; fan out only onto slices that cannot touch each other; the main session owns the merge |
 | §6 Continuity | `HANDOFF.md` for work that spans more than one sitting, written early (steps still open, context running low, before anything irreversible), not at the moment it's needed. Resuming checks the note against git first |
 | §7 Audit | Re-read the **session**, not the diff. A step that never happened leaves nothing in a diff to see |
-| §8 Report | What changed, why, how it was verified, and what was deliberately skipped. Emoji only as status signals; every technical term glossed once per message, Thai and English |
+| §8 Report | What changed, why, how it was verified, and what was deliberately skipped. Emoji only as status signals; every technical term glossed once per message in the user's language |
 | §9 Doc hygiene | Docs are edited only on the user's go-ahead |
-| §10 Autopilot | On request ("autopilot", "รันให้จบ"): the whole task list in one run. Each task gets the walk, its own review and a local commit; reversible decisions are picked and logged, the rest parked; one report at the end |
+| §10 Autopilot | On request ("autopilot", "run it all"): the whole task list in one run. Each task gets the walk, its own review and a local commit; reversible decisions are picked and logged, the rest parked; one report at the end |
 
 Two design decisions carry most of the weight:
 
