@@ -1,3 +1,4 @@
 @RTK.md
 @WAYFINDER-LEANCODE.md
 @IDENTITY.md
+@GIT.md
