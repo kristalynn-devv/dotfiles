@@ -30,6 +30,36 @@ git clone https://github.com/kristalynn-devv/dotfiles.git ~/dotfiles && bash ~/d
 
 Re-run `sync.sh` after every edit under `claude/` to regenerate `agents/AGENTS.md`.
 
+## Installing the skills
+
+**Full setup** (your own machine): the Usage line above already links every skill in `skills/` into
+`~/.claude/skills/`, together with `CLAUDE.md` and the rule files.
+
+**Skills only** (another machine, without this repo's `CLAUDE.md`):
+
+```bash
+git clone https://github.com/kristalynn-devv/dotfiles.git ~/dotfiles
+mkdir -p ~/.claude/skills
+for s in ~/dotfiles/skills/*/; do ln -sfn "${s%/}" ~/.claude/skills/"$(basename "$s")"; done
+```
+
+A real folder with the same name already in `~/.claude/skills/` (an old clone, say) has to be moved aside first;
+`sync.sh` does that for you, the loop above does not.
+
+**Windows:** run the above in WSL, or link each skill from an elevated Command Prompt:
+
+```bat
+mklink /D "%USERPROFILE%\.claude\skills\pause" C:\src\dotfiles\skills\pause
+```
+
+**After installing**
+
+- leancode's friction log stays on each machine (gitignored); start it with
+  `cp ~/dotfiles/skills/leancode/FRICTION.template.md ~/dotfiles/skills/leancode/FRICTION.md`
+- Check: start Claude Code and type `/pause`, `/resume` or `/leancode`; if it is listed, it is installed.
+- Update: `git -C ~/dotfiles pull`. The skills are symlinks, so edits arrive without re-running anything; re-run
+  `sync.sh` (or the loop) only when a new skill is added.
+
 ## Adding a rule file
 
 1. Write `claude/<NAME>.md` — rules that apply to every project go here, not in Claude auto-memory.
