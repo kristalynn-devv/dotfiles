@@ -51,37 +51,40 @@ is what it was written against and the only one it has been run in.
 The skill is a folder with a `SKILL.md` in it. **The folder name must match the `name:`
 in the frontmatter** (`leancode`), because that is how the agent addresses it.
 
+The skill lives in [`kristalynn-devv/dotfiles`](https://github.com/kristalynn-devv/dotfiles)
+under `skills/leancode/`. It moved there, history included, from its own repo
+`kristalynn-devv/leancode`, which is no longer updated.
+
 Paths below are macOS and Linux. On Windows the personal skills folder is
-`%USERPROFILE%\.claude\skills\`, and the symlink route is
-`mklink /D "%USERPROFILE%\.claude\skills\leancode" C:\src\leancode` from an
+`%USERPROFILE%\.claude\skills\`, and the symlink is
+`mklink /D "%USERPROFILE%\.claude\skills\leancode" C:\src\dotfiles\skills\leancode` from an
 elevated prompt.
 
-Already have a `leancode` folder there from an earlier install? The clone will refuse
-rather than overwrite it. Update it instead, with the `git pull` under
-[Update / remove](#update--remove).
+Already have a `leancode` folder there from an earlier install (a clone of the old
+`kristalynn-devv/leancode` repo)? Move it aside before linking, and copy your `FRICTION.md`
+into the new folder.
 
 ### Every project (personal skill)
 
+Clone the repo once and link the skill folder in. This is also the route for tuning the
+rules: edit the files in the clone and push them back.
+
 ```bash
-git clone https://github.com/kristalynn-devv/leancode.git ~/.claude/skills/leancode
+git clone https://github.com/kristalynn-devv/dotfiles.git ~/src/dotfiles
+mkdir -p ~/.claude/skills
+ln -s ~/src/dotfiles/skills/leancode ~/.claude/skills/leancode
 ```
+
+The repo's own `sync.sh` links every skill in it the same way, but it also links that
+repo owner's personal `CLAUDE.md`; use the lines above if you only want the skill.
 
 ### One project only (project skill)
 
 Commit it into the repo so everyone working there gets the same walk:
 
 ```bash
-git clone https://github.com/kristalynn-devv/leancode.git .claude/skills/leancode
-rm -rf .claude/skills/leancode/.git   # keep it as files, not a nested repo
-```
-
-### Keep a clone you can edit, symlink it in
-
-Best if you intend to tune the rules and push them back:
-
-```bash
-git clone https://github.com/kristalynn-devv/leancode.git ~/src/leancode
-ln -s ~/src/leancode ~/.claude/skills/leancode
+git clone --depth 1 https://github.com/kristalynn-devv/dotfiles.git /tmp/dotfiles
+mkdir -p .claude/skills && cp -R /tmp/dotfiles/skills/leancode .claude/skills/leancode
 ```
 
 ### Verify it loaded
@@ -136,8 +139,8 @@ except that `review.max_rounds` always wins over `review.rounds`.
 ### Update / remove
 
 ```bash
-git -C ~/.claude/skills/leancode pull    # update
-rm -rf ~/.claude/skills/leancode         # remove
+git -C ~/src/dotfiles pull         # update
+rm ~/.claude/skills/leancode       # remove (only the link; the clone stays)
 ```
 
 ## Where it sits
