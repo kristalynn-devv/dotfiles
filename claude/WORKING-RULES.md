@@ -29,6 +29,11 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
 3. **No cap on parallel agents** (overrides leancode's `parallel.max_agents` = 3) — only the cap is lifted; the split
    rules stay: a slice that needs another slice's output waits · one owner per repo/worktree · never two agents on the
    same branch/tree · each builder gets its own worktree — the user: "call as many agents as you want"
+3a. **An agent holding a large slice may spawn workers one layer down** — only when the parts of its slice don't
+   depend on each other · the split rules of item 3 hold at every layer · workers are briefed to execute (item 4a) and
+   spawn nothing further · the agent hands its workers' output back as its own slice, and the main session still
+   verifies (item 4b) — the user (2026-10-14): "I want agents to split into subs in several layers so the work goes
+   faster"
 4. **New, non-continuous work → always a fresh agent**, never a resumed one · resume only to finish or directly extend
    what it was doing · a fresh agent gets a compact brief (repo, worktree, branch, contracts, queue) · the main session
    is the same, but only the user can `/clear` — say when it's a good moment for a clean break —
