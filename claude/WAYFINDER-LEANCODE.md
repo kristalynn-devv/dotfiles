@@ -40,8 +40,28 @@ The map is done when the frontier is empty, no fog is left, and nothing needs de
 
 You can hand off before the whole map is done if one slice has all its decisions — but say clearly which slice is being handed off.
 
+## Build steps with a skill of their own
+
+`leancode` walks the build and decides what has to be proven. The steps below run through Matt Pocock's skills — the `mattpocock-skills` plugin, called as `mattpocock-skills:<name>`. The skill supplies the how; what `leancode` asks to be shown for the step is still owed. Skill missing or unable to run → do the step from `leancode`'s own text and say so in the report.
+
+| Step of the walk | Skill | Still owed to `leancode` |
+|---|---|---|
+| Tests for new behavior (§3) | `tdd` | the test seen red for the right reason; the full check before done |
+| A bug that doesn't yield at first look | `diagnosing-bugs` | the root cause in one sentence, with its evidence, before the fix; the search for siblings |
+| A new boundary, or reshaping a module (Structure) | `codebase-design` | the case named before the edit; no new pattern on a refactor |
+| Review (§4) | `code-review` — two more reviewers, Standards and Spec | `leancode`'s own round still runs; every finding is checked against the code before it is fixed |
+| A merge or rebase conflict | `resolving-merge-conflicts` | intents that can't coexist go back to the caller; the merged tree's full check before it is pushed |
+| A prototype or spike | `prototype` | it reaches production only by being rebuilt through the walk |
+| Facts from docs or other primary sources | `research` | each claim keeps its source; no recommendations |
+| A step only a person can take (§0) | `wizard` | the evidence that has to come back |
+
+- `code-review` takes two inputs up front: the fixed point — the commit this change started from (in autopilot the previous task's commit; at the end of a run, the run's base) — and the spec: the ticket or spec file, or the goal sentence when there is none.
+- When one of these skills says to ask the user, or to commit: interactive → ask, as it says. Autopilot → pick or park (`leancode` §10) and log it. Commits and pushes follow `GIT.md` and `leancode`'s Land, never the skill.
+- The typo tier has none of these steps, and loads none of these skills.
+
+Recorded 2026-10-14 from the user: "use Matt Pocock's for all of it" — chosen as: every step he has a skill for, with his review added beside `leancode`'s own, not instead of it.
+
 ## Missing skills (use the fallback, don't stall)
 
-- `research` → a subagent reads and searches, reports facts with sources; no recommendations.
-- `prototype` → the smallest artifact that reacts, labeled disposable.
-- `grilling` ✅ / `domain-modeling` ✅ / `leancode` ✅ / `wayfinder` ✅ all available.
+- `mattpocock-skills` plugin not installed → `research`: a subagent reads and searches, reports facts with sources, no recommendations · `prototype`: the smallest artifact that reacts, labeled disposable · the build steps above: `leancode`'s own text.
+- `wayfinder` here means the user's own copy (it keeps the map in `.wayfinder/` and hands off to `leancode`), not the plugin's `mattpocock-skills:wayfinder`.
