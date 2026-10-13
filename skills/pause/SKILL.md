@@ -26,7 +26,7 @@ If a tool named here isn't available in this session (in Claude Code CLI, for ex
 
 ## 1. Pick the mode
 
-- **implement**: the work is code in a git repo, leancode or lean-code-workflow is driving it, or a HANDOFF.md with leancode's sections (Goal, Steps, State, Decisions, Next action, Blockers) already exists at the repo root. Follow leancode §6: one HANDOFF.md at the repo root with its sections kept. This skill adds its own sections to that same file and never creates a second one.
+- **implement**: the work is code in a git repo, leancode is driving it, or a HANDOFF.md with leancode's sections (Goal, Steps, State, Decisions, Next action, Blockers) already exists at the repo root. Follow leancode §6: one HANDOFF.md at the repo root with its sections kept. This skill adds its own sections to that same file and never creates a second one.
 - **general**: everything else, such as docs, research, design, planning, a prototype, or a conversation that produced decisions. Planning-only work counts, because settled decisions and open questions are worth saving even when no file exists yet.
 
 If nothing at all has been done or decided, say so in one line and write nothing.

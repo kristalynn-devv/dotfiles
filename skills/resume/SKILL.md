@@ -5,7 +5,7 @@ description: "Use when the user types /resume or asks to continue paused or inte
 
 # /resume — continue from where we stopped
 
-Pick up work saved by /pause (a pause or a checkpoint), or a HANDOFF.md written by leancode or lean-code-workflow, and continue without the user re-explaining anything. When the work stopped before any note was written, rebuild one from the earlier chat.
+Pick up work saved by /pause (a pause or a checkpoint), or a HANDOFF.md written by leancode, and continue without the user re-explaining anything. When the work stopped before any note was written, rebuild one from the earlier chat.
 
 Text after `/resume` is either the answer to the pending decision ("/resume B", "/resume ใช้แบบที่ 2") or which work or note to use.
 
@@ -67,11 +67,11 @@ First set Status in the note to "in progress (resumed <time>)" and add a Log lin
 
 Then start the next action in the same turn, unless a decision is still open or the next action needs confirmation.
 
-- **implement**: load the leancode skill (or lean-code-workflow, whichever is installed) and continue its walk at the step marked ▶, with Decisions locked. From there leancode keeps HANDOFF.md current. If the note holds an autopilot queue and the user wants autopilot, resume it the leancode way (`autopilot: resume`).
+- **implement**: load the leancode skill and continue its walk at the step marked ▶, with Decisions locked. From there leancode keeps HANDOFF.md current. If the note holds an autopilot queue and the user wants autopilot, resume it the leancode way (`autopilot: resume`).
 - **general**: continue from Next action, keeping Decisions and Tried & rejected closed unless the user reopens them.
 
 ## 6. Keep the note honest
 
 - From here on, /pause's checkpoint rules apply: update the note at the same moments, in the same place.
-- When the work is finished: in implement mode, leancode's rule applies (delete the note once every step is ✅). In general mode, say the note is no longer needed and delete it (file or artifact) only if the user agrees; in a connected folder, deletion follows that folder's permission flow.
+- When the work is finished: in implement mode, leancode's rule applies (once every step is ✅, remove this work's part of the note; delete the file only when nothing else is left in it). In general mode, say the note is no longer needed and delete it (file or artifact) only if the user agrees; in a connected folder, deletion follows that folder's permission flow.
 - Pausing again: /pause updates this same note.
