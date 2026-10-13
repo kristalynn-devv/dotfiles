@@ -7,7 +7,7 @@ updated: 2026-10-14
 Make `skills/leancode` fit every kind of coding work, cut what it costs in tokens, and settle which skills and plugins Claude Code loads.
 
 ### State
-branch: main · committed locally on 2026-10-14 as three commits, not pushed: leancode v5.0.0 (`skills/leancode/`), the `sync.sh` change (with `README.md`), and the skill mapping (`claude/WAYFINDER-LEANCODE.md`, the regenerated `agents/AGENTS.md`, this file)
+branch: main · this work is four commits dated 2026-10-14: `7b84af2` leancode v5.0.0 (`skills/leancode/`) · `ee6355e` the `sync.sh` change (with `README.md`) · `1fc1b21` the skill mapping (`claude/WAYFINDER-LEANCODE.md`, the regenerated `agents/AGENTS.md`, this file) · `7b7a8d8` merges `376968e`, a README section on installing the skills that had been pushed to origin from another clone on 2026-10-07
 uncommitted, someone else's: `claude/WORKING-RULES.md` — not touched
 Checked: frontmatter parses, every § and file pointer resolves, the 18 rows of the Kind table match the 18 sections of `references/kinds.md`, tunables agree between `SKILL.md` and its README, `sync.sh` runs clean. Not checked: a real task run on 5.0.0.
 
@@ -55,6 +55,3 @@ Not started: it reshapes how the skill loads, and the user has not said go.
 - `claude/WORKING-RULES.md` item 5 ("review by risk — replaces leancode's default") can now be stated as the tunable `autopilot.review: by risk`. Not edited: the file has another session's uncommitted changes.
 - The links for `leancode`, `pause` and `resume` in `~/.agents/skills` (for Codex) are still there. With the setup now Claude-only they do nothing for Claude and harm nothing; removing them means dropping `agents` from the loop in `sync.sh` step 2.
 - `claude.ai` copy of `leancode`: needs the whole folder uploaded again (it now needs `references/`), or deleting.
-
-### On "push"
-`git push origin main` — the repo has one branch. `claude/WORKING-RULES.md` stays out until its own session commits it.
