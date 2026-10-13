@@ -10,6 +10,11 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
    work it describes · a repo that ignores it → remove the rule · on "push", HANDOFF.md edits made by this session
    count as this session's files · `.wayfinder/` is not covered; leave it as each repo has it —
    the user: "let handoff go into git, it's there for tracking work"
+1a. **Anything found goes into that repo's `HANDOFF.md` right away** — a new gap, a residual, a parked question, a
+   stale doc: write it (file:line, what breaks, options + pick) into the HANDOFF of the repo it lives in, on the
+   branch carrying the work, not only into a run note or the chat · a finding in a repo this session can't commit to
+   (other session's uncommitted HANDOFF, no clone) → record it in the nearest repo's HANDOFF as "to send to <repo>" —
+   the user (2026-09-30): "whatever you find, keep it in that repo's handoff"
 
 ## Finding answers
 
@@ -28,10 +33,20 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
    what it was doing · a fresh agent gets a compact brief (repo, worktree, branch, contracts, queue) · the main session
    is the same, but only the user can `/clear` — say when it's a good moment for a clean break —
    the user: "when it's new work that doesn't continue from before, clear the session every time"
+4a. **Brief a subagent to execute, not to investigate** — the main session does the finding first, then hands over
+   everything: exact files + lines, the exact change for each item, decisions already made (callers checked, picks
+   locked), commands to run, what done looks like · the subagent must not have to work out *what* to do or *where* ·
+   anything still unknown → settle it before briefing (or brief a separate read-only research agent first), don't
+   hand the builder a "find out whether…" — the user (2026-09-30): "when handing work to a sub agent, specify
+   everything so it goes to do the work, not so the subagents go looking for it themselves"
+4b. **Builders build, the main session verifies** — a builder subagent writes the change (and the tests for it),
+   commits on its own branch, and hands back; it does not spawn a review round or run the full suite itself · the main
+   session runs the tests and the review (items 5–6) on what comes back — the user (2026-09-30): "when a subagent
+   finishes, it doesn't review/test itself, send it back to the main one"
 5. **Review by risk** — high-risk tasks (hard to undo if wrong, or touching security/money/user data) are reviewed one
    task at a time · other tasks share one review at the end of the run (replaces leancode's default of reviewing every task)
 6. **While iterating, run only the relevant tests** (`--filter`, a path) · the full suite once before each task's
-   commit and once more at the end of the run · put items 5–6 in every builder's brief
+   commit and once more at the end of the run · both run by the main session (item 4b), not the builder
 7. **Every progress update carries a table of all summoned agents** — what each does, which repo/worktree, status
    (running / done / parked), including agents a builder spawned · call `ListAgents` before writing · mention other
    sessions working in the same repos when it matters — the user: "while working, show every agent you summoned"
