@@ -1,7 +1,7 @@
 ---
 name: leancode
 description: "Coding workflow for build work — features, bug fixes, refactors, upgrades, migrations, UI, config and infra changes, scripts, prototypes, code review, questions about what the code does, and resuming interrupted work. Names the kind of work to fix what counts as proof, scales to the size of the change, verifies with evidence, reviews once in depth, audits its own walk, and commits only when asked. Autopilot ('autopilot', 'run it all', or the same ask in the user's language) runs a whole task list in one go. Not for requests that are not about code."
-version: 5.0.0
+version: 5.1.0
 ---
 
 # Lean Code Workflow
@@ -49,7 +49,7 @@ A project can override any of these in its own `CLAUDE.md`; the project's value 
 - **Blocked by a capability, not a decision** — a permission you don't hold, a network you can't reach, a step only a person can trigger. Return the exact action someone has to take and the exact evidence you need back from it: the output, the row, the screenshot. "It works" is not that evidence. Until the real thing is in hand, the claim it supports is unverified, and §8 says so.
 - Only when there is no caller to return to — the user invoked you directly, and the question is about how the work should be *shaped* rather than what they want — reach for a planning pass yourself, and say which one you reached for and why.
 
-**A step the caller's rules give to another skill runs through that skill.** This file names none; a project's or a user's rules may — a test-first loop for §3, a diagnosis loop for a bug, a design vocabulary for Structure, a second review for §4. Such a skill supplies the how. This file still decides what has to be proven (Kind, §3), and a named review adds a reviewer to §4's round without replacing it. Named but missing, or unable to run here → do the step from this file, and say so in §8.
+**A step the caller's rules give to another skill runs through that skill.** This file names none; a project's or a user's rules may — a test-first loop for §3, a diagnosis loop for a bug, a design vocabulary for Structure, a second review for §4. Such a skill supplies the how. This file still decides what has to be proven (Kind, §3), and a named review adds a reviewer to §4's round without replacing it. **Check that each one is there before §1, not when its step arrives.** Missing, or unable to run here → tell the caller at once which one and how their rules say to get it, then do its step from this file, and say so in §8.
 
 ## 1. Plan before touching code
 
@@ -236,7 +236,7 @@ The single-sitting skip above lapses the moment any of these becomes true — a 
 
 What to walk:
 
-- §0 — every open decision went back to the caller. Nothing was guessed past. A capability block went back as an action plus the evidence needed, and nothing is reported verified on someone's word alone. A step the caller's rules gave to another skill ran through it, or §8 says why not.
+- §0 — every open decision went back to the caller. Nothing was guessed past. A capability block went back as an action plus the evidence needed, and nothing is reported verified on someone's word alone. The skills the caller's rules name were checked before §1 and a missing one was said then; a step given to one ran through it, or §8 says why not.
 - §1 — the goal was said out loud before the first edit, and it is still the goal being built to. A goal rewritten mid-flight got its own proof and its own review round.
 - §1 — the repo's standing constraints were read, not only the scope-matched docs.
 - §1 — no claim of scope rests on a search you cut short, and none about the code rests on a doc you didn't check.
