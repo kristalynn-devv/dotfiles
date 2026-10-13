@@ -4,8 +4,7 @@ updated: 2026-10-14
 ## leancode 5.1.0 and a Claude-only setup
 
 ### State
-branch: main · leancode is at v5.1.0 · everything below is committed except the two files listed as someone else's
-uncommitted, someone else's: `claude/WORKING-RULES.md` (another session) · `claude/RTK.md` (rewritten by `rtk init -g`, which the user ran on 2026-10-14)
+branch: main · leancode is at v5.1.0 · everything here is committed; `git status -sb` says whether it is pushed
 Checked: `SKILL.md` frontmatter parses, every § and file pointer resolves, the 18 rows of the Kind table match the 18 sections of `references/kinds.md`, tunables agree between `SKILL.md` and its README, `sync.sh` runs clean. Not checked: a real task run on 5.x.
 
 Plugins in Claude Code (user scope): `impeccable` 4.5.2 · `mattpocock-skills` 1.2.3 · `daisyui` 5.7.0 · `context7` · `playwright`. Disabled: `engineering@synced`, `cowork-plugin-management@synced`.
@@ -49,4 +48,4 @@ Checks to re-run afterwards: frontmatter parses; every § and `references/*.md` 
 - `mattpocock-skills:code-review` stops and asks for `/mattpocock-skills:setup-matt-pocock-skills` in a repo that has no `docs/agents/issue-tracker.md`; that setup is run by the user, once per repo.
 - `skills/leancode/SKILL.md` §3 names `web-design-guidelines` as an optional UI pass; it is not installed, and `impeccable` covers that step here.
 - `skills/resume/SKILL.md` §6 — says leancode's rule is "delete the note once every step is ✅"; leancode §6 now removes only its own lines. The pointer still works; the paraphrase is stale.
-- `claude/WORKING-RULES.md` item 5 ("review by risk — replaces leancode's default") can now be stated as the tunable `autopilot.review: by risk`. Not edited: the file has another session's uncommitted changes.
+- `claude/WORKING-RULES.md` item 5 ("review by risk — replaces leancode's default") can now be stated as the tunable `autopilot.review: by risk`. Not edited: nobody asked for it.
