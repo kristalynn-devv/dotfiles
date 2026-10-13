@@ -1,14 +1,22 @@
 #!/usr/bin/env bash
 # Single source of truth for agent instructions: ~/dotfiles
 # - Claude Code reads ~/.claude/*.md (supports @imports) and ~/.claude/skills/<name>/
+# - Other agents (Codex, ...) read skills from ~/.agents/skills/<name>/
 # - Codex / Gemini read one flat file (no @import support) -> generated below
 set -euo pipefail
 D="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-link() {  # link <source> <target>
-  local src="$1" dst="$2"
+link() {  # link <source> <target> [backup-dir]
+  local src="$1" dst="$2" bak="${3:-}"
   mkdir -p "$(dirname "$dst")"
-  [ -e "$dst" ] && [ ! -L "$dst" ] && mv "$dst" "$dst.bak.$(date +%Y%m%d%H%M%S)"
+  if [ -e "$dst" ] && [ ! -L "$dst" ]; then
+    if [ -n "$bak" ]; then
+      mkdir -p "$bak"
+      mv "$dst" "$bak/$(basename "$dst").$(date +%Y%m%d%H%M%S)"
+    else
+      mv "$dst" "$dst.bak.$(date +%Y%m%d%H%M%S)"
+    fi
+  fi
   ln -sfn "$src" "$dst"
   echo "linked $dst -> $src"
 }
@@ -18,11 +26,14 @@ for f in CLAUDE.md RTK.md WAYFINDER-LEANCODE.md IDENTITY.md; do
   link "$D/claude/$f" "$HOME/.claude/$f"
 done
 
-# 2. Claude Code skills: link each skills/<name>/ to ~/.claude/skills/<name>
-#    (an existing real folder there is moved to <name>.bak.<timestamp>, never deleted)
+# 2. Skills: link each skills/<name>/ into every agent's skills folder
+#    (an existing real folder there is moved to .backup/ in this repo, never deleted;
+#    left beside the link it would load as a second copy of the skill)
 for s in "$D"/skills/*/; do
   s="${s%/}"
-  link "$s" "$HOME/.claude/skills/$(basename "$s")"
+  for agent in claude agents; do
+    link "$s" "$HOME/.$agent/skills/$(basename "$s")" "$D/.backup/$agent-skills"
+  done
 done
 
 # 3. Flat file for agents without @import support
