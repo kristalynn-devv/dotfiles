@@ -69,7 +69,7 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
 
 ## Skill leancode
 
-10. **Call `leancode` only for work that suits it** (overrides the skill's description "Use for any coding task") —
+10. **Call `leancode` only for work that suits it** (narrower than the skill's own description, which covers every kind of code work) —
     suits: multi-step / multi-file build work such as features, bugs that need tracing through several places,
     refactors, resuming from HANDOFF, autopilot · not needed: answering questions, editing config/docs/memory, a
     one-spot edit with a clear path, routine git/shell work — do those directly · for anything else the user wants it
