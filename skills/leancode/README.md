@@ -1,7 +1,8 @@
 # leancode
 
 A coding-workflow skill for agents. It turns "implement this" from a single leap into
-a walk with nine steps plus a structure check and one tighten pass on the finished diff, and (the part most
+a walk: name the kind of work, because the kind decides what counts as proof, then nine steps plus a
+structure check and one tighten pass on the finished diff. And (the part most
 workflows leave out) it **audits whether the walk actually happened** before it
 reports anything back. On request, autopilot (§10) runs a whole task list that way in one go.
 
@@ -14,21 +15,28 @@ pointer into `references/` carries a short fallback in case the file can't be re
 
 | Step | What it enforces |
 | --- | --- |
-| §0 Entry and return | Note who handed the work over. Hit a decision you cannot make → hand it **back**, don't guess and don't pick the next skill for them |
-| §1 Plan first | Say the goal out loud before the first edit; read the code this touches; read the repo's standing constraints, not just the scope-matched docs |
+| §0 Entry and return | Note who handed the work over. Hit a decision you cannot make → hand it **back**, don't guess and don't pick the next skill for them. Blocked by a permission or a step only a person can take → hand back the exact action and the evidence needed. A step your own rules give to another skill (a test-first loop, a diagnosis loop, a second review) runs through that skill; what has to be proven stays this file's call |
+| §1 Plan first | Say the goal out loud before the first edit; read the code this touches; read the repo's standing constraints, not just the scope-matched docs. Scope comes from a search run to its end |
+| Kind | Name the kind of work before the plan: it decides what §3 has to show. A bug is reproduced before it is fixed; a refactor is proven by the same assertions, untouched; UI is looked at; an infra change is observed at the destination; a prototype is disposable; a review or an investigation is read-only. One row per kind, procedures in `references/kinds.md` |
 | Structure | Name the case before the edit. A new boundary is checked against that decision. A refactor keeps the structure already there |
 | §2 Build lean | Reuse before adding; no new abstraction until there are real call sites for it. Anything irreversible is confirmed first: by the user in an interactive mode, by the harness's guard in an autonomous one, and by the user in every mode for a one-way change to shared data |
-| §3 Verify with evidence | A baseline run *before* the change; the new test seen red; the full diff read. Never "should work" |
+| §3 Verify with evidence | A baseline run *before* the change; the new test seen red, for the right reason; the narrowest check while iterating and the full one before done; the full diff read. Never "should work" |
 | §4 Self-review | A delegated review round, findings checked against the code, rejected ones named |
 | Optimize | One pass on the finished diff: remove, collapse, bound a cost this change introduced. No speed rewrite without a measurement |
 | §5 Split across agents | Subagents are authorized for speed. Analyse the risk *before* splitting; never repeat an in-flight task; fan out only onto slices that cannot touch each other; the main session owns the merge |
-| §6 Continuity | `HANDOFF.md` for work that spans more than one sitting, written early (steps still open, context running low, before anything irreversible), not at the moment it's needed. Resuming checks the note against git first |
+| §6 Continuity | `HANDOFF.md` for work that spans more than one sitting, written early (steps still open, context running low, before anything irreversible), not at the moment it's needed. Resuming checks the note against git first. The note can have other writers: change only your own lines |
 | §7 Audit | Re-read the **session**, not the diff. A step that never happened leaves nothing in a diff to see |
+| Land | Commit, merge, and push only when asked. One change per commit; the remote re-read before anything leaves the machine; a merged tree verified before it is pushed; pushed is not delivered |
 | §8 Report | What changed, why, how it was verified, and what was deliberately skipped. Emoji only as status signals; every technical term glossed once per message in the user's language |
 | §9 Doc hygiene | Docs are edited only on the user's go-ahead |
-| §10 Autopilot | On request ("autopilot", "run it all"): the whole task list in one run. Each task gets the walk, its own review and a local commit; reversible decisions are picked and logged, the rest parked; one report at the end |
+| §10 Autopilot | On request ("autopilot", "run it all"): the whole task list in one run. Each task gets the walk, its own review and a local commit; reversible decisions are picked and logged, the rest parked; one report at the end. The procedure lives in `references/autopilot.md`, read only when a run starts |
 
-Two design decisions carry most of the weight:
+Three design decisions carry most of the weight:
+
+**The proof follows the kind of work.** A refactor proven by a brand-new test, or a bug
+fixed without ever being reproduced, passed the wrong exam. One table in `SKILL.md` names
+the kinds, from a feature to a read-only investigation, and what each has to show. The
+procedure for each lives in `references/kinds.md` and is read only for the kind in hand.
 
 **Ceremony scales with the change, and the level is said out loud.** A typo gets a
 diff read. A small fix gets §2, §3, Structure, Optimize, §8. Anything else gets the whole walk. Without
@@ -135,6 +143,7 @@ except that `review.max_rounds` always wins over `review.rounds`.
 | `parallel.max_agents` | 3 | Agents running at once, any shape |
 | `parallel.min_slice` | ~1 sitting's worth | Smallest slice worth handing to its own builder |
 | `autopilot.max_parked` | 3 | Parked tasks that end an autopilot run early |
+| `autopilot.review` | each task | Which autopilot tasks get their own review round: `each task`, or `by risk` (only tasks that are hard to undo or touch security, money, or user data; the rest share the end-of-run round) |
 
 ### Update / remove
 

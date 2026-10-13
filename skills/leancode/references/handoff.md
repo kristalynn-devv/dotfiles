@@ -1,5 +1,5 @@
 # HANDOFF.md template
-Read by SKILL.md §6 when creating the note. Update it the moment each step finishes.
+Read by SKILL.md §6 when creating the note. Update it the moment each step finishes. The file already holds other work → add this under its own heading; don't replace what is there.
 
 ```markdown
 # HANDOFF
@@ -24,4 +24,7 @@ uncommitted: <files>
 
 ## Blockers
 - <if any>
+
+## Found, not fixed
+- <file:line> — <what breaks> — <the options, and the one you'd pick>
 ```
