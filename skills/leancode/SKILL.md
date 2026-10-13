@@ -1,7 +1,7 @@
 ---
 name: leancode
 description: "Coding workflow for build work — features, bug fixes, refactors, upgrades, migrations, UI, config and infra changes, scripts, prototypes, code review, questions about what the code does, and resuming interrupted work. Names the kind of work to fix what counts as proof, scales to the size of the change, verifies with evidence, reviews once in depth, audits its own walk, and commits only when asked. Autopilot ('autopilot', 'run it all', or the same ask in the user's language) runs a whole task list in one go. Not for requests that are not about code."
-version: 5.1.0
+version: 5.1.1
 ---
 
 # Lean Code Workflow
@@ -49,7 +49,7 @@ A project can override any of these in its own `CLAUDE.md`; the project's value 
 - **Blocked by a capability, not a decision** — a permission you don't hold, a network you can't reach, a step only a person can trigger. Return the exact action someone has to take and the exact evidence you need back from it: the output, the row, the screenshot. "It works" is not that evidence. Until the real thing is in hand, the claim it supports is unverified, and §8 says so.
 - Only when there is no caller to return to — the user invoked you directly, and the question is about how the work should be *shaped* rather than what they want — reach for a planning pass yourself, and say which one you reached for and why.
 
-**A step the caller's rules give to another skill runs through that skill.** This file names none; a project's or a user's rules may — a test-first loop for §3, a diagnosis loop for a bug, a design vocabulary for Structure, a second review for §4. Such a skill supplies the how. This file still decides what has to be proven (Kind, §3), and a named review adds a reviewer to §4's round without replacing it. **Check that each one is there before §1, not when its step arrives.** Missing, or unable to run here → tell the caller at once which one and how their rules say to get it, then do its step from this file, and say so in §8.
+**A step the caller's rules give to another skill runs through that skill.** Beyond the checks §3 calls for, this file names none; a project's or a user's rules may — a test-first loop for §3, a diagnosis loop for a bug, a design vocabulary for Structure, a second review for §4. Such a skill supplies the how. This file still decides what has to be proven (Kind, §3), and a named review adds a reviewer to §4's round without replacing it. **Check that each one — and each skill §3 calls for on this change — is there before §1, not when its step arrives.** Missing, or unable to run here → tell the caller at once which one — with how to get it, where their rules say — then do its step from this file, and say so in §8.
 
 ## 1. Plan before touching code
 
@@ -146,7 +146,7 @@ Check the diff against the case you named once, after §4 when that round ran, b
 - **Verify the target environment before testing against it.** Once you have *checked* that it's a dev environment, test it hard — smoke runs, real requests, writes, restarts, whatever the change deserves. Checked means you ran something that names the target (the cluster context, the namespace, the host, the connection string) and read the answer back; inferring it from a branch name, a file you opened, or a config labelled "dev" somewhere is not checking. Not verified, or only fairly sure → ask before the first smoke test, not after it.
 - Touched auth, input handling, the rendering of user-controlled data, secrets, or anything crossing a trust boundary → also run `security-review` before calling it done. Rendering counts: most injection arrives on the way out, through a template or an `innerHTML`, not on the way in.
 - Touched UI or user-visible behavior → also use `run` (or `web-design-guidelines` for a UI-standards pass) to see it working in the real app, not just green tests.
-- **The named skill isn't there, or can't run as written** — the harness has no such skill, or bans the sub-tasks it spawns → run its substance in-session. Security: walk the diff against the trust-boundary list above — an authorization check on every newly reachable path, input validation, output encoding where user data renders, secrets kept out of logs and client bundles — and report each finding with file and line. UI: drive the real app yourself (dev server plus a browser or screenshot tool, or a temporary probe that mounts the component), then delete the probe. Either way, point it at this change's diff (working tree plus staged), not the last commit. Name the fallback in §8 and don't call it the skill. Nothing can drive the real app → say so; green tests don't stand in for it.
+- **The named skill isn't there, or can't run as written** — the harness has no such skill, or bans the sub-tasks it spawns → run its substance in-session. Security: walk the diff against the trust-boundary list above — an authorization check on every newly reachable path, input validation, output encoding where user data renders, secrets kept out of logs and client bundles — and report each finding with file and line. UI: drive the real app yourself (dev server plus a browser or screenshot tool, or a temporary probe that mounts the component), then delete the probe. Either way, point it at this change's diff (working tree plus staged), not the last commit. Say it is missing before §1 (§0), name the fallback in §8, and don't call it the skill. Nothing can drive the real app → say so; green tests don't stand in for it.
 
 ## 4. Self-review — maximum effort
 
@@ -204,7 +204,7 @@ A second agent still costs a cold start: it shares none of this session's contex
 
 Only files on disk and git state survive a new session. Nothing else carries over.
 
-**Maintain `HANDOFF.md` at the repo root** for any task spanning more than one sitting. Skip this section entirely for a task that finishes in the current sitting — don't create or touch the file for single-sitting work just because this skill runs on every task. Update it the moment each step finishes — not at the end — so an interrupted run still leaves a current note. Its template is `references/handoff.md` beside this file; without it, the sections are Goal, Steps (current one marked), State (branch, last commit, uncommitted files), Decisions, Next action, Blockers.
+**Maintain `HANDOFF.md` at the repo root** for any task spanning more than one sitting. Skip this section entirely for a task that finishes in the current sitting — don't create or touch the file for single-sitting work just because this skill runs on every task. Update it the moment each step finishes — not at the end — so an interrupted run still leaves a current note. Its template is `references/handoff.md` beside this file; without it, the sections are Goal, Steps (current one marked), State (branch, last commit, uncommitted files), Decisions, Next action, Blockers, and Found, not fixed.
 
 **Write the note early, not when you need it.** Create `HANDOFF.md` as soon as any of these is true, whichever comes first — an interruption is not the moment to start writing one:
 
@@ -236,7 +236,7 @@ The single-sitting skip above lapses the moment any of these becomes true — a 
 
 What to walk:
 
-- §0 — every open decision went back to the caller. Nothing was guessed past. A capability block went back as an action plus the evidence needed, and nothing is reported verified on someone's word alone. The skills the caller's rules name were checked before §1 and a missing one was said then; a step given to one ran through it, or §8 says why not.
+- §0 — every open decision went back to the caller. Nothing was guessed past. A capability block went back as an action plus the evidence needed, and nothing is reported verified on someone's word alone. The skills the caller's rules name, and those §3 calls for, were checked before §1 and a missing one was said then; a step given to one ran through it, or §8 says why not.
 - §1 — the goal was said out loud before the first edit, and it is still the goal being built to. A goal rewritten mid-flight got its own proof and its own review round.
 - §1 — the repo's standing constraints were read, not only the scope-matched docs.
 - §1 — no claim of scope rests on a search you cut short, and none about the code rests on a doc you didn't check.
