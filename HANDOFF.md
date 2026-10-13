@@ -1,10 +1,10 @@
 # HANDOFF
 updated: 2026-10-14
 
-## leancode 5.1.0 and a Claude-only setup
+## leancode 5.1.1 and a Claude-only setup
 
 ### State
-branch: main · leancode is at v5.1.0 · everything here is committed; `git status -sb` says whether it is pushed
+branch: main · leancode is at v5.1.1 · everything here is committed; `git status -sb` says whether it is pushed
 Checked: `SKILL.md` frontmatter parses, every § and file pointer resolves, the 18 rows of the Kind table match the 18 sections of `references/kinds.md`, tunables agree between `SKILL.md` and its README, `sync.sh` runs clean. Not checked: a real task run on 5.x.
 
 Plugins in Claude Code (user scope): `impeccable` 4.5.2 · `mattpocock-skills` 1.2.3 · `daisyui` 5.7.0 · `context7` · `playwright`. Disabled: `engineering@synced`, `cowork-plugin-management@synced`.
@@ -41,6 +41,9 @@ Expected: about 4,500 tokens at the typo tier (18,400 today), about 11,500 befor
 Checks to re-run afterwards: frontmatter parses; every § and `references/*.md` pointer resolves; Kind rows match `references/kinds.md` sections; tunables in `SKILL.md` and its README agree; the first 5,000 tokens of `SKILL.md` contain the whole core.
 
 ### Found, not fixed
+- Review of leancode against the changes agreed on 2026-10-14: every agreed change is in the files (47 presence checks, then one full read of `SKILL.md`). The read found three small wording defects, fixed in 5.1.1. The review was done by the session that wrote the changes; no independent reviewer has read 5.x, and no real task has run on it.
+- `claude/WORKING-RULES.md` item 10 quotes leancode's description as "Use for any coding task"; the description no longer says that.
+- `skills/pause/SKILL.md` and `skills/resume/SKILL.md` still mention `lean-code-workflow`, a name with no skill behind it any more.
 - Two settings the agent was not allowed to write (the harness blocks edits to `~/.claude/settings.json` as self-modification); the user adds them by hand: `"skillOverrides": {"dataviz": "name-only", "artifact-design": "name-only", "artifact-diagramming": "name-only", "artifact-capabilities": "name-only", "claude-api": "name-only"}` (about 1,150 tokens fewer per session) and `"syncClaudeAiSkills": false` (about 3,600 fewer: stops the skills synced from the claude.ai account from loading in Claude Code, without changing the account).
 - MCP connectors from the claude.ai account that the coding work does not use still add server instructions and tool names to every session; they are switched off per project in `/mcp`.
 - `wayfinder`: Claude Code now gets the user's current copy through a link, `~/.claude/skills/wayfinder` → `~/.agents/skills/wayfinder`, made by hand and not by `sync.sh`. The copy uploaded to claude.ai still names `lean-code-workflow`, a skill that no longer exists, and loads as a second `wayfinder` until skill sync is off or the upload is deleted. Options for a permanent home: (a) move the folder into `skills/wayfinder` here, with Matt Pocock's MIT licence beside it, since this repo is public; (b) leave the link. Pick: (a), on the user's word.
