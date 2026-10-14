@@ -1,7 +1,7 @@
 ---
 name: leancode
 description: "Coding workflow for build work — features, bug fixes, refactors, upgrades, migrations, UI, config and infra changes, scripts, prototypes, code review, questions about what the code does, and resuming interrupted work. Names the kind of work to fix what counts as proof, scales to the size of the change, verifies with evidence, reviews once in depth, audits its own walk, and commits only when asked. Autopilot ('autopilot', 'run it all', or the same ask in the user's language) runs a whole task list in one go. Not for requests that are not about code."
-version: 5.3.0
+version: 5.4.0
 ---
 
 # Lean Code Workflow
@@ -67,7 +67,7 @@ A project can override any of these in its own `CLAUDE.md`; the project's value 
 - A change that adds a file, moves code, or could be done by reshaping where things live → Structure, before the task list.
 - Something doesn't resolve cleanly from the code or project docs — an unfamiliar library's API, a framework convention, a spec detail, a version-specific behavior — look it up (web search, official docs, or a docs tool like Context7) before guessing from memory or training data, which can be stale or simply wrong. Cite what you found when it changes the plan.
 - Ask only questions that actually block the work; otherwise pick the obvious default and state the assumption. A genuinely blocking question goes back to the caller (§0), never into the build as a guess. A reference lookup that resolves it is better than either guessing or asking.
-- **Scale the ceremony to the change, and say which level you picked.** One file, no behavior change (typo, copy, comment) → read the diff yourself; skip §4, Structure, Optimize, §6, §7, charting. A small fix that one test covers end to end → §2, §3, Structure, Optimize, §8, with §7 cut to the lines that apply and §4's delegated round optional. Anything else → the whole walk. Reading the diff before calling it done is never optional at any level.
+- **Scale the ceremony to the change, and say which level you picked.** One file, no behavior change (typo, copy, comment) → read the diff yourself; skip §4, Structure, Optimize, §6, §7, charting. A small fix that one test covers end to end, or a markup-and-styles change that adds no state, no data the screen did not already have, and no behavior, looked at in the real app (Kind: UI) → §2, §3, Structure, Optimize, §8, with §7 cut to the lines that apply and §4's delegated round optional. Anything else → the whole walk. Reading the diff before calling it done is never optional at any level.
 
 ## Kind — name the work, because it decides the proof
 
@@ -109,7 +109,7 @@ Two cases. Name one out loud before the task list. If both seem true, it is exis
 - **Existing** — a fix, a feature, or a refactor the current layout can hold. Name the neighbor: the file or folder this change sits beside, and the pattern it copies. File layout, naming, and where this kind of logic lives stay as they are. Moved code lands next to the code it already belonged with. The diff adds no new folder, no new layer, and no new pattern. A refactor that also invents a structure is two changes — return it (§0).
 - **New** — nothing that already exists can hold the change without a second copy of the same idea. A repo with no pattern yet is not this case: that decision goes back to the caller (§1). Name the boundary and the interface in one sentence each before the task list. If that sentence is still an open decision, return it (§0). A lookup of what this codebase already does, or a design-guidance skill, can settle it; guessing cannot. On the diff, every new file belongs to that boundary, and callers cross only through the named interface. That seam is load-bearing — Optimize does not collapse it for having one call site. `abstraction.call_sites` still gates a helper extracted inside an existing structure. It does not gate a boundary this case already named.
 
-Check the diff against the case you named once, after §4 when that round ran, before Optimize. A diff that drifted is corrected once to match the case, then the check §3 used is re-run. That correction does not re-enter §4, and it does not refresh this check. If it still does not match, return it (§0). On a match, go to Optimize. The typo tier skips this. A small fix names existing and confirms no new folder, layer, or pattern appeared.
+Check the diff against the case you named once, after §4 when that round ran, before Optimize. A diff that drifted is corrected once to match the case, then the check §3 used is re-run. That correction does not re-enter §4, and it does not refresh this check. If it still does not match, return it (§0). On a match, go to Optimize. The typo tier skips this. A small-tier change names existing and confirms no new folder, layer, or pattern appeared.
 
 ## 2. Build lean
 
@@ -145,7 +145,7 @@ Check the diff against the case you named once, after §4 when that round ran, b
 - Read the full diff before declaring anything done.
 - Report the concrete result (test output, command exit, screenshot), not "should work".
 - **Verify the target environment before testing against it.** Once you have *checked* that it's a dev environment, test it hard — smoke runs, real requests, writes, restarts, whatever the change deserves. Checked means you ran something that names the target (the cluster context, the namespace, the host, the connection string) and read the answer back; inferring it from a branch name, a file you opened, or a config labelled "dev" somewhere is not checking. Not verified, or only fairly sure → ask before the first smoke test, not after it.
-- Touched auth, input handling, the rendering of user-controlled data, secrets, or anything crossing a trust boundary → also run `security-review` before calling it done. Rendering counts: most injection arrives on the way out, through a template or an `innerHTML`, not on the way in.
+- Touched auth, input handling, the rendering of user-controlled data, secrets, or anything crossing a trust boundary → also run `security-review` before calling it done. Rendering counts: most injection arrives on the way out, through a template or an `innerHTML`, not on the way in. User-controlled includes what a sign-in provider or another service returns about the user, such as a display name or an avatar URL.
 - Touched UI or user-visible behavior → also use `run` (or `web-design-guidelines` for a UI-standards pass) to see it working in the real app, not just green tests.
 - **The named skill isn't there, or can't run as written** — the harness has no such skill, bans the sub-tasks it spawns, or the skill reads only committed history while this change is still uncommitted (it then sees an empty diff) → run its substance in-session. Security: walk the diff against the trust-boundary list above — an authorization check on every newly reachable path, input validation, output encoding where user data renders, secrets kept out of logs and client bundles — and report each finding with file and line. UI: drive the real app yourself (dev server plus a browser or screenshot tool, or a temporary probe that mounts the component), then delete the probe. Either way, point it at this change's diff (working tree plus staged), not the last commit. Say it is missing before §1 (§0), name the fallback in §8, and don't call it the skill. Nothing can drive the real app → say so; green tests don't stand in for it.
 
@@ -169,7 +169,7 @@ Review deliberately, not repeatedly. `review.rounds` pass(es) at `review.effort`
 
 §4 asks what breaks. This asks what the caller will still want to delete once the change is correct. A finding §4 already fixed is not done again here.
 
-Run it on the diff you are about to hand over, after §4 when that round ran, and after §3 has been re-run for any fix that landed. The session that holds the goal runs it — it edits, so it is not delegated and it is not a second review. The typo tier skips it. A small fix runs it only on the lines the change touched.
+Run it on the diff you are about to hand over, after §4 when that round ran, and after §3 has been re-run for any fix that landed. The session that holds the goal runs it — it edits, so it is not delegated and it is not a second review. The typo tier skips it. A small-tier change runs it only on the lines it touched.
 
 Three moves, in order:
 
