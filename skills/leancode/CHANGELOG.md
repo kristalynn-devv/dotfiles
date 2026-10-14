@@ -2,6 +2,7 @@
 
 `version` in `SKILL.md`'s frontmatter is the source of truth. Semver: major = breaking walk change, minor = new rule or section, patch = wording. Newest first.
 
+- 5.3.0 (2026-10-15) — §3: a named skill that reads only committed history counts as unable to run on an uncommitted change, so its substance runs in-session. §9 and kinds.md (UI): a stand-in backend or driver built to run the real app is kept in `.leancode/` for reuse instead of rebuilt each change.
 - 5.2.0 (2026-10-15) — §1: uncommitted work in a file the change will touch → ask whether to commit it first, so two changes never share one commit. §2: a byproduct a command of this session generated into the tree is read, removed, and named in §8. §6: a finished entry is marked done and kept while other work in the note is open; finished entries go once none is. §7's §6 line matches.
 - 5.1.1 (2026-10-14) — wording: §0 no longer claims the file names no skill (§3 names its checks); the check before §1 also covers the skills §3 calls for, and §3's fallback says the gap up front; §6's inline list of HANDOFF.md sections gains Found, not fixed. §7 matches
 - 5.1.0 (2026-10-14) — §0: the skills a caller's rules name are checked before §1, not when their step arrives; a missing one is said to the caller at once, with how their rules say to get it, and its step falls back to this file. §7 matches

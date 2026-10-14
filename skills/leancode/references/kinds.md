@@ -43,7 +43,7 @@ The default walk. A new test, red on the baseline and green after (§3). Restruc
 
 - **Look at it.** A screenshot at each width, theme, and state the change can reach, and then read the picture: fitting is not the same as readable, and no test measures "looks wrong". Scale it with the tier — a small fix looks at what it touched, a new screen at everything the project supports.
 - States, not only the happy one: empty, loading, error, long text, the keyboard path and focus.
-- **Check that the existing harness renders what you changed.** An end-to-end sweep stopped by a login wall or an error branch passes without ever drawing your component. If it doesn't reach it, mount the component yourself with a temporary probe, look, then delete the probe (§3).
+- **Check that the existing harness renders what you changed.** An end-to-end sweep stopped by a login wall or an error branch passes without ever drawing your component. If it doesn't reach it, mount the component yourself with a temporary probe, look, then delete the probe (§3). A stand-in backend that lets the real app run past the wall is not a probe: keep it in `.leancode/` (§9) for the next change, and check it is still there before building another.
 - A size, a radius, or a spacing has partners — the padding around it, the icon inside it, the height of its neighbor. Zoom in on the changed element next to its neighbors.
 - **One rule across many places → write the check first** and let it list the violators, then fix the list; the check stays as the guard. Count the non-obvious cases: a link styled as a button, an input behind a wrapper component.
 - A choice between designs is the caller's (§0). Show the options; don't pick.
