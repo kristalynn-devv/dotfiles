@@ -50,7 +50,7 @@ You can hand off before the whole map is done if one slice has all its decisions
 | A bug that doesn't yield at first look | `diagnosing-bugs` | the root cause in one sentence, with its evidence, before the fix; the search for siblings |
 | UI or visual work, before the first edit | `impeccable:impeccable` — `shape` to plan the structure of something new, `audit` or `critique` to check what is already there | the real app looked at, at every width and state the change can reach |
 | A new boundary, or reshaping a module (Structure) | `codebase-design` | the case named before the edit; no new pattern on a refactor |
-| Review (§4) | `code-review` — two more reviewers, Standards and Spec | `leancode`'s own round still runs; every finding is checked against the code before it is fixed |
+| Review (§4) | `code-review` — two more reviewers, Standards and Spec, only on a high-risk change (hard to undo, or touching security, money, or user data); any other change gets `leancode`'s own round alone | `leancode`'s own round still runs; every finding is checked against the code before it is fixed |
 | A merge or rebase conflict | `resolving-merge-conflicts` | intents that can't coexist go back to the caller; the merged tree's full check before it is pushed |
 | A prototype or spike | `prototype` | it reaches production only by being rebuilt through the walk |
 | Facts from docs or other primary sources | `research` | each claim keeps its source; no recommendations |
@@ -69,3 +69,5 @@ Recorded 2026-10-14 from the user: "use Matt Pocock's for all of it" — chosen 
 
 - `mattpocock-skills` plugin not installed → `research`: a subagent reads and searches, reports facts with sources, no recommendations · `prototype`: the smallest artifact that reacts, labeled disposable · the build steps above: `leancode`'s own text.
 - `wayfinder` here means the user's own copy (it keeps the map in `.wayfinder/` and hands off to `leancode`), not the plugin's `mattpocock-skills:wayfinder`.
+
+Recorded 2026-10-15 from the user: the extra Standards and Spec reviewers run only on high-risk changes ("2 ok", to the proposal that low-risk work gets leancode's single deep review).
