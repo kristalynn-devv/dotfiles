@@ -1,7 +1,7 @@
 ---
 name: leancode
 description: "Coding workflow for build work — features, bug fixes, refactors, upgrades, migrations, UI, config and infra changes, scripts, prototypes, code review, questions about what the code does, and resuming interrupted work. Names the kind of work to fix what counts as proof, scales to the size of the change, verifies with evidence, reviews once in depth, audits its own walk, and commits only when asked. Autopilot ('autopilot', 'run it all', or the same ask in the user's language) runs a whole task list in one go. Not for requests that are not about code."
-version: 5.4.0
+version: 5.5.0
 ---
 
 # Lean Code Workflow
@@ -67,7 +67,7 @@ A project can override any of these in its own `CLAUDE.md`; the project's value 
 - A change that adds a file, moves code, or could be done by reshaping where things live → Structure, before the task list.
 - Something doesn't resolve cleanly from the code or project docs — an unfamiliar library's API, a framework convention, a spec detail, a version-specific behavior — look it up (web search, official docs, or a docs tool like Context7) before guessing from memory or training data, which can be stale or simply wrong. Cite what you found when it changes the plan.
 - Ask only questions that actually block the work; otherwise pick the obvious default and state the assumption. A genuinely blocking question goes back to the caller (§0), never into the build as a guess. A reference lookup that resolves it is better than either guessing or asking.
-- **Scale the ceremony to the change, and say which level you picked.** One file, no behavior change (typo, copy, comment) → read the diff yourself; skip §4, Structure, Optimize, §6, §7, charting. A small fix that one test covers end to end, or a markup-and-styles change that adds no state, no data the screen did not already have, and no behavior, looked at in the real app (Kind: UI) → §2, §3, Structure, Optimize, §8, with §7 cut to the lines that apply and §4's delegated round optional. Anything else → the whole walk. Reading the diff before calling it done is never optional at any level.
+- **Scale the ceremony to the change, and say which level you picked.** One file, no behavior change (typo, copy, comment) → read the diff yourself; skip §4, Structure, Optimize, §6, §7, charting. A small fix proven end to end by one test, or, where the code has no seam for a test, by one reproduction in the real app seen red before the fix and green after, or a markup-and-styles change that adds no state, no data the screen did not already have, and no behavior, looked at in the real app (Kind: UI) → §2, §3, Structure, Optimize, §8, with §7 cut to the lines that apply and §4's delegated round optional. Anything else → the whole walk. Reading the diff before calling it done is never optional at any level.
 
 ## Kind — name the work, because it decides the proof
 

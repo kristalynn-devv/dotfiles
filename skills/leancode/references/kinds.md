@@ -7,11 +7,11 @@ The default walk. A new test, red on the baseline and green after (§3). Restruc
 
 ## Bug fix
 
-1. **Reproduce before you read for a fix.** A command, a request, or a test that shows the failure — keep its output. Can't reproduce it → that is the finding: return what you tried and what you would need (§0). Don't fix blind.
+1. **Reproduce before you read for a fix.** A command, a request, or a test that shows the failure — keep its output. Can't reproduce it → that is the finding: return what you tried and what you would need (§0). Don't fix blind. Seen only on a device or browser you cannot run → model the suspected cause in one you can, for example by forcing the suspected default; the model has to reproduce the reported picture, and the fix has to remove it there. A model is not the device: return the exact check to whoever has it (§0), and the fix stays unverified (§8) until their result is back.
 2. **Cut variables before you chase.** Start with the one check that removes the most unknowns in a single move — call the component directly, skip the layers in front of it — rather than walking back from the far end. On someone else's machine or account, rule out their local state first: which build, which login, which settings.
 3. **A hypothesis is a guess until a run confirms it.** Mid-diagnosis is when a memory of how the platform behaves gets stated as fact. Ask the live system or read the source — §1's lookup rule holds here too.
 4. **Name the root cause in one sentence, with its evidence, before the first edit.** A fix that makes the symptom go away without that sentence is a patch on a guess.
-5. **The reproduction becomes the regression test** — red before the fix, green after (§3).
+5. **The reproduction becomes the regression test** — red before the fix, green after (§3). No seam for a test → the real-app run that reproduced it is the check: keep it in `.leancode/` (§9) and show it red, then green.
 6. **Look for siblings.** The same mistake elsewhere, found by a search run to its end (§1). Fix the ones the task list covers; name the rest in §8.
 7. `build.max_cycles` failed fixes → stop. The model of the bug is wrong, not the patch.
 

@@ -39,7 +39,7 @@ the kinds, from a feature to a read-only investigation, and what each has to sho
 procedure for each lives in `references/kinds.md` and is read only for the kind in hand.
 
 **Ceremony scales with the change, and the level is said out loud.** A typo gets a
-diff read. A small fix, or a small visual change looked at in the real app, gets §2, §3, Structure, Optimize, §8. Anything else gets the whole walk. Without
+diff read. A small fix proven by one test or one real-app reproduction, or a small visual change looked at in the real app, gets §2, §3, Structure, Optimize, §8. Anything else gets the whole walk. Without
 this a workflow skill is only ever obeyed on the tasks that did not need it.
 
 **The skill never edits its own rules mid-task.** Observations go into an
