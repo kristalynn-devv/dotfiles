@@ -2,7 +2,7 @@
 # Single source of truth for Claude Code's instructions and skills: ~/dotfiles
 # Claude Code reads ~/.claude/*.md (supports @imports) and ~/.claude/skills/<name>/
 set -euo pipefail
-D="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+D="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"  # -P: links point at the real clone, not a path linked to it
 
 link() {  # link <source> <target> [backup-dir]
   local src="$1" dst="$2" bak="${3:-}"
@@ -19,9 +19,9 @@ link() {  # link <source> <target> [backup-dir]
   echo "linked $dst -> $src"
 }
 
-# 1. Rule files: link each one so @imports resolve from either directory
-for f in CLAUDE.md RTK.md WAYFINDER-LEANCODE.md IDENTITY.md; do
-  link "$D/claude/$f" "$HOME/.claude/$f"
+# 1. Rule files: link every claude/*.md so @imports resolve from either directory
+for f in "$D"/claude/*.md; do
+  link "$f" "$HOME/.claude/$(basename "$f")"
 done
 
 # 2. Skills: link each skills/<name>/ to ~/.claude/skills/<name>
