@@ -29,6 +29,9 @@ git clone https://github.com/kristalynn-devv/dotfiles.git ~/dotfiles && bash ~/d
 
 Everything is a symlink, so edits need no re-run. Run `sync.sh` again only after adding a skill.
 
+Keep one clone per machine. The links point at the clone `sync.sh` ran from, so edits made in a second clone are not
+live until they are pushed and that clone pulls them.
+
 ## Installing the skills
 
 **Full setup** (your own machine): the Usage line above already links every skill in `skills/` into
@@ -58,6 +61,35 @@ mklink /D "%USERPROFILE%\.claude\skills\pause" C:\src\dotfiles\skills\pause
 - Check: start Claude Code and type `/pause`, `/resume` or `/leancode`; if it is listed, it is installed.
 - Update: `git -C ~/dotfiles pull`. The skills are symlinks, so edits arrive without re-running anything; re-run
   `sync.sh` (or the loop) only when a new skill is added.
+
+## What leancode works with
+
+`claude/WAYFINDER-LEANCODE.md` hands some build steps to the skills below. Each one is optional. leancode checks for
+them before the work starts, names any that are missing with the command to install it, and uses its own text for that
+step instead.
+
+| What | From | Install |
+|---|---|---|
+| `leancode`, `pause`, `resume` | `skills/` in this repo | `sync.sh` |
+| `wayfinder` (the user's copy: the map lives in `.wayfinder/` and hands off to leancode) | not in this repo yet; `~/.agents/skills/wayfinder`, linked by hand | `ln -sfn ~/.agents/skills/wayfinder ~/.claude/skills/wayfinder` on a machine that has the folder |
+| `mattpocock-skills` (tdd, diagnosing-bugs, code-review, research, …) | plugin | `claude plugin install mattpocock-skills@claude-plugins-official` |
+| `context7` (library docs), `playwright` (driving the real app) | plugin | `claude plugin install context7@claude-plugins-official` · `claude plugin install playwright@claude-plugins-official` |
+| `impeccable` (UI structure and checks) | plugin | `claude plugin marketplace add pbakaus/impeccable && claude plugin install impeccable@impeccable` |
+| `daisyui` (on new projects, and where a project already uses it) | plugin | `claude plugin marketplace add saadeghi/daisyui && claude plugin install daisyui@daisyui` |
+
+Check with `claude plugin list`. The guard against destructive commands needs nothing installed in Claude Code; see
+`skills/leancode/adapters/`.
+
+Two settings save tokens in every session. Add them to `~/.claude/settings.json` by hand, since Claude Code does not
+let the agent edit its own settings:
+
+```json
+"skillOverrides": {"dataviz": "name-only", "artifact-design": "name-only", "artifact-diagramming": "name-only", "artifact-capabilities": "name-only", "claude-api": "name-only"},
+"syncClaudeAiSkills": false
+```
+
+`syncClaudeAiSkills: false` also stops older copies of `wayfinder`, `pause` and `resume` uploaded to claude.ai from
+loading beside the ones here.
 
 ## Adding a rule file
 
