@@ -4,7 +4,7 @@ updated: 2026-10-16
 ## leancode 5.1.1 and a Claude-only setup
 
 ### State
-branch: main · leancode is at v5.6.0 · everything here is committed; `git status -sb` says whether it is pushed
+branch: main · leancode is at v5.7.0 · everything here is committed; `git status -sb` says whether it is pushed
 Checked: `SKILL.md` frontmatter parses, every § and file pointer resolves, the 18 rows of the Kind table match the 18 sections of `references/kinds.md`, tunables agree between `SKILL.md` and its README, `sync.sh` runs clean. Not checked: a real task run on 5.x.
 
 Plugins in Claude Code (user scope): `impeccable` 4.5.2 · `mattpocock-skills` 1.2.3 · `daisyui` 5.7.0 · `context7` · `playwright`. Disabled: `engineering@synced`, `cowork-plugin-management@synced`.
@@ -23,6 +23,7 @@ Token figures, at the 3.03 bytes per token measured on claude-opus-5-5 from one 
 - Matt Pocock's skills take every build step he has one for, his review beside leancode's own [user]. They come from the `mattpocock-skills` plugin. UI work goes through `impeccable:impeccable` before the first edit; daisyUI is optional on an existing project and the default on a new one [user]. The mapping is in `claude/WAYFINDER-LEANCODE.md`; `SKILL.md` stays neutral.
 - Plugins the rules name are checked before the work starts; a missing one is told to the user at once with its install command, and is not installed unasked [user]. leancode §0 carries the neutral form of that rule (v5.1.0).
 - Autopilot does not stop between tasks [user, 2026-10-16, after a real run over grilled tickets stopped to ask after the first]: it stops early only at `autopilot.max_parked` or when the context can't hold the next task and can't be compacted; a compaction makes the note current and the run goes on. `claude/WAYFINDER-LEANCODE.md` puts autopilot ahead of the map check, so `wayfinder` is not called between tickets and nobody is asked mid-run (v5.6.0).
+- `autopilot.max_parked` counts distinct open questions, not parked tasks: one question parks its dependents without ending the run [user, 2026-10-16]. Default stays 3; the user's own rules don't override it yet (v5.7.0).
 - Can Matt Pocock's set replace ours? Checked against 1.2.3: not `leancode` (his `implement` is five lines — no proof per kind, no rules on irreversible actions or other people's files, no correctness review, no audit, and it commits unasked), not `pause`/`resume` (his `handoff` writes one note to the OS temp folder, with no resume and no pending decision), not the user's `wayfinder` (his keeps the map on an issue tracker). It does replace the procedures the mapping hands to it.
 
 ### Next action — make leancode cheaper to load and safe under compaction

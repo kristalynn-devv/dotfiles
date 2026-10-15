@@ -142,7 +142,7 @@ except that `review.max_rounds` always wins over `review.rounds`.
 | `optimize.passes` | 1 | One pass on the finished diff; leftovers are named, not re-hunted |
 | `parallel.max_agents` | 3 | Agents running at once, any shape |
 | `parallel.min_slice` | ~1 sitting's worth | Smallest slice worth handing to its own builder |
-| `autopilot.max_parked` | 3 | Parked tasks that end an autopilot run early |
+| `autopilot.max_parked` | 3 | Distinct open questions behind parked tasks that end an autopilot run early; tasks parked under the same question count once |
 | `autopilot.review` | each task | Which autopilot tasks get their own review round: `each task`, or `by risk` (only tasks that are hard to undo or touch security, money, or user data; the rest share the end-of-run round) |
 
 ### Update / remove

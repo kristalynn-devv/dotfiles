@@ -1,7 +1,7 @@
 ---
 name: leancode
 description: "Coding workflow for build work — features, bug fixes, refactors, upgrades, migrations, UI, config and infra changes, scripts, prototypes, code review, questions about what the code does, and resuming interrupted work. Names the kind of work to fix what counts as proof, scales to the size of the change, verifies with evidence, reviews once in depth, audits its own walk, and commits only when asked. Autopilot ('autopilot', 'run it all', or the same ask in the user's language) runs a whole task list in one go. Not for requests that are not about code."
-version: 5.6.0
+version: 5.7.0
 ---
 
 # Lean Code Workflow
@@ -25,7 +25,7 @@ Every threshold this skill uses lives here and is referenced by name from the se
 | `optimize.passes` | 1 | Optimize — one pass on the finished diff; leftovers are named, not re-hunted |
 | `parallel.max_agents` | 3 | §5 — agents running at once, any shape |
 | `parallel.min_slice` | ~1 sitting's worth | §5 — smallest slice worth handing to its own builder |
-| `autopilot.max_parked` | 3 | §10 — parked tasks that end an autopilot run early |
+| `autopilot.max_parked` | 3 | §10 — distinct open questions behind parked tasks that end an autopilot run early; tasks parked under the same question count once |
 | `autopilot.review` | each task | §10 — which tasks get their own §4 round: `each task`, or `by risk` (only a task that is hard to undo, or touches security, money, or user data; the rest share the end-of-run round) |
 
 A project can override any of these in its own `CLAUDE.md`; the project's value wins — except that `review.max_rounds` always wins over `review.rounds`, a ceiling that config can exceed is not a ceiling.
