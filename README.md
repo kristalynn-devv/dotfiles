@@ -76,8 +76,7 @@ step instead. `install.sh` installs all of them; the commands below are for doin
 | What | From | Install |
 |---|---|---|
 | `leancode`, `pause`, `resume` | `skills/` in this repo | `sync.sh` |
-| `wayfinder` (the user's copy: the map lives in `.wayfinder/` and hands off to leancode) | not in this repo yet; `~/.agents/skills/wayfinder`, linked by hand | `ln -sfn ~/.agents/skills/wayfinder ~/.claude/skills/wayfinder` on a machine that has the folder |
-| `mattpocock-skills` (tdd, diagnosing-bugs, code-review, research, …) | plugin | `claude plugin marketplace add anthropics/claude-plugins-official` (a fresh machine may not have it yet), then `claude plugin install mattpocock-skills@claude-plugins-official` |
+| `mattpocock-skills` (wayfinder, tdd, diagnosing-bugs, code-review, research, …) | plugin | `claude plugin marketplace add anthropics/claude-plugins-official` (a fresh machine may not have it yet), then `claude plugin install mattpocock-skills@claude-plugins-official` |
 | `context7` (library docs), `playwright` (driving the real app) | plugin | `claude plugin install context7@claude-plugins-official` · `claude plugin install playwright@claude-plugins-official` |
 | `impeccable` (UI structure and checks) | plugin | `claude plugin marketplace add pbakaus/impeccable && claude plugin install impeccable@impeccable` |
 | `daisyui` (on new projects, and where a project already uses it) | plugin | `claude plugin marketplace add saadeghi/daisyui && claude plugin install daisyui@daisyui` |
@@ -93,8 +92,8 @@ let the agent edit its own settings; `install.sh` prints them at the end until t
 "syncClaudeAiSkills": false
 ```
 
-`syncClaudeAiSkills: false` also stops older copies of `wayfinder`, `pause` and `resume` uploaded to claude.ai from
-loading beside the ones here.
+`syncClaudeAiSkills: false` also stops older copies of `pause`, `resume` and the user's retired `wayfinder` uploaded to
+claude.ai from loading beside the ones in use.
 
 ## Adding a rule file
 

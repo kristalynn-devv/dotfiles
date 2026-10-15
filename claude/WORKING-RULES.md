@@ -8,7 +8,7 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
 
 1. **`HANDOFF.md` is in git in every repo** — it is the team's work tracker. Never gitignore it; commit it with the
    work it describes · a repo that ignores it → remove the rule · on "push", HANDOFF.md edits made by this session
-   count as this session's files · `.wayfinder/` is not covered; leave it as each repo has it —
+   count as this session's files · `.scratch/` and `.wayfinder/` are not covered; leave them as each repo has them —
    the user: "let handoff go into git, it's there for tracking work"
 1a. **Anything found goes into that repo's `HANDOFF.md` right away** — a new gap, a residual, a parked question, a
    stale doc: write it (file:line, what breaks, options + pick) into the HANDOFF of the repo it lives in, on the

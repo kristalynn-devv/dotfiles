@@ -2,18 +2,18 @@
 
 **Core rule: the planning side decides, the build side acts. Never swap roles, never skip a step.**
 
-Planning can come from any skill — `wayfinder` fits best when a map already exists, but it is not the only way. The build side **doesn't need to be named**: once the decisions are complete and the next move is editing code, the skill that takes build work is picked by its own description.
+Planning can come from any skill — `mattpocock-skills:wayfinder` fits best when a map already exists, but it is not the only way. The build side **doesn't need to be named**: once the decisions are complete and the next move is editing code, the skill that takes build work is picked by its own description.
 
 ## Choosing a skill
 
 Before starting anything that isn't a quick question, check in this order:
 
 0. **Did the user ask for autopilot** (`leancode` §10's trigger, or the phrases in `WORKING-RULES.md` item 10)?
-   → Yes: `leancode` autopilot runs the whole list, even where a map exists. The tickets the user named, whether from a map, a grill or a list, are its queue in blocking order. `wayfinder` is not called between tickets, and its Work loop's "stop" after one ticket does not apply.
-1. **Is there a `.wayfinder/map.md` in the project** (or in a related sibling repo)?
-   → Yes: `wayfinder` in Work mode — load the map, health check, claim a ticket, resolve one at a time.
+   → Yes: `leancode` autopilot runs the whole list, even where a map exists. The tickets the user named, whether from a map, a grill or a list, are its queue in blocking order. `mattpocock-skills:wayfinder` is not called between tickets, and its Work loop's "stop" after one ticket does not apply.
+1. **Is there an open wayfinder map in the project** (or in a related sibling repo): `.scratch/<effort>/map.md`, or a `wayfinder:map` issue on the tracker `docs/agents/issue-tracker.md` names?
+   → Yes: `mattpocock-skills:wayfinder` in Work mode — load the map, health check, claim a ticket, resolve one at a time. A `.wayfinder/` folder holds a finished map from the user's older copy; read it for its decisions, don't work it.
 2. **The work is bigger than one session / how to do it is still unclear / several questions are open**
-   → Plan first, don't write code yet (`wayfinder` in Chart mode, or another planner that fits better).
+   → Plan first, don't write code yet (`mattpocock-skills:wayfinder` in Chart mode, or another planner that fits better).
 3. **The way is clear — you know what to change and where**
    → Go ahead and build. No need to announce which skill you'll call.
 
@@ -25,7 +25,7 @@ Not sure whether it's 2 or 3 → plan first, then ask the user one question.
 |---|---|---|
 | Output | decisions + a spec that can be built | code that actually runs |
 | Writes code? | throwaway prototypes only | yes |
-| Where the work lives | `.wayfinder/map.md` + tickets | `HANDOFF.md` + diff |
+| Where the work lives | the wayfinder map + its tickets | `HANDOFF.md` + diff |
 
 - On the planning side and feeling "I just want to start writing" = you've reached the edge of the map → **stop and hand off**, don't keep writing yourself.
 - On the build side and hitting a question you can't answer = fog → **throw it back to whoever called you**, with the question, the options and the one you'd pick — don't guess and write, and don't pick the next skill for them.
@@ -72,7 +72,9 @@ Recorded 2026-10-14 from the user: "use Matt Pocock's for all of it" — chosen 
 
 **Check before the work starts.** The plugins these rules name — `mattpocock-skills`, `impeccable`, `daisyui`, `context7`, `playwright` — have to be in the session's skill or tool list (`claude plugin list` settles a doubt). One is missing → tell the user at once, with its install command, then carry on with the fallback; don't install it yourself unless asked. The command is `claude plugin install <name>@claude-plugins-official`, except `impeccable@impeccable` (first `claude plugin marketplace add pbakaus/impeccable`) and `daisyui@daisyui` (first `claude plugin marketplace add saadeghi/daisyui`). On a machine set up from dotfiles, offer `bash ~/dotfiles/install.sh` before the single commands: it installs or re-enables all five, and adds `anthropics/claude-plugins-official` where a fresh install lacks it.
 
-- `mattpocock-skills` plugin not installed → `research`: a subagent reads and searches, reports facts with sources, no recommendations · `prototype`: the smallest artifact that reacts, labeled disposable · the build steps above: `leancode`'s own text.
-- `wayfinder` here means the user's own copy (it keeps the map in `.wayfinder/` and hands off to `leancode`), not the plugin's `mattpocock-skills:wayfinder`.
+- `mattpocock-skills` plugin not installed → `research`: a subagent reads and searches, reports facts with sources, no recommendations · `prototype`: the smallest artifact that reacts, labeled disposable · the build steps above: `leancode`'s own text · `wayfinder`: plan in the conversation, one open question at a time; there is no map to keep.
+- `wayfinder` here means `mattpocock-skills:wayfinder`. Its map lives on the tracker that `docs/agents/issue-tracker.md` names, which `/setup-matt-pocock-skills` writes (the user runs it once per repo); with no tracker doc it defaults to local markdown in `.scratch/<effort>/`. The user's older copy, which kept maps in `.wayfinder/`, is retired.
+
+Recorded 2026-10-16 from the user: "Matt's wayfinder is probably better", after comparing it with the user's own copy. The two `.wayfinder/` maps that existed (`ai-news`, `devpath`) were finished, so they stay as records and were not converted.
 
 Recorded 2026-10-15 from the user: the extra Standards and Spec reviewers run only on high-risk changes ("2 ok", to the proposal that low-risk work gets leancode's single deep review).
