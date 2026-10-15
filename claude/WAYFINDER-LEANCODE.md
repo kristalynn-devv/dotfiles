@@ -8,6 +8,8 @@ Planning can come from any skill — `wayfinder` fits best when a map already ex
 
 Before starting anything that isn't a quick question, check in this order:
 
+0. **Did the user ask for autopilot** (`leancode` §10's trigger, or the phrases in `WORKING-RULES.md` item 10)?
+   → Yes: `leancode` autopilot runs the whole list, even where a map exists. The tickets the user named, whether from a map, a grill or a list, are its queue in blocking order. `wayfinder` is not called between tickets, and its Work loop's "stop" after one ticket does not apply.
 1. **Is there a `.wayfinder/map.md` in the project** (or in a related sibling repo)?
    → Yes: `wayfinder` in Work mode — load the map, health check, claim a ticket, resolve one at a time.
 2. **The work is bigger than one session / how to do it is still unclear / several questions are open**
@@ -29,6 +31,9 @@ Not sure whether it's 2 or 3 → plan first, then ask the user one question.
 - On the build side and hitting a question you can't answer = fog → **throw it back to whoever called you**, with the question, the options and the one you'd pick — don't guess and write, and don't pick the next skill for them.
   - Caller is a planner → open it as a ticket/fog there · caller is the user → ask the user directly.
   - Work already built and verified stays; no need to tear it down. Resume from the same step once the answer comes back.
+  - In autopilot, nobody is asked mid-run, neither the planner nor the user: pick or park (`leancode` §10), log it in `HANDOFF.md`, and go on to the next ticket. The questions reach the user once, in the end-of-run report.
+
+Recorded 2026-10-16 from the user, after a real autopilot run over grilled tickets stopped to ask once the first ticket was done: "it shouldn't stop; it should note it down, because it's autopilot".
 
 ## Handoff
 

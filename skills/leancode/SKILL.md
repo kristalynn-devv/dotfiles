@@ -1,7 +1,7 @@
 ---
 name: leancode
 description: "Coding workflow for build work — features, bug fixes, refactors, upgrades, migrations, UI, config and infra changes, scripts, prototypes, code review, questions about what the code does, and resuming interrupted work. Names the kind of work to fix what counts as proof, scales to the size of the change, verifies with evidence, reviews once in depth, audits its own walk, and commits only when asked. Autopilot ('autopilot', 'run it all', or the same ask in the user's language) runs a whole task list in one go. Not for requests that are not about code."
-version: 5.5.0
+version: 5.6.0
 ---
 
 # Lean Code Workflow
@@ -315,4 +315,4 @@ If this change affects documented behavior (a route, an API contract, a decision
 - Rewrite for speed without a measurement named in the §8 report.
 - Invent a new folder, layer, or pattern on a refactor.
 - Edit this file without bumping `version` and adding a `CHANGELOG.md` line.
-- In autopilot: stop mid-run to ask in chat, push, amend, rebase, or stage with `git add -A`. Turn autopilot on without being asked.
+- In autopilot: stop mid-run to ask in chat or end the turn between tasks, push, amend, rebase, or stage with `git add -A`. Turn autopilot on without being asked.
