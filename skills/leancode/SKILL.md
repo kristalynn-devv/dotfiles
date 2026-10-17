@@ -1,7 +1,7 @@
 ---
 name: leancode
 description: "Coding workflow for build work — features, bug fixes, refactors, upgrades, migrations, UI, config and infra changes, scripts, prototypes, code review, questions about what the code does, and resuming interrupted work. Names the kind of work to fix what counts as proof, scales to the size of the change, verifies with evidence, reviews once in depth, audits its own walk, and commits only when asked. Autopilot ('autopilot', 'run it all', or the same ask in the user's language) runs a whole task list in one go. Not for requests that are not about code."
-version: 5.7.0
+version: 5.8.0
 ---
 
 # Lean Code Workflow
@@ -21,7 +21,6 @@ Every threshold this skill uses lives here and is referenced by name from the se
 | `build.max_cycles` | 3 | §3 — build→verify cycles before stopping to rethink |
 | `review.rounds` | 1 | §4 — delegated self-review passes |
 | `review.max_rounds` | 2 | §4 — hard ceiling; past this, stop and hand back to the caller |
-| `review.effort` | maximum (`ultrathink`) | §4 — reasoning depth the review runs at |
 | `optimize.passes` | 1 | Optimize — one pass on the finished diff; leftovers are named, not re-hunted |
 | `parallel.max_agents` | 3 | §5 — agents running at once, any shape |
 | `parallel.min_slice` | ~1 sitting's worth | §5 — smallest slice worth handing to its own builder |
@@ -149,11 +148,11 @@ Check the diff against the case you named once, after §4 when that round ran, b
 - Touched UI or user-visible behavior → also use `run` (or `web-design-guidelines` for a UI-standards pass) to see it working in the real app, not just green tests.
 - **The named skill isn't there, or can't run as written** — the harness has no such skill, bans the sub-tasks it spawns, or the skill reads only committed history while this change is still uncommitted (it then sees an empty diff) → run its substance in-session. Security: walk the diff against the trust-boundary list above — an authorization check on every newly reachable path, input validation, output encoding where user data renders, secrets kept out of logs and client bundles — and report each finding with file and line. UI: drive the real app yourself (dev server plus a browser or screenshot tool, or a temporary probe that mounts the component), then delete the probe. Either way, point it at this change's diff (working tree plus staged), not the last commit. Say it is missing before §1 (§0), name the fallback in §8, and don't call it the skill. Nothing can drive the real app → say so; green tests don't stand in for it.
 
-## 4. Self-review — maximum effort
+## 4. Self-review — delegated, once
 
-Review deliberately, not repeatedly. `review.rounds` pass(es) at `review.effort`, thinking at full depth, beats several cheap re-reads by the model that just wrote the code — that model is the worst reviewer of its own work.
+Review deliberately, not repeatedly. `review.rounds` pass(es) by a reader that didn't write the code beats several re-reads by the model that just wrote it — that model is the worst reviewer of its own work.
 
-- **Delegate it** — §5 owns the mechanics of spawning, briefing, and the harness-forbids-it fallback, and its standing authorization covers this round. A missing "use a subagent" in the current message is not a ban. What this pass buys is depth, not a different nameplate: spend it on effort, not on model shopping. Claude Code: `Agent` tool with `subagent_type: "general-purpose"` and **no `model` override** — the review runs on the session's own model. Open the prompt with `ultrathink` so it runs at `review.effort`. On any other harness, select the deepest thinking mode available and leave the model alone. Where the harness runs agents in the background, draft the §8 report and walk §7's lines up to §3 while the round runs — neither edits the diff, and the rest of §7 waits for what comes after. Optimize and any fix wait for the findings. **The reviewer reads and reports; it never edits.** Fixing is the main session's job — a reviewer that patches its own findings puts changes into the diff that nobody reviewed, and collides with §5.
+- **Delegate it** — §5 owns the mechanics of spawning, briefing, and the harness-forbids-it fallback, and its standing authorization covers this round. A missing "use a subagent" in the current message is not a ban. Claude Code: `Agent` tool with `subagent_type: "general-purpose"`. Where the harness runs agents in the background, draft the §8 report and walk §7's lines up to §3 while the round runs — neither edits the diff, and the rest of §7 waits for what comes after. Optimize and any fix wait for the findings. **The reviewer reads and reports; it never edits.** Fixing is the main session's job — a reviewer that patches its own findings puts changes into the diff that nobody reviewed, and collides with §5.
 - **Brief it properly.** The reviewer doesn't share this session's context: give it the one-sentence goal from §1, the full diff (`git diff`, plus `--staged` if anything is staged), and the surrounding files it should read. Ask for concrete findings — file, line, what breaks — not a grade.
 - **Every pass covers all three dimensions:**
   - *Correctness* — edge cases, empty/null inputs, error paths, off-by-one, async ordering, resource cleanup, security (auth checks, input trust), performance (extra queries/renders, unbounded work the change introduced).
@@ -250,7 +249,7 @@ What to walk:
 - §3 — the test that proves new behavior was actually seen red against that baseline — the right red, for the reason predicted — and no check passed by examining nothing.
 - §3 — the full diff was read, the project's whole check ran after the last edit, and every result reported is a concrete one (output, exit code, screenshot).
 - §3 — UI or user-visible change → seen working in the real app; auth, input handling, rendering user-controlled data, or secrets → `security-review` ran, or §3's in-session fallback ran and §8 names it.
-- §4 — the delegated round ran at `review.effort` with no model override, findings were checked against the code, and rejected ones named. The harness forbids spawning agents → say so in §8 and offer the round; a self-read does not count as one.
+- §4 — the delegated round ran, findings were checked against the code, and rejected ones named. The harness forbids spawning agents → say so in §8 and offer the round; a self-read does not count as one.
 - Optimize — one pass ran on the diff that shipped, or the tier skipped it and §8 says so. The check §3 used was re-run after the moves and was green, or the breaking move was reverted. A move that would have changed a test was skipped and named. A speed change names its measurement. The pass did not run a second time.
 - §5 — a subagent ran only on work no other in-flight task already owned; a duplicate was skipped and named. Where the harness had an "unless the user asked" clause, it was treated as satisfied. An unconditional ban → said so in §8.
 - §5 — work was split only after the risk pass was written down, and no two agents touched the same file or shared surface.

@@ -138,7 +138,6 @@ except that `review.max_rounds` always wins over `review.rounds`.
 | `build.max_cycles` | 3 | Build→verify cycles before stopping to rethink |
 | `review.rounds` | 1 | Delegated self-review passes |
 | `review.max_rounds` | 2 | Hard ceiling; past this, hand back to the caller |
-| `review.effort` | maximum (`ultrathink`) | Reasoning depth the review runs at |
 | `optimize.passes` | 1 | One pass on the finished diff; leftovers are named, not re-hunted |
 | `parallel.max_agents` | 3 | Agents running at once, any shape |
 | `parallel.min_slice` | ~1 sitting's worth | Smallest slice worth handing to its own builder |
