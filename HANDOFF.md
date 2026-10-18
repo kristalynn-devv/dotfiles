@@ -1,10 +1,10 @@
 # HANDOFF
-updated: 2026-10-16
+updated: 2026-10-18
 
 ## leancode 5.1.1 and a Claude-only setup
 
 ### State
-branch: main · leancode is at v5.7.0 · everything here is committed; `git status -sb` says whether it is pushed
+branch: main · leancode is at v5.8.0 · everything here is committed; `git status -sb` says whether it is pushed
 Checked: `SKILL.md` frontmatter parses, every § and file pointer resolves, the 18 rows of the Kind table match the 18 sections of `references/kinds.md`, tunables agree between `SKILL.md` and its README, `sync.sh` runs clean. Not checked: a real task run on 5.x.
 
 Plugins in Claude Code (user scope): `impeccable` 4.6.0 · `mattpocock-skills` 1.2.3 · `daisyui` 5.7.0 · `context7` · `playwright`. Disabled: `engineering@synced`, `cowork-plugin-management@synced`.
@@ -19,6 +19,7 @@ Token figures, at the 3.03 bytes per token measured on claude-opus-5-5 from one 
 - Landing (commit, merge, push) is its own unnumbered section so §0–§10 keep their numbers.
 - §10's procedure lives in `references/autopilot.md`; the trigger and a fallback stay inline [user].
 - §4 no longer says "never on Fable" [user].
+- §4 sets no reasoning depth and no model for the review round; it runs at the harness's defaults [user, 2026-10-17] (v5.8.0).
 - Claude only [user]: `sync.sh` links rule files and skills into `~/.claude` and nothing else. The links it had made in `~/.agents/skills`, `~/.codex` and `~/.gemini` are removed, `agents/AGENTS.md` is deleted, and Codex has its own one-line `AGENTS.md` back.
 - Matt Pocock's skills take every build step he has one for, his review beside leancode's own [user]. They come from the `mattpocock-skills` plugin. UI work goes through `impeccable:impeccable` before the first edit; daisyUI is optional on an existing project and the default on a new one [user]. The mapping is in `claude/WAYFINDER-LEANCODE.md`; `SKILL.md` stays neutral.
 - Plugins the rules name are checked before the work starts; a missing one is told to the user at once with its install command, and is not installed unasked [user]. leancode §0 carries the neutral form of that rule (v5.1.0).
