@@ -79,7 +79,6 @@ step instead. `install.sh` installs all of them; the commands below are for doin
 | `leancode`, `pause`, `resume` | `skills/` in this repo | `sync.sh` |
 | `mattpocock-skills` (wayfinder, tdd, diagnosing-bugs, code-review, research, …) | plugin | `claude plugin marketplace add anthropics/claude-plugins-official` (a fresh machine may not have it yet), then `claude plugin install mattpocock-skills@claude-plugins-official` |
 | `context7` (library docs), `playwright` (driving the real app) | plugin | `claude plugin install context7@claude-plugins-official` · `claude plugin install playwright@claude-plugins-official` |
-| `caveman` (terse replies and commit messages only; its other skills and agents are not used, see `claude/WAYFINDER-LEANCODE.md`) | plugin, its hooks need `node` | `claude plugin marketplace add JuliusBrussee/caveman`, then `claude plugin install caveman@caveman` |
 | `rtk` (condensed command output, which `claude/RTK.md` describes) | CLI + hook | `brew install rtk`, then `rtk init -g --hook-only` (keeps this repo's `RTK.md`) |
 | `impeccable` (UI structure and checks) | plugin | `claude plugin marketplace add pbakaus/impeccable && claude plugin install impeccable@impeccable` |
 | `daisyui` (on new projects, and where a project already uses it) | plugin | `claude plugin marketplace add saadeghi/daisyui && claude plugin install daisyui@daisyui` |

@@ -68,26 +68,6 @@ You can hand off before the whole map is done if one slice has all its decisions
 
 Recorded 2026-10-14 from the user: "use Matt Pocock's for all of it" — chosen as: every step he has a skill for, with his review added beside `leancode`'s own, not instead of it. And: "on UI work, use impeccable to look at the structure and check first; daisyUI is optional, but a new project uses it right away."
 
-## caveman: the voice and commit messages only
-
-The `caveman` plugin is here for its voice. Only `caveman:caveman` (and its `ultracave` / `megacave` variants) and
-`caveman:caveman-commit` are used. Everything else it adds duplicates a skill or agent already chosen here and is never
-picked, whatever its description says:
-
-| caveman's | Use instead |
-|---|---|
-| `lean-build`, `surgical-patch`, `safe-refactor`, `migration`, `investigate-first`, `verify-and-stop` | `leancode` for build work that suits it (`WORKING-RULES.md` item 10), a one-spot edit done directly, a step with a skill of its own from the table above |
-| `caveman-review`, the `cavecrew-reviewer` agent | the review row of the table above |
-| `caveman-explore`, the `cavecrew-investigator` agent | the `Explore` agent, or a direct search |
-| the `cavecrew-builder` agent | a one-spot edit done directly; a builder subagent under `WORKING-RULES.md` items 3–4b |
-
-None of these can be switched off in settings: `skillOverrides` does not reach a plugin's skills (Claude Code 2.1.301),
-and caveman has no per-skill switch. This rule is the only guard.
-
-Recorded 2026-10-20 from the user: keep `leancode` for autopilot and multi-step builds, other skills for small work;
-then "turn off the caveman parts that duplicate" — the review, explore and cavecrew parts as well as the six build
-skills.
-
 ## Missing skills (use the fallback, don't stall)
 
 **Check before the work starts.** The plugins these rules name — `mattpocock-skills`, `impeccable`, `daisyui`, `context7`, `playwright` — have to be in the session's skill or tool list (`claude plugin list` settles a doubt). One is missing → tell the user at once, with its install command, then carry on with the fallback; don't install it yourself unless asked. The command is `claude plugin install <name>@claude-plugins-official`, except `impeccable@impeccable` (first `claude plugin marketplace add pbakaus/impeccable`) and `daisyui@daisyui` (first `claude plugin marketplace add saadeghi/daisyui`). On a machine set up from dotfiles, offer `bash ~/dotfiles/install.sh` before the single commands: it installs or re-enables all five, and adds `anthropics/claude-plugins-official` where a fresh install lacks it.

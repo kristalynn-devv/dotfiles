@@ -5,22 +5,20 @@ set -euo pipefail
 D="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 SETTINGS="$HOME/.claude/settings.json"
 
-MARKETPLACES=(anthropics/claude-plugins-official pbakaus/impeccable saadeghi/daisyui JuliusBrussee/caveman)
+MARKETPLACES=(anthropics/claude-plugins-official pbakaus/impeccable saadeghi/daisyui)
 PLUGINS=(
   mattpocock-skills@claude-plugins-official
   context7@claude-plugins-official
   playwright@claude-plugins-official
   impeccable@impeccable
   daisyui@daisyui
-  caveman@caveman
 )
-# node: caveman's hooks skip themselves without it · rtk: claude/RTK.md assumes its hook
+# node: step 6 merges settings.json with it · rtk: claude/RTK.md assumes its hook
 TOOLS=(node rtk)
 
 # skillOverrides added to settings.json; a skill already listed there keeps the user's value
 #   name-only: the skill stays, its description stops loading in every session
-#   A plugin's skills can't be hidden here: neither "caveman:lean-build" nor "lean-build" took effect
-#   (Claude Code 2.1.301); claude/WAYFINDER-LEANCODE.md rules caveman's duplicates out instead
+#   A plugin's skills can't be hidden here (Claude Code 2.1.301): "<plugin>:<skill>" and "<skill>" both had no effect
 SKILL_OVERRIDES='{
   "dataviz": "name-only", "artifact-design": "name-only", "artifact-diagramming": "name-only",
   "artifact-capabilities": "name-only", "claude-api": "name-only"

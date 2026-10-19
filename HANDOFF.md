@@ -15,6 +15,7 @@ Token figures, at the 3.03 bytes per token measured on claude-opus-5-5 from one 
 - One session reached 470,000 tokens of context over 95 calls, 25 million tokens re-read in total. Session length outweighs every other figure here.
 
 ### Decisions
+- No `caveman` plugin [user, 2026-10-20]: its voice saved little in coding sessions (its own README cites 8.5% fewer output tokens), made replies harder to read and clashed with `WORKING-RULES.md` item 7's agent tables; its skills duplicated `leancode`, the review skills and `Explore`. Uninstalled, removed from `install.sh` and README. `rtk` stays.
 - Kinds live in one table in `SKILL.md`, the procedure per kind in `references/kinds.md`; the table alone is the fallback.
 - Landing (commit, merge, push) is its own unnumbered section so §0–§10 keep their numbers.
 - §10's procedure lives in `references/autopilot.md`; the trigger and a fallback stay inline [user].
@@ -46,7 +47,7 @@ Expected: about 4,500 tokens at the typo tier (18,400 today), about 11,500 befor
 Checks to re-run afterwards: frontmatter parses; every § and `references/*.md` pointer resolves; Kind rows match `references/kinds.md` sections; tunables in `SKILL.md` and its README agree; the first 5,000 tokens of `SKILL.md` contain the whole core.
 
 ### Found, not fixed
-- `caveman`'s skills and agents other than its voice and `caveman-commit` are ruled out in `claude/WAYFINDER-LEANCODE.md`, but still listed in every session: `skillOverrides` does not reach a plugin's skills (tested on Claude Code 2.1.301 with `--settings`: `"dataviz": "off"` hid `dataviz`, while `"caveman:lean-build": "off"` and `"lean-build": "off"` both left `caveman:lean-build` listed). Found 2026-10-20.
+- `skillOverrides` does not reach a plugin's skills (tested on Claude Code 2.1.301 with `--settings`: `"dataviz": "off"` hid `dataviz`, while `"caveman:lean-build": "off"` and `"lean-build": "off"` both left `caveman:lean-build` listed). A plugin whose skills duplicate others can only be ruled out in the rule files or uninstalled. Found 2026-10-20.
 - `mattpocock-skills:implement` ends by committing to the current branch, against `leancode`'s commit-only-when-asked; it is user-invoked only (`disable-model-invocation: true`), so it runs only when the user types `/implement`. Found 2026-10-20.
 - `sync.sh` links into `$HOME/.claude` even when `CLAUDE_CONFIG_DIR` is set, while `install.sh`'s plugins then go to that directory. Not changed: nobody here sets it, and whether Claude Code reads rule files and skills from it was not checked. Found 2026-10-16.
 - `sync.sh` never removes a link left behind when a rule file or skill is renamed or deleted; that link dangles in `~/.claude` until removed by hand. Found 2026-10-16.
