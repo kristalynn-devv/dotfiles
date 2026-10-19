@@ -1,5 +1,5 @@
 # HANDOFF
-updated: 2026-10-18
+updated: 2026-10-20
 
 ## leancode 5.1.1 and a Claude-only setup
 
@@ -46,6 +46,8 @@ Expected: about 4,500 tokens at the typo tier (18,400 today), about 11,500 befor
 Checks to re-run afterwards: frontmatter parses; every § and `references/*.md` pointer resolves; Kind rows match `references/kinds.md` sections; tunables in `SKILL.md` and its README agree; the first 5,000 tokens of `SKILL.md` contain the whole core.
 
 ### Found, not fixed
+- `caveman`'s skills and agents other than its voice and `caveman-commit` are ruled out in `claude/WAYFINDER-LEANCODE.md`, but still listed in every session: `skillOverrides` does not reach a plugin's skills (tested on Claude Code 2.1.301 with `--settings`: `"dataviz": "off"` hid `dataviz`, while `"caveman:lean-build": "off"` and `"lean-build": "off"` both left `caveman:lean-build` listed). Found 2026-10-20.
+- `mattpocock-skills:implement` ends by committing to the current branch, against `leancode`'s commit-only-when-asked; it is user-invoked only (`disable-model-invocation: true`), so it runs only when the user types `/implement`. Found 2026-10-20.
 - `sync.sh` links into `$HOME/.claude` even when `CLAUDE_CONFIG_DIR` is set, while `install.sh`'s plugins then go to that directory. Not changed: nobody here sets it, and whether Claude Code reads rule files and skills from it was not checked. Found 2026-10-16.
 - `sync.sh` never removes a link left behind when a rule file or skill is renamed or deleted; that link dangles in `~/.claude` until removed by hand. Found 2026-10-16.
 - Git Bash on Windows copies instead of linking (`ln -s` without developer mode), and each re-run then moves those copies into `.backup/`; the README sends Windows to WSL or `mklink`. Found 2026-10-16.
