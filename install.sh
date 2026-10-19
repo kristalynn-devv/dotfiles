@@ -13,8 +13,8 @@ PLUGINS=(
   impeccable@impeccable
   daisyui@daisyui
 )
-# node: step 6 merges settings.json with it · rtk: claude/RTK.md assumes its hook
-TOOLS=(node rtk)
+# node: step 5 merges settings.json with it
+TOOLS=(node)
 
 # skillOverrides added to settings.json; a skill already listed there keeps the user's value
 #   name-only: the skill stays, its description stops loading in every session
@@ -33,7 +33,7 @@ for t in "${TOOLS[@]}"; do
   if command -v brew >/dev/null; then
     brew install "$t"
   else
-    echo "$t not found and no Homebrew: install it by hand (rtk: https://github.com/rtk-ai/rtk), then run $0 again" >&2
+    echo "$t not found and no Homebrew: install it by hand, then run $0 again" >&2
   fi
 done
 
@@ -52,10 +52,7 @@ for p in "${PLUGINS[@]}"; do
   claude plugin update --scope user "$p"
 done
 
-# 5. rtk's hook only: --hook-only keeps this repo's RTK.md and CLAUDE.md as they are
-command -v rtk >/dev/null && rtk init -g --hook-only --auto-patch
-
-# 6. skillOverrides, merged into settings.json
+# 5. skillOverrides, merged into settings.json
 if command -v node >/dev/null; then
   SETTINGS="$SETTINGS" SKILL_OVERRIDES="$SKILL_OVERRIDES" node -e '
     const fs = require("fs"), f = process.env.SETTINGS;

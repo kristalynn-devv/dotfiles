@@ -15,7 +15,8 @@ Token figures, at the 3.03 bytes per token measured on claude-opus-5-5 from one 
 - One session reached 470,000 tokens of context over 95 calls, 25 million tokens re-read in total. Session length outweighs every other figure here.
 
 ### Decisions
-- No `caveman` plugin [user, 2026-10-20]: its voice saved little in coding sessions (its own README cites 8.5% fewer output tokens), made replies harder to read and clashed with `WORKING-RULES.md` item 7's agent tables; its skills duplicated `leancode`, the review skills and `Explore`. Uninstalled, removed from `install.sh` and README. `rtk` stays.
+- No `caveman` plugin [user, 2026-10-20]: its voice saved little in coding sessions (its own README cites 8.5% fewer output tokens), made replies harder to read and clashed with `WORKING-RULES.md` item 7's agent tables; its skills duplicated `leancode`, the review skills and `Explore`. Uninstalled, removed from `install.sh` and README.
+- No `rtk` [user, 2026-10-20]: its condensed output hid lines Claude needed (`ls` came back as `(5 filtered) [+5 hidden: rtk recall …]`, twice in one session). Uninstalled, its hook removed from `~/.claude/settings.json` by hand (`rtk init --uninstall` would have written through the `CLAUDE.md` link), `claude/RTK.md` and `@RTK.md` deleted, `install.sh` and README updated.
 - Kinds live in one table in `SKILL.md`, the procedure per kind in `references/kinds.md`; the table alone is the fallback.
 - Landing (commit, merge, push) is its own unnumbered section so §0–§10 keep their numbers.
 - §10's procedure lives in `references/autopilot.md`; the trigger and a fallback stay inline [user].
