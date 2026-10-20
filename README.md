@@ -20,6 +20,9 @@ The single source of truth for the rule files and skills Claude Code reads.
     gitignored, keep yours in this folder)
   - `pause/` — `/pause`: save the context, where work stopped and any open decision to `HANDOFF.md`; also checkpoints
   - `resume/` — `/resume`: find the note, check it against reality, settle the open decision, continue
+  - `cursor-dispatch/` — only when the user asks: hand a settled build slice to Cursor's agent CLI (`cursor-agent -p`)
+    in its own git worktree, then verify the result in Claude · needs `cursor-agent` (`curl https://cursor.com/install -fsS | bash`)
+    and `cursor-agent login` once
 - `sync.sh` — links every `claude/*.md` and every `skills/<name>/` into `~/.claude/`
 - `install.sh` — the whole setup in one command: `sync.sh`, then `node` (Homebrew), the plugins below
   installed or updated to their latest version, and `skillOverrides` merged into
