@@ -9,7 +9,6 @@ MARKETPLACES=(anthropics/claude-plugins-official pbakaus/impeccable saadeghi/dai
 PLUGINS=(
   mattpocock-skills@claude-plugins-official
   context7@claude-plugins-official
-  playwright@claude-plugins-official
   impeccable@impeccable
   daisyui@daisyui
 )

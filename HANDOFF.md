@@ -7,7 +7,7 @@ updated: 2026-10-20
 branch: main · leancode is at v5.8.0 · everything here is committed; `git status -sb` says whether it is pushed
 Checked: `SKILL.md` frontmatter parses, every § and file pointer resolves, the 18 rows of the Kind table match the 18 sections of `references/kinds.md`, tunables agree between `SKILL.md` and its README, `sync.sh` runs clean. Not checked: a real task run on 5.x.
 
-Plugins in Claude Code (user scope): `impeccable` 4.6.0 · `mattpocock-skills` 1.2.3 · `daisyui` 5.7.0 · `context7` · `playwright`. Disabled: `engineering@synced`, `cowork-plugin-management@synced`.
+Plugins in Claude Code (user scope): `impeccable` 4.6.0 · `mattpocock-skills` 1.2.3 · `daisyui` 5.7.0 · `context7`. Disabled: `engineering@synced`, `cowork-plugin-management@synced`.
 
 Token figures, at the 3.03 bytes per token measured on claude-opus-5-5 from one session's usage records:
 - `SKILL.md` 55.6 KB, about 18,400 tokens per load; its description about 190 in every session.
@@ -16,6 +16,7 @@ Token figures, at the 3.03 bytes per token measured on claude-opus-5-5 from one 
 
 ### Decisions
 - No `caveman` plugin [user, 2026-10-20]: its voice saved little in coding sessions (its own README cites 8.5% fewer output tokens), made replies harder to read and clashed with `WORKING-RULES.md` item 7's agent tables; its skills duplicated `leancode`, the review skills and `Explore`. Uninstalled, removed from `install.sh` and README.
+- No `playwright` plugin [user, 2026-10-24]: each MCP action returned a full accessibility snapshot, thousands to tens of thousands of tokens per click on a busy page. Uninstalled, removed from `install.sh`, README and `WAYFINDER-LEANCODE.md`; the real app is looked at with a Playwright script run through Bash instead.
 - No `rtk` [user, 2026-10-20]: its condensed output hid lines Claude needed (`ls` came back as `(5 filtered) [+5 hidden: rtk recall …]`, twice in one session). Uninstalled, its hook removed from `~/.claude/settings.json` by hand (`rtk init --uninstall` would have written through the `CLAUDE.md` link), `claude/RTK.md` and `@RTK.md` deleted, `install.sh` and README updated.
 - Kinds live in one table in `SKILL.md`, the procedure per kind in `references/kinds.md`; the table alone is the fallback.
 - Landing (commit, merge, push) is its own unnumbered section so §0–§10 keep their numbers.
