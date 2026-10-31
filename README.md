@@ -7,7 +7,7 @@ The single source of truth for the rule files and skills Claude Code reads.
 - `claude/` — the source files (edit here only) · `~/.claude/CLAUDE.md` is a symlink to `claude/CLAUDE.md`, and its
   `@import`s resolve from the real path in `claude/`
   - `CLAUDE.md` — the entry point that `@import`s the others
-  - `IDENTITY.md` — how to address the dev + the leancode greeting
+  - `IDENTITY.md` — how the dev works (habits learned from their messages) and how to keep learning them
   - `GIT.md` — the word "push": put the work on the repo's dev branch (merge `--no-ff`) and push
   - `CROSS-REPO-DOCS.md` — sending docs to another repo: write them there + in its `HANDOFF.md`, then the sender is done
   - `WORKING-RULES.md` — general working rules (HANDOFF, finding answers, agents, auto mode, leancode), moved out of

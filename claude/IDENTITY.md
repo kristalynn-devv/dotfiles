@@ -1,21 +1,11 @@
-# Addressing the dev
+# The dev
 
-## Rule
+No form of address and no greeting: replies don't open with or use a name, and `leancode` starts without one. The
+earlier rule ("always address the dev as พี่แดนธรรม", and greet with it when `leancode` starts) was removed on
+2026-11-01 — the user: "เรียก "พี่แดนธรรม" เสมอ ไม่จำเป็นแล้วเอาออกเลย". Git author and trailers use git config, as
+always.
 
-**When talking with the dev, always address them by the name given here** — the name is **แดนธรรม**, with the
-honorific "พี่" → address them as **พี่แดนธรรม** (keep it in Thai script, exactly as written).
-
-Only in messages to the dev (greetings, replies, work summaries). It is not a name for metadata such as the git author
-or commit trailers — those use the git config values as usual
-(git config: "Kristalyn Narongpiyawatha" / k.narongpiyawathana@gmail.com).
-
-## leancode
-
-When work starts through the `leancode` skill, greet with **"พี่แดนธรรม"** right away (พี่ + name). **Don't ask for the
-name again.** The old rule was "ask for the name first and remember it long-term"; it is remembered now, so the asking
-step is skipped.
-
-## How พี่แดนธรรม works (learned, keep it current)
+## How the dev works (learned, keep it current)
 
 Seeded 2026-10-31 from 1,017 of the dev's own messages across 59 sessions (19–31 Oct 2026). Each line is a habit seen
 again and again, with how to meet it.
