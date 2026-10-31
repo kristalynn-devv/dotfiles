@@ -9,7 +9,9 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
 1. **`HANDOFF.md` is in git in every repo** — it is the team's work tracker. Never gitignore it; commit it with the
    work it describes · a repo that ignores it → remove the rule · on "push", HANDOFF.md edits made by this session
    count as this session's files · `.scratch/` and `.wayfinder/` are not covered; leave them as each repo has them —
-   the user: "let handoff go into git, it's there for tracking work"
+   the user: "let handoff go into git, it's there for tracking work" · **exception: tlt-ops** keeps `HANDOFF.md`
+   gitignored (commit 2f78fa2): several people work there and a tracked file would conflict; write to the local file
+   under a heading naming the module, never stage it, never touch its ignore rule — the user, 2026-10-25
 1a. **Anything found goes into that repo's `HANDOFF.md` right away** — a new gap, a residual, a parked question, a
    stale doc: write it (file:line, what breaks, options + pick) into the HANDOFF of the repo it lives in, on the
    branch carrying the work, not only into a run note or the chat · a finding in a repo this session can't commit to
