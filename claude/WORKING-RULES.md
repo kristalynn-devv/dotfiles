@@ -70,7 +70,10 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
    (2026-10-02 → 11-01) had 210 of 215 subagents on Opus because none named a model — about 515k input-equivalent
    tokens each, 17% of all spend — the user (2026-11-01): "ทำเลย", to the proposal that search and spec-driven agents
    run on Sonnet in every project
-5. **Big review and big tests happen at "push", not at each commit** — the deep review (leancode's round, plus the
+5. **Big review and big tests happen at "push", not at each commit** — as `leancode` tunables: **`review.when: at land`**
+   and **`autopilot.review: by risk`** (leancode 5.9.0+; before that version leancode reviewed every change and the
+   user saw review after each ticket — 112 review agents in 30 days, ~4.7 min and ~568k input-equivalent tokens each,
+   the user 2026-11-01: "รีวิวทุก ticket รู้สึกนานและใช้ token เยอะ" · "แก้กฏ leancode") · the deep review (leancode's round, plus the
    `code-review` Standards/Spec reviewers when the change is high-risk: hard to undo, or touching security, money or
    user data) and the full test suite run once, on everything going up, when the user says "push" (`GIT.md`) ·
    a high-risk task is still flagged as such when it is committed, so the push review knows to look hard at it ·
