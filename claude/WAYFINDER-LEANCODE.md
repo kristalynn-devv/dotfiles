@@ -2,7 +2,7 @@
 
 **Core rule: the planning side decides, the build side acts. Never swap roles, never skip a step.**
 
-Planning can come from any skill — `mattpocock-skills:wayfinder` fits best when a map already exists, but it is not the only way. The build side **doesn't need to be named**: once the decisions are complete and the next move is editing code, the skill that takes build work is picked by its own description.
+Planning can come from any skill — `mattpocock-skills:wayfinder` fits best when a map already exists, but it is not the only way. The build side is always **`leancode`**: once the decisions are complete and the next move is editing code, `leancode` takes it, whatever the size (`WORKING-RULES.md` item 10, the user 2026-10-31: "ทุกงานที่ implement ให้ส่งไป leancode ทั้งหมด").
 
 ## Choosing a skill
 
@@ -11,11 +11,11 @@ Before starting anything that isn't a quick question, check in this order:
 0. **Did the user ask for autopilot** (`leancode` §10's trigger, or the phrases in `WORKING-RULES.md` item 10)?
    → Yes: `leancode` autopilot runs the whole list, even where a map exists. The tickets the user named, whether from a map, a grill or a list, are its queue in blocking order. `mattpocock-skills:wayfinder` is not called between tickets, and its Work loop's "stop" after one ticket does not apply.
 1. **Is there an open wayfinder map in the project** (or in a related sibling repo): `.scratch/<effort>/map.md`, or a `wayfinder:map` issue on the tracker `docs/agents/issue-tracker.md` names?
-   → Yes: `mattpocock-skills:wayfinder` in Work mode — load the map, health check, claim a ticket, resolve one at a time. A `.wayfinder/` folder holds a finished map from the user's older copy; read it for its decisions, don't work it.
+   → Yes: `mattpocock-skills:wayfinder` in Work mode — load the map, health check, claim a ticket, resolve one at a time; the code of each ticket is built through `leancode`. A `.wayfinder/` folder holds a finished map from the user's older copy; read it for its decisions, don't work it.
 2. **The work is bigger than one session / how to do it is still unclear / several questions are open**
    → Plan first, don't write code yet (`mattpocock-skills:wayfinder` in Chart mode, or another planner that fits better).
 3. **The way is clear — you know what to change and where**
-   → Go ahead and build. No need to announce which skill you'll call.
+   → Build through `leancode`.
 
 Not sure whether it's 2 or 3 → plan first, then ask the user one question.
 
@@ -51,7 +51,7 @@ You can hand off before the whole map is done if one slice has all its decisions
 
 | Step of the walk | Skill | Still owed to `leancode` |
 |---|---|---|
-| Tests for new behavior (§3) | `tdd` | the test seen red for the right reason; the full check before done |
+| Tests for new behavior (§3) | `tdd` | the test seen red for the right reason; the relevant tests green before the commit (the full suite runs at push) |
 | A bug that doesn't yield at first look | `diagnosing-bugs` | the root cause in one sentence, with its evidence, before the fix; the search for siblings |
 | UI or visual work, before the first edit | `impeccable:impeccable` — `shape` to plan the structure of something new, `audit` or `critique` to check what is already there | the real app looked at, at every width and state the change can reach |
 | A new boundary, or reshaping a module (Structure) | `codebase-design` | the case named before the edit; no new pattern on a refactor |
@@ -61,7 +61,8 @@ You can hand off before the whole map is done if one slice has all its decisions
 | Facts from docs or other primary sources | `research` | each claim keeps its source; no recommendations |
 | A step only a person can take (§0) | `wizard` | the evidence that has to come back |
 
-- `code-review` takes two inputs up front: the fixed point — the commit this change started from (in autopilot the previous task's commit; at the end of a run, the run's base) — and the spec: the ticket or spec file, or the goal sentence when there is none.
+- Review (§4) runs at "push", once, over everything going up, not after each task (`WORKING-RULES.md` items 5–6a); a commit along the way gets only the light check.
+- `code-review` takes two inputs up front: the fixed point — the commit this change started from (at push: the dev branch's last pushed commit, or the run's base) — and the spec: the ticket or spec file, or the goal sentence when there is none.
 - When one of these skills says to ask the user, or to commit: interactive → ask, as it says. Autopilot → pick or park (`leancode` §10) and log it. Commits and pushes follow `GIT.md` and `leancode`'s Land, never the skill.
 - **daisyUI** (`daisyui:daisyui`) is optional on an existing project: use it where the project already uses daisyUI, or when the user asks. A new project uses it from the start — that choice is already made, so it is not a question to return. The skill's own description says to load it for any HTML or JSX; this rule is the one that holds.
 - The typo tier has none of these steps, and loads none of these skills.

@@ -23,6 +23,16 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
    (web/app) is a reference only for wiring (which API, which screen) when porting between clients · no document
    older than the current one → say so plainly —
    the user: "web isn't the reference, look at how the early PRDs had it"
+2a. **Search before asking — whatever raises the question** (a skill's interview or grilling step, a subagent's open
+   question, a plugin's prompt, or my own) — before it reaches the user, search every source inside the frame for the
+   answer, then show per question: found or not · where (file:line, doc section, table + query, earlier decision or
+   memory) · how it is done there · a short example. Ask only what is still unclear after that, each with the options
+   and a pick · the frame is what is already set: the task's scope (named project/repo/module), `DB-ACCESS.md` (which
+   databases, in which order), read-only unless asked, nothing the user ruled out · a source outside the
+   frame is listed as "not checked (outside scope)", never visited · a subagent runs the same search before it hands a
+   question back — the user (2026-10-31): "ถ้าจะตั้งคำถามมาจากไหนก็ตามเช่น skill agents หรือ plugin ต่างๆ
+   อยากให้ค้นหาให้ครบก่อนแล้วแสดงผลลัพธ์ว่าเจอไหมที่ไหนทำแบบไหนยกตัวอย่าง ถ้าข้อไหนไม่ชัดเจนก็ค่อยถาม
+   แต่การค้นหาต้องอยู่ในกรอบที่ตั้งไว้"
 
 ## Agents
 
@@ -48,10 +58,22 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
    commits on its own branch, and hands back; it does not spawn a review round or run the full suite itself · the main
    session runs the tests and the review (items 5–6) on what comes back — the user (2026-09-30): "when a subagent
    finishes, it doesn't review/test itself, send it back to the main one"
-5. **Review by risk** — high-risk tasks (hard to undo if wrong, or touching security/money/user data) are reviewed one
-   task at a time · other tasks share one review at the end of the run (replaces leancode's default of reviewing every task)
-6. **While iterating, run only the relevant tests** (`--filter`, a path) · the full suite once before each task's
-   commit and once more at the end of the run · both run by the main session (item 4b), not the builder
+5. **Big review and big tests happen at "push", not at each commit** — the deep review (leancode's round, plus the
+   `code-review` Standards/Spec reviewers when the change is high-risk: hard to undo, or touching security, money or
+   user data) and the full test suite run once, on everything going up, when the user says "push" (`GIT.md`) ·
+   a high-risk task is still flagged as such when it is committed, so the push review knows to look hard at it ·
+   replaces leancode's default of reviewing every task
+6. **A commit inside a skill's or agent's walk gets a light check only** — it builds or compiles, lint/type-check of the
+   touched code passes, the relevant tests (`--filter`, a path) are green, nothing errors · no full suite, no review
+   round at that point · run by the main session (item 4b), not the builder
+6a. **Work done but not committed or pushed → ask, saying what each would do** — the user sometimes forgets, so at the
+   end of a piece of work that is left uncommitted or unpushed, ask once, with both options spelled out for this repo:
+   "commit → light check (item 6) + commit <these files> on <branch>" · "push → full suite + deep review (item 5) +
+   merge `--no-ff` to <dev> + `git push origin <dev>`, plus any other sessions' commits that would go up with it" ·
+   since 2026-10-31 commit and push are on judgment (`GIT.md` §Commit and push on judgment); this question is only
+   for the cases that section says to ask about — the user (2026-10-31):
+   "ถ้าจะ review หรือ test ใหญ่ๆ ให้ทำตอนสั่ง push ส่วน commit ส่วนย่อยๆ ของ skill หรือ agent ไม่ต้องใหญ่แค่เช็คแล้ว
+   ไม่ error แต่บางครั้งอาจจะลืมก็ให้ถามพร้อมบอกว่า ถ้า push หรือ commit จะทำอะไรบ้าง"
 7. **Every progress update carries a table of all summoned agents** — what each does, which repo/worktree, status
    (running / done / parked), including agents a builder spawned · call `ListAgents` before writing · mention other
    sessions working in the same repos when it matters — the user: "while working, show every agent you summoned"
@@ -69,12 +91,12 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
 
 ## Skill leancode
 
-10. **Call `leancode` only for work that suits it** (narrower than the skill's own description, which covers every kind of code work) —
-    suits: multi-step / multi-file build work such as features, bugs that need tracing through several places,
-    refactors, resuming from HANDOFF, autopilot · not needed: answering questions, editing config/docs/memory, a
-    one-spot edit with a clear path, routine git/shell work — do those directly · for anything else the user wants it
-    on, the user calls `/leancode` · the user saying "รันให้จบ" or "ทำให้หมด" = leancode autopilot (§10) —
-    the user: "adjust it so leancode is called for suitable work, and for work I want it on I can call it myself"
+10. **Every implementation goes through `leancode`** — any change to code, whatever its size: features, bug fixes,
+    refactors, a one-spot edit, UI tweaks, tests, migrations, scripts that ship, resuming from HANDOFF, autopilot
+    (leancode scales itself; a one-line fix is its smallest tier, not a reason to skip it) · not leancode: answering
+    questions, research and data lookups, editing config/docs/memory/rules, routine git/shell work — do those
+    directly · the user saying "รันให้จบ" or "ทำให้หมด" = leancode autopilot (§10) — the user (2026-10-31): "ทุกงานที่
+    implement ให้ส่งไป leancode ทั้งหมด" (replaces 2026-10 "call leancode only for suitable work")
 11. **Edits to the `leancode` skill itself stay neutral** (`~/.claude/skills/leancode`, public GitHub repo) — usable on
     any harness and in any language (English only, no language-specific rules), no local repo rules ·
     harness-specific points are worded "if the harness has X, otherwise Y" · enforcement lives in `adapters/` · every
