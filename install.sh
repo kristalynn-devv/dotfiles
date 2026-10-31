@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # One command for a machine's whole Claude Code setup: the links (sync.sh), the command-line tools,
-# then the plugins claude/WAYFINDER-LEANCODE.md names, brought to their latest version. Safe to re-run.
+# then the plugins, playwright-cli and the antd MCP, brought to their latest version. Safe to re-run.
 set -euo pipefail
 D="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 SETTINGS="$HOME/.claude/settings.json"
@@ -50,6 +50,24 @@ for p in "${PLUGINS[@]}"; do
   claude plugin install --scope user "$p"
   claude plugin update --scope user "$p"
 done
+
+# 4b. playwright-cli: looks at the real app from Bash; its skill goes to ~/.claude/skills.
+#     Run from a temp folder: the CLI writes .playwright-cli/ into the folder it runs in
+if command -v npm >/dev/null; then
+  npm install -g @playwright/cli@latest
+  (cd "$(mktemp -d)" && playwright-cli install --skills --global)
+else
+  echo "npm not found: install @playwright/cli by hand (npm install -g @playwright/cli@latest), then run $0 again" >&2
+fi
+
+# 4c. antd MCP (official, from @ant-design/cli): Ant Design docs, demos and tokens, user scope.
+#     Adding a server that is already there is an error, so only add a missing one
+if command -v npm >/dev/null; then
+  npm install -g @ant-design/cli@latest
+  claude mcp get antd >/dev/null 2>&1 || claude mcp add --scope user antd -- antd mcp
+else
+  echo "npm not found: install @ant-design/cli by hand, then claude mcp add --scope user antd -- antd mcp" >&2
+fi
 
 # 5. skillOverrides, merged into settings.json
 if command -v node >/dev/null; then

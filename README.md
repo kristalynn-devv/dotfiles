@@ -24,8 +24,8 @@ The single source of truth for the rule files and skills Claude Code reads.
     in its own git worktree, then verify the result in Claude · needs `cursor-agent` (`curl https://cursor.com/install -fsS | bash`)
     and `cursor-agent login` once
 - `sync.sh` — links every `claude/*.md` and every `skills/<name>/` into `~/.claude/`
-- `install.sh` — the whole setup in one command: `sync.sh`, then `node` (Homebrew), the plugins below
-  installed or updated to their latest version, and `skillOverrides` merged into
+- `install.sh` — the whole setup in one command: `sync.sh`, then `node` (Homebrew), the plugins, `playwright-cli` and
+  the `antd` MCP below installed or updated to their latest version, and `skillOverrides` merged into
   `~/.claude/settings.json` (a skill already listed there keeps its value); safe to re-run
 
 ## Usage
@@ -84,6 +84,8 @@ step instead. `install.sh` installs all of them; the commands below are for doin
 | `context7` (library docs) | plugin | `claude plugin install context7@claude-plugins-official` |
 | `impeccable` (UI structure and checks) | plugin | `claude plugin marketplace add pbakaus/impeccable && claude plugin install impeccable@impeccable` |
 | `daisyui` (on new projects, and where a project already uses it) | plugin | `claude plugin marketplace add saadeghi/daisyui && claude plugin install daisyui@daisyui` |
+| `playwright-cli` (looking at the real app from Bash) | npm + skill | `npm install -g @playwright/cli@latest`, then `playwright-cli install --skills --global` |
+| `antd` (Ant Design docs, demos and tokens, official) | npm + MCP | `npm install -g @ant-design/cli@latest`, then `claude mcp add --scope user antd -- antd mcp` |
 
 Check with `claude plugin list`. The guard against destructive commands needs nothing installed in Claude Code; see
 `skills/leancode/adapters/`.
