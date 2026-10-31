@@ -58,6 +58,16 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
    commits on its own branch, and hands back; it does not spawn a review round or run the full suite itself · the main
    session runs the tests and the review (items 5–6) on what comes back — the user (2026-09-30): "when a subagent
    finishes, it doesn't review/test itself, send it back to the main one"
+4c. **Every spawn names its model; Opus only where judgment is the job** — pass `model` on every `Agent` call (or set
+   it in the agent's frontmatter), never let it inherit by default · `haiku`: pure lookups — find a file, grep a
+   name, read a page, collect facts with sources · `sonnet`: building from a full brief (item 4a), mechanical edits,
+   test writing, broad searches, summaries · `opus`: review (item 5), diagnosing a bug that didn't yield, planning or
+   research that has to weigh options, anything high-risk (security, money, user data) · a `fork` always runs on the
+   main model; spawn a fresh agent on a cheaper model instead when the work doesn't need this conversation · not sure
+   → `sonnet` · this is the user naming the model for `leancode`'s spawn rule · why: 30 days of this machine's logs
+   (2026-10-02 → 11-01) had 210 of 215 subagents on Opus because none named a model — about 515k input-equivalent
+   tokens each, 17% of all spend — the user (2026-11-01): "ทำเลย", to the proposal that search and spec-driven agents
+   run on Sonnet in every project
 5. **Big review and big tests happen at "push", not at each commit** — the deep review (leancode's round, plus the
    `code-review` Standards/Spec reviewers when the change is high-risk: hard to undo, or touching security, money or
    user data) and the full test suite run once, on everything going up, when the user says "push" (`GIT.md`) ·
