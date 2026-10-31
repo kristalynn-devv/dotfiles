@@ -1,7 +1,7 @@
 ---
 name: leancode
 description: "Coding workflow for build work — features, bug fixes, refactors, upgrades, migrations, UI, config and infra changes, scripts, prototypes, code review, questions about what the code does, and resuming interrupted work. Names the kind of work to fix what counts as proof, scales to the size of the change, verifies with evidence, reviews once in depth, audits its own walk, and commits only when asked. Autopilot ('autopilot', 'run it all', or the same ask in the user's language) runs a whole task list in one go. Not for requests that are not about code."
-version: 5.8.0
+version: 5.9.0
 ---
 
 # Lean Code Workflow
@@ -21,13 +21,14 @@ Every threshold this skill uses lives here and is referenced by name from the se
 | `build.max_cycles` | 3 | §3 — build→verify cycles before stopping to rethink |
 | `review.rounds` | 1 | §4 — delegated self-review passes |
 | `review.max_rounds` | 2 | §4 — hard ceiling; past this, stop and hand back to the caller |
+| `review.when` | each change | §4, Land, §10 — when the delegated round runs: `each change` (on each change's diff, before it is handed over), or `at land` (once, at Land, on everything about to leave the machine; a change that is hard to undo, or touches security, money, or user data, still gets its own round before its commit) |
 | `optimize.passes` | 1 | Optimize — one pass on the finished diff; leftovers are named, not re-hunted |
 | `parallel.max_agents` | 3 | §5 — agents running at once, any shape |
 | `parallel.min_slice` | ~1 sitting's worth | §5 — smallest slice worth handing to its own builder |
 | `autopilot.max_parked` | 3 | §10 — distinct open questions behind parked tasks that end an autopilot run early; tasks parked under the same question count once |
 | `autopilot.review` | each task | §10 — which tasks get their own §4 round: `each task`, or `by risk` (only a task that is hard to undo, or touches security, money, or user data; the rest share the end-of-run round) |
 
-A project can override any of these in its own `CLAUDE.md`; the project's value wins — except that `review.max_rounds` always wins over `review.rounds`, a ceiling that config can exceed is not a ceiling.
+The caller's standing rules can override any of these — the user's own instructions (global or per-user rule files) or a project's `CLAUDE.md`; where both set one, the project's value wins. Look for them before §1, with the rest of the caller's rules (§0) — except that `review.max_rounds` always wins over `review.rounds`, a ceiling that config can exceed is not a ceiling.
 
 ## Versioning
 
@@ -152,6 +153,8 @@ Check the diff against the case you named once, after §4 when that round ran, b
 
 Review deliberately, not repeatedly. `review.rounds` pass(es) by a reader that didn't write the code beats several re-reads by the model that just wrote it — that model is the worst reviewer of its own work.
 
+- **When it runs — `review.when`.** `each change`: here, on this change's diff, before it is handed over. `at land`: not here — the change ends at §3's checks for what it touched, Structure and Optimize, and its commit if one was asked for; the round runs once at Land on everything about to leave, briefed with every change's goal sentence. A change that is hard to undo, or touches security, money, or user data, still gets its round here before its commit, and §8 says it was flagged. Deferred → §8 says the round is owed at Land, so nobody takes the change as reviewed.
+
 - **Delegate it** — §5 owns the mechanics of spawning, briefing, and the harness-forbids-it fallback, and its standing authorization covers this round. A missing "use a subagent" in the current message is not a ban. Claude Code: `Agent` tool with `subagent_type: "general-purpose"`. Where the harness runs agents in the background, draft the §8 report and walk §7's lines up to §3 while the round runs — neither edits the diff, and the rest of §7 waits for what comes after. Optimize and any fix wait for the findings. **The reviewer reads and reports; it never edits.** Fixing is the main session's job — a reviewer that patches its own findings puts changes into the diff that nobody reviewed, and collides with §5.
 - **Brief it properly.** The reviewer doesn't share this session's context: give it the one-sentence goal from §1, the full diff (`git diff`, plus `--staged` if anything is staged), and the surrounding files it should read. Ask for concrete findings — file, line, what breaks — not a grade.
 - **Every pass covers all three dimensions:**
@@ -249,14 +252,14 @@ What to walk:
 - §3 — the test that proves new behavior was actually seen red against that baseline — the right red, for the reason predicted — and no check passed by examining nothing.
 - §3 — the full diff was read, the project's whole check ran after the last edit, and every result reported is a concrete one (output, exit code, screenshot).
 - §3 — UI or user-visible change → seen working in the real app; auth, input handling, rendering user-controlled data, or secrets → `security-review` ran, or §3's in-session fallback ran and §8 names it.
-- §4 — the delegated round ran, findings were checked against the code, and rejected ones named. The harness forbids spawning agents → say so in §8 and offer the round; a self-read does not count as one.
+- §4 — the delegated round ran (on this change, or at Land when `review.when` is `at land` and this change is not a risky one, and §8 says the round is owed), findings were checked against the code, and rejected ones named. The harness forbids spawning agents → say so in §8 and offer the round; a self-read does not count as one.
 - Optimize — one pass ran on the diff that shipped, or the tier skipped it and §8 says so. The check §3 used was re-run after the moves and was green, or the breaking move was reverted. A move that would have changed a test was skipped and named. A speed change names its measurement. The pass did not run a second time.
 - §5 — a subagent ran only on work no other in-flight task already owned; a duplicate was skipped and named. Where the harness had an "unless the user asked" clause, it was treated as satisfied. An unconditional ban → said so in §8.
 - §5 — work was split only after the risk pass was written down, and no two agents touched the same file or shared surface.
 - §5 — per-slice results were re-verified on the integrated tree; nothing was reported green on a slice's word alone.
 - §6 — `HANDOFF.md` matches where the work actually is: this work's entry is current, or marked done and kept while other work in the note is open, or removed once none is. Nobody else's lines were touched.
-- Land — nothing was committed, merged, or pushed unasked. Each commit holds one change. The state was re-read before anything left the machine, a merged tree was green before its push, and what the push was meant to set off was seen to happen.
-- §10 — autopilot only: every ✅ task has its own commit, holding only its files, verified green, with its own §4 round — or, where `autopilot.review` is `by risk` and the task is not a risky one, the end-of-run round. Every pick is in Decisions, its commit, and the report. Every parked task's work is in a named stash with its question in Blockers. Nothing pushed, amended, or rebased. The integration round ran on base..HEAD.
+- Land — `review.when` is `at land` → the round ran on the whole diff going up, and §3's full check after its fixes, before the push. Nothing was committed, merged, or pushed unasked. Each commit holds one change. The state was re-read before anything left the machine, a merged tree was green before its push, and what the push was meant to set off was seen to happen.
+- §10 — autopilot only: every ✅ task has its own commit, holding only its files, verified green, with its own §4 round — or, where `autopilot.review` is `by risk` (or `review.when` is `at land`) and the task is not a risky one, the end-of-run round, or the Land round when `review.when` is `at land`. Every pick is in Decisions, its commit, and the report. Every parked task's work is in a named stash with its question in Blockers. Nothing pushed, amended, or rebased. The integration round ran on base..HEAD.
 - **Friction** — this skill's own log lives beside this file, `FRICTION.md` next to `SKILL.md`. At the *end* of every task, append one dated line: what the task was, its kind, the §1 tier (typo, small, full), the wall time, and how it ended. Take the time from `date` (or the harness's clock) once at §1 and once here; none taken at §1 → write `?`, never an estimate. Tier and time are the measurement a speed change to this skill needs. Add a second line only when a rule here failed you — didn't fire when it should have, fired wrongly, or there was simply no rule. Logging only the failures gives a numerator with no denominator, and no rate can be read from it. Never edit the rules themselves from inside a task: the session that just got burned is the worst judge of what the rule should be. This one file is exempt from §9's ask-first rule because it only records observations and changes no behaviour; `FRICTION.md` carries its own bar for what may later be promoted into a rule.
 
 ## Land — only when asked
@@ -264,6 +267,7 @@ What to walk:
 The walk ends at a verified diff in the working tree. Committing, merging, and pushing happen only when the caller asked — in the request, in a standing rule of theirs, or by turning on autopilot (§10), which commits locally and never pushes. Not asked → the work stays uncommitted and §8 says so. A commit "to be safe" and a push "as a backup" are someone else's decisions.
 
 - **One change, one commit.** The commit is the unit that gets reverted, so it holds this change's files and nothing else — staged by path, never `-A` or `.`; what isn't yours stays out (§2). Two changes tangled in one file that can't be staged apart are named in §8, not folded together quietly.
+- **`review.when` is `at land` → §4's round runs here, before anything leaves the machine** — once, on the whole diff going up (from the last pushed commit, or the run's base, to HEAD, plus anything uncommitted that is going too). Then §3's full check on that tree, its fixes in their own commit, and only then the merge or push. A finding that needs a decision stops the push and goes back to the caller (§0).
 - **Re-read the state before anything leaves the machine.** A branch read ten messages ago has had time to move. Fetch and look at what arrived before a merge or a push; commits you didn't expect are someone's work, to be integrated the way the repo does it or returned (§0) — never overwritten. A rejected push means the remote moved, not that it needs force.
 - **A merge is a new tree — verify it before it leaves the machine.** Green on the branch proves the branch, not the result of merging it into a base that has moved. Re-run §3's full check on the merged tree before pushing it or opening it for review. Red after the merge → stop there: don't push, leave the branch and the merge in place, and say what fails — nothing has left the machine, so it is still cheap to undo. A failure there is never waved off as flaky.
 - **Pushed is not delivered.** Confirm the remote holds the commit you verified. When the task depends on what the push sets off — a pipeline, a deploy — that result is part of the proof (Kind): a job that was skipped, or is waiting on a manual step, did not pass.

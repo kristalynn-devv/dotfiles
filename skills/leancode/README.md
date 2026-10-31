@@ -21,7 +21,7 @@ pointer into `references/` carries a short fallback in case the file can't be re
 | Structure | Name the case before the edit. A new boundary is checked against that decision. A refactor keeps the structure already there |
 | §2 Build lean | Reuse before adding; no new abstraction until there are real call sites for it. Anything irreversible is confirmed first: by the user in an interactive mode, by the harness's guard in an autonomous one, and by the user in every mode for a one-way change to shared data |
 | §3 Verify with evidence | A baseline run *before* the change; the new test seen red, for the right reason; the narrowest check while iterating and the full one before done; the full diff read. Never "should work" |
-| §4 Self-review | A delegated review round, findings checked against the code, rejected ones named |
+| §4 Self-review | A delegated review round, findings checked against the code, rejected ones named. `review.when` decides whether it runs per change or once at Land |
 | Optimize | One pass on the finished diff: remove, collapse, bound a cost this change introduced. No speed rewrite without a measurement |
 | §5 Split across agents | Subagents are authorized for speed. Analyse the risk *before* splitting; never repeat an in-flight task; fan out only onto slices that cannot touch each other; the main session owns the merge |
 | §6 Continuity | `HANDOFF.md` for work that spans more than one sitting, written early (steps still open, context running low, before anything irreversible), not at the moment it's needed. Resuming checks the note against git first. The note can have other writers: change only your own lines |
@@ -126,8 +126,8 @@ Codex, a shell hook for Cursor. The skill works without it.
 
 Every threshold lives in one table at the top of `SKILL.md` and is referenced by name
 from the section that uses it. Change the number there; don't hunt for it in the prose.
-A project can override any of them in its own `CLAUDE.md` and the project's value wins,
-except that `review.max_rounds` always wins over `review.rounds`.
+The user's own rule files or a project's `CLAUDE.md` can override any of them; where both
+set one, the project's value wins, except that `review.max_rounds` always wins over `review.rounds`.
 
 | Name | Default | What it gates |
 | --- | --- | --- |
@@ -138,6 +138,7 @@ except that `review.max_rounds` always wins over `review.rounds`.
 | `build.max_cycles` | 3 | Build→verify cycles before stopping to rethink |
 | `review.rounds` | 1 | Delegated self-review passes |
 | `review.max_rounds` | 2 | Hard ceiling; past this, hand back to the caller |
+| `review.when` | each change | When the review round runs: `each change`, or `at land` (once, on everything going up, before the push or merge; changes that are hard to undo or touch security, money, or user data still get their own round) |
 | `optimize.passes` | 1 | One pass on the finished diff; leftovers are named, not re-hunted |
 | `parallel.max_agents` | 3 | Agents running at once, any shape |
 | `parallel.min_slice` | ~1 sitting's worth | Smallest slice worth handing to its own builder |
