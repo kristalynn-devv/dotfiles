@@ -85,6 +85,23 @@ else
   echo "node not found: add to $SETTINGS by hand  \"skillOverrides\": $SKILL_OVERRIDES" >&2
 fi
 
+# 6. PreToolUse hook: a subagent spawn must name its model (claude/WORKING-RULES.md item 4c).
+#    Added once; a settings.json that already runs the script is left as it is
+AGENT_HOOK='python3 -I "$HOME/dotfiles/claude/hooks/require-agent-model.py"'
+if command -v node >/dev/null; then
+  SETTINGS="$SETTINGS" AGENT_HOOK="$AGENT_HOOK" node -e '
+    const fs = require("fs"), f = process.env.SETTINGS, cmd = process.env.AGENT_HOOK;
+    const s = fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, "utf8")) : {};
+    const pre = ((s.hooks ||= {}).PreToolUse ||= []);
+    if (JSON.stringify(pre).includes("require-agent-model.py")) process.exit(0);
+    pre.push({ matcher: "Agent|Task", hooks: [{ type: "command", command: cmd, timeout: 10 }] });
+    fs.writeFileSync(f, JSON.stringify(s, null, 2) + "\n");
+    console.log("hooks: added require-agent-model (PreToolUse Agent|Task)");
+  '
+else
+  echo "node not found: add a PreToolUse hook on \"Agent|Task\" running $AGENT_HOOK to $SETTINGS by hand" >&2
+fi
+
 grep -q '"syncClaudeAiSkills"' "$SETTINGS" 2>/dev/null || cat <<'EOF'
 
 Optional, saves tokens in every session: add to ~/.claude/settings.json by hand
