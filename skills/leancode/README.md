@@ -20,7 +20,7 @@ pointer into `references/` carries a short fallback in case the file can't be re
 | Kind | Name the kind of work before the plan: it decides what §3 has to show. A bug is reproduced before it is fixed; a refactor is proven by the same assertions, untouched; UI is looked at; an infra change is observed at the destination; a prototype is disposable; a review or an investigation is read-only. One row per kind, procedures in `references/kinds.md` |
 | Structure | Name the case before the edit. A new boundary is checked against that decision. A refactor keeps the structure already there |
 | §2 Build lean | Reuse before adding; no new abstraction until there are real call sites for it. Anything irreversible is confirmed first: by the user in an interactive mode, by the harness's guard in an autonomous one, and by the user in every mode for a one-way change to shared data |
-| §3 Verify with evidence | A baseline run *before* the change; the new test seen red, for the right reason; the narrowest check while iterating and the full one before done; the full diff read. Never "should work" |
+| §3 Verify with evidence | A baseline run *before* the change; the new test seen red, for the right reason; the narrowest check while iterating and the full one before done (or once at Land, `check.full_when`); the full diff read. Never "should work" |
 | §4 Self-review | A delegated review round, findings checked against the code, rejected ones named. `review.when` decides whether it runs per change or once at Land |
 | Optimize | One pass on the finished diff: remove, collapse, bound a cost this change introduced. No speed rewrite without a measurement |
 | §5 Split across agents | Subagents are authorized for speed. Analyse the risk *before* splitting; never repeat an in-flight task; fan out only onto slices that cannot touch each other; the main session owns the merge |
@@ -139,6 +139,7 @@ set one, the project's value wins, except that `review.max_rounds` always wins o
 | `review.rounds` | 1 | Delegated self-review passes |
 | `review.max_rounds` | 2 | Hard ceiling; past this, hand back to the caller |
 | `review.when` | each change | When the review round runs: `each change`, or `at land` (once, on everything going up, before the push or merge; changes that are hard to undo or touch security, money, or user data still get their own round) |
+| `check.full_when` | each change | When the project's whole check runs: `each change` (before done and before each commit), or `at land` (once, on the tree going up, before the push or merge; a change ends on the checks covering what it touched, and changes that are hard to undo or touch security, money, or user data still get the whole check before their commit) |
 | `optimize.passes` | 1 | One pass on the finished diff; leftovers are named, not re-hunted |
 | `parallel.max_agents` | 3 | Agents running at once, any shape |
 | `parallel.min_slice` | ~1 sitting's worth | Smallest slice worth handing to its own builder |
