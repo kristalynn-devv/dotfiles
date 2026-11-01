@@ -78,7 +78,9 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
    user data) and the full test suite run once, on everything going up, when the user says "push" (`GIT.md`) ·
    a high-risk task is still flagged as such when it is committed, so the push review knows to look hard at it ·
    replaces leancode's default of reviewing every task
-6. **A commit inside a skill's or agent's walk gets a light check only** — it builds or compiles, lint/type-check of the
+6. **A commit inside a skill's or agent's walk gets a light check only** — as the `leancode` tunable
+   **`check.full_when: at land`** (leancode 5.10.0+; before it, leancode ran the whole check before every commit, so 1 ticket
+   = 1 `make check` — the user 2026-11-02: "1 ตั๋ว 1 commit มันดูเยอะไปเพราะต้องคอย review test ทุกครั้ง") · it builds or compiles, lint/type-check of the
    touched code passes, the relevant tests (`--filter`, a path) are green, nothing errors · no full suite, no review
    round at that point · run by the main session (item 4b), not the builder
 6a. **Work done but not committed or pushed → ask, saying what each would do** — the user sometimes forgets, so at the

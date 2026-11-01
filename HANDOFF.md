@@ -4,7 +4,7 @@ updated: 2026-10-20
 ## leancode 5.1.1 and a Claude-only setup
 
 ### State
-branch: main · leancode is at v5.8.0 · everything here is committed; `git status -sb` says whether it is pushed
+branch: main · leancode is at v5.10.0 · everything here is committed; `git status -sb` says whether it is pushed
 Checked: `SKILL.md` frontmatter parses, every § and file pointer resolves, the 18 rows of the Kind table match the 18 sections of `references/kinds.md`, tunables agree between `SKILL.md` and its README, `sync.sh` runs clean. Not checked: a real task run on 5.x.
 
 Plugins in Claude Code (user scope): `impeccable` 4.6.0 · `mattpocock-skills` 1.2.3 · `daisyui` 5.7.0 · `context7`. Disabled: `engineering@synced`, `cowork-plugin-management@synced`.
