@@ -1,7 +1,7 @@
 ---
 name: leancode
 description: "Coding workflow for build work — features, bug fixes, refactors, upgrades, migrations, UI, config and infra changes, scripts, prototypes, code review, questions about what the code does, and resuming interrupted work. Names the kind of work to fix what counts as proof, scales to the size of the change, verifies with evidence, reviews once in depth, audits its own walk, and commits only when asked. Autopilot ('autopilot', 'run it all', or the same ask in the user's language) runs a whole task list in one go. Not for requests that are not about code."
-version: 5.10.0
+version: 5.11.0
 ---
 
 # Lean Code Workflow
@@ -269,7 +269,7 @@ The walk ends at a verified diff in the working tree. Committing, merging, and p
 
 - **One change, one commit.** The commit is the unit that gets reverted, so it holds this change's files and nothing else — staged by path, never `-A` or `.`; what isn't yours stays out (§2). Two changes tangled in one file that can't be staged apart are named in §8, not folded together quietly.
 - **`review.when` is `at land` → §4's round runs here, before anything leaves the machine** — once, on the whole diff going up (from the last pushed commit, or the run's base, to HEAD, plus anything uncommitted that is going too). Then §3's full check on that tree, its fixes in their own commit, and only then the merge or push. A finding that needs a decision stops the push and goes back to the caller (§0).
-- **`check.full_when` is `at land` → §3's whole check runs here** on the tree about to leave, before the merge or push, whether or not a round is owed — it is the first full run since the last push for the changes that deferred it. Red → fix through the walk, in its own commit, and re-run; never push on red.
+- **`check.full_when` is `at land` → §3's whole check runs here** on the tree about to leave, before the merge or push, whether or not a round is owed — it is the first full run since the last push for the changes that deferred it. A whole check already green on this exact tree — same HEAD, nothing uncommitted, run after the last edit, as at the end of an autopilot run — counts; don't run it twice. Red → fix through the walk, in its own commit, and re-run; never push on red.
 - **Re-read the state before anything leaves the machine.** A branch read ten messages ago has had time to move. Fetch and look at what arrived before a merge or a push; commits you didn't expect are someone's work, to be integrated the way the repo does it or returned (§0) — never overwritten. A rejected push means the remote moved, not that it needs force.
 - **A merge is a new tree — verify it before it leaves the machine.** Green on the branch proves the branch, not the result of merging it into a base that has moved. Re-run §3's full check on the merged tree before pushing it or opening it for review. Red after the merge → stop there: don't push, leave the branch and the merge in place, and say what fails — nothing has left the machine, so it is still cheap to undo. A failure there is never waved off as flaky.
 - **Pushed is not delivered.** Confirm the remote holds the commit you verified. When the task depends on what the push sets off — a pipeline, a deploy — that result is part of the proof (Kind): a job that was skipped, or is waiting on a manual step, did not pass.
