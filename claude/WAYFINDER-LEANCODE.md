@@ -61,8 +61,8 @@ You can hand off before the whole map is done if one slice has all its decisions
 | Facts from docs or other primary sources | `research` | each claim keeps its source; no recommendations |
 | A step only a person can take (§0) | `wizard` | the evidence that has to come back |
 
-- Review (§4) runs at "push", once, over everything going up, not after each task — `leancode`'s `review.when: at land` and `autopilot.review: by risk` (`WORKING-RULES.md` items 5–6a); a commit along the way gets only the light check.
-- `code-review` takes two inputs up front: the fixed point — the commit this change started from (at push: the dev branch's last pushed commit, or the run's base) — and the spec: the ticket or spec file, or the goal sentence when there is none.
+- Review (§4) runs only on a high-risk change, before its commit — `leancode`'s `review.when: risky only` and `autopilot.review: by risk` (`WORKING-RULES.md` items 5–6a); every other change gets no round, and "push" runs the full test suite without one.
+- `code-review` takes two inputs up front: the fixed point — the commit this change started from (the commit before the high-risk change) — and the spec: the ticket or spec file, or the goal sentence when there is none.
 - When one of these skills says to ask the user, or to commit: interactive → ask, as it says. Autopilot → pick or park (`leancode` §10) and log it. Commits and pushes follow `GIT.md` and `leancode`'s Land, never the skill.
 - **daisyUI** (`daisyui:daisyui`) is optional on an existing project: use it where the project already uses daisyUI, or when the user asks. A new project uses it from the start — that choice is already made, so it is not a question to return. The skill's own description says to load it for any HTML or JSX; this rule is the one that holds.
 - The typo tier has none of these steps, and loads none of these skills.

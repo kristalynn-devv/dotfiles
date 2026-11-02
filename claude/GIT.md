@@ -13,10 +13,9 @@
 
 ## What "push" runs first
 
-Push is where the big checks happen (`WORKING-RULES.md` items 5–6): before anything goes up, run the full test suite
-and the deep review on everything being pushed (the `code-review` Standards/Spec reviewers too when it is high-risk).
-A failure or a finding that needs fixing → stop, fix through `leancode`, re-run, then push. Commits along the way only
-had the light check.
+Push is where the full test suite runs (`WORKING-RULES.md` items 5–6): before anything goes up, run it on everything
+being pushed. No review round at push — a high-risk change already had its round before its commit (item 5). A failure
+→ stop, fix through `leancode`, re-run, then push. Commits along the way only had the light check.
 
 ## Commit and push on judgment
 

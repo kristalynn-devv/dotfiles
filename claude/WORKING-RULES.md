@@ -70,14 +70,15 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
    (2026-10-02 → 11-01) had 210 of 215 subagents on Opus because none named a model — about 515k input-equivalent
    tokens each, 17% of all spend — the user (2026-11-01): "ทำเลย", to the proposal that search and spec-driven agents
    run on Sonnet in every project
-5. **Big review and big tests happen at "push", not at each commit** — as `leancode` tunables: **`review.when: at land`**
-   and **`autopilot.review: by risk`** (leancode 5.9.0+; before that version leancode reviewed every change and the
-   user saw review after each ticket — 112 review agents in 30 days, ~4.7 min and ~568k input-equivalent tokens each,
-   the user 2026-11-01: "รีวิวทุก ticket รู้สึกนานและใช้ token เยอะ" · "แก้กฏ leancode") · the deep review (leancode's round, plus the
-   `code-review` Standards/Spec reviewers when the change is high-risk: hard to undo, or touching security, money or
-   user data) and the full test suite run once, on everything going up, when the user says "push" (`GIT.md`) ·
-   a high-risk task is still flagged as such when it is committed, so the push review knows to look hard at it ·
-   replaces leancode's default of reviewing every task
+5. **Review only high-risk changes; the full test suite runs at "push"** — as `leancode` tunables:
+   **`review.when: risky only`** and **`autopilot.review: by risk`** (leancode 5.12.0+) · a high-risk change (hard to
+   undo, or touching security, money or user data) gets its review round before its commit — leancode's round plus the
+   `code-review` Standards/Spec reviewers · every other change gets no review round, not per ticket, not at the end of
+   an autopilot run, not at push · the full test suite runs once, on everything going up, when the user says "push"
+   (`GIT.md`) · history: before 5.9.0 leancode reviewed every change — 112 review agents in 30 days, ~4.7 min and
+   ~568k input-equivalent tokens each (the user 2026-11-01: "รีวิวทุก ticket รู้สึกนานและใช้ token เยอะ"); 5.9.0 moved
+   the review to push (`at land`); the user 2026-11-02 dropped that too: "ตั้งให้ตอนบอกว่าให้ push ไม่ต้อง full review
+   เทสปกติ"
 6. **A commit inside a skill's or agent's walk gets a light check only** — as the `leancode` tunable
    **`check.full_when: at land`** (leancode 5.10.0+; before it, leancode ran the whole check before every commit, so 1 ticket
    = 1 `make check` — the user 2026-11-02: "1 ตั๋ว 1 commit มันดูเยอะไปเพราะต้องคอย review test ทุกครั้ง") · it builds or compiles, lint/type-check of the
@@ -85,7 +86,7 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
    round at that point · run by the main session (item 4b), not the builder
 6a. **Work done but not committed or pushed → ask, saying what each would do** — the user sometimes forgets, so at the
    end of a piece of work that is left uncommitted or unpushed, ask once, with both options spelled out for this repo:
-   "commit → light check (item 6) + commit <these files> on <branch>" · "push → full suite + deep review (item 5) +
+   "commit → light check (item 6) + commit <these files> on <branch>" · "push → full suite (item 5) +
    merge `--no-ff` to <dev> + `git push origin <dev>`, plus any other sessions' commits that would go up with it" ·
    since 2026-10-31 commit and push are on judgment (`GIT.md` §Commit and push on judgment); this question is only
    for the cases that section says to ask about — the user (2026-10-31):
