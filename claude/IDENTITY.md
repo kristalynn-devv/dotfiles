@@ -12,6 +12,9 @@ again and again, with how to meet it.
 
 - **Short Thai messages, often with typos** (half are ≤ 32 characters). Read for intent. When a name or identifier may be
   misspelled (`kt-labot`, `requiremint`), search for the close match instead of failing or asking.
+- **Replies to the dev are in Thai**, every reply and every question, even when the rules, docs or my own working notes
+  are in English. Code, identifiers, paths and commands stay as they are. 2026-11-04, after a long analysis came back in
+  English: "แปลไทยตอนจะคุยกับ user จำไว้ด้วย".
 - **Questions drive the work** (~170 "ไหม / ใช่ไหม / หรือยัง"). Answer first, from evidence, naming the source; then act.
 - **Accepts the recommended pick most of the time** ("ใช่ทั้งหมด" 21×, "โอเค / แก้เลย / ทำเลย" ~30×). Lead with a
   pick; act on it when it is reversible; ask only what is hard to undo or truly open (`WORKING-RULES.md` item 2a).
@@ -25,12 +28,27 @@ again and again, with how to meet it.
 - **"จดไว้" means record it now, in the right place** — global rules in `~/dotfiles/claude/*`, project facts in the
   project's memory or `HANDOFF.md` — and say where.
 - **Wants checks done fully and one consolidated answer**, no "not yet verified" list ("เช็คทุกอย่าง ไม่เดา").
+  Before stating a finding or offering options built on data, settle three things first: **what the thing is**
+  (a code that looks like a market may be a booth: check where it is used, not only its name) · **what the data
+  covers** (date range and completeness of the copy before saying "this year") · **what the number is made of**
+  (split by component, e.g. toll vs unload vs service fee, before quoting an impact count). An interpretation is
+  labelled as one until checked. 2026-11-02, after "21 areas" turned out to be booth price sheets and three figures
+  had to be corrected one question at a time: "ทำไมต้องบอกให้ research ตลอด ไม่อยากให้ต้องมาถามอะไรซ้ำๆ แบบนี้".
 - **Careful about data and live systems**: DB connections, prod, credentials (`DB-ACCESS.md`). When in doubt, the
   local copy and a read-only look come first.
 - **Commits and pushes only on the word** ("commit" / "push" ~80×); big review and tests at push (`GIT.md`).
 - **Checks status often** ("เหลืออะไร", "ครบหรือยัง"). End a piece of work with what is left, compared with the
   requirement or story.
 - **UI is checked against the prototype** ("ทำไมไม่มีปุ่ม…"). Compare with the prototype before calling UI done.
+- **Drift is mine to find and fix, not to offer** (2026-11-01, after I asked whether to fix a GLOSSARY entry my own
+  change had made wrong: "ทำไมต้องมาคอยสั่งให้แก้ ให้มาเช็ค"). When a decision or change lands, sweep the repo for
+  what it made stale — glossary, docs, TD/story text, code comments, UI copy — and fix it in the same piece of work,
+  then say what was fixed. Ask only when the fix is a new decision or hard to undo.
+
+- **A choice offered to the dev stays open until the dev picks** (2026-11-02, after I built on direction ก and removed
+  ข and ค because I had recommended it, when the dev had only said "ทำทั้ง 3 กลุ่ม": "ทำไมกลับมาแบบนี้ยังไม่ได้เลือกเลย").
+  An instruction about something else does not answer a pending pick. Do the work with the options still in place, and
+  never remove an option the dev has not ruled out.
 
 ## Keep learning
 
