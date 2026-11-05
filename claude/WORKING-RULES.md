@@ -70,6 +70,12 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
    (2026-10-02 → 11-01) had 210 of 215 subagents on Opus because none named a model — about 515k input-equivalent
    tokens each, 17% of all spend — the user (2026-11-01): "ทำเลย", to the proposal that search and spec-driven agents
    run on Sonnet in every project
+4d. **Context at ~500k tokens → move to a new session** — every project · once this session's context reaches about
+   500k tokens: bring the current step to a safe stop (finished, or parked), write where it stands to the repo's
+   `HANDOFF.md` (`pause`), then tell the user plainly that it is time for a new session, with the line to continue
+   from (`/resume`, or the HANDOFF heading) · only the user can `/clear` or open a session, so I say it and stop
+   starting new work in this one · in autopilot, finish the ticket in hand first, then stop and say it — the user
+   (2026-11-05): "เมื่อ context 500k แล้วให้ สร้าง session ใหม่ทุกโปรเจค"
 5. **Review only high-risk changes; the full test suite runs at "push"** — as `leancode` tunables:
    **`review.when: risky only`** and **`autopilot.review: by risk`** (leancode 5.12.0+) · a high-risk change (hard to
    undo, or touching security, money or user data) gets its review round before its commit — leancode's round plus the
