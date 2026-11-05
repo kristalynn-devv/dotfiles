@@ -60,16 +60,25 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
    commits on its own branch, and hands back; it does not spawn a review round or run the full suite itself · the main
    session runs the tests and the review (items 5–6) on what comes back — the user (2026-09-30): "when a subagent
    finishes, it doesn't review/test itself, send it back to the main one"
-4c. **Every spawn names its model; Opus only where judgment is the job** — pass `model` on every `Agent` call (or set
-   it in the agent's frontmatter), never let it inherit by default · `haiku`: pure lookups — find a file, grep a
-   name, read a page, collect facts with sources · `sonnet`: building from a full brief (item 4a), mechanical edits,
-   test writing, broad searches, summaries · `opus`: review (item 5), diagnosing a bug that didn't yield, planning or
-   research that has to weigh options, anything high-risk (security, money, user data) · a `fork` always runs on the
-   main model; spawn a fresh agent on a cheaper model instead when the work doesn't need this conversation · not sure
-   → `sonnet` · this is the user naming the model for `leancode`'s spawn rule · why: 30 days of this machine's logs
-   (2026-10-02 → 11-01) had 210 of 215 subagents on Opus because none named a model — about 515k input-equivalent
-   tokens each, 17% of all spend — the user (2026-11-01): "ทำเลย", to the proposal that search and spec-driven agents
-   run on Sonnet in every project
+4c. **Every spawn names its model tier; the top tier only where judgment is the job** — pass a model on every spawn
+   (or set it in the agent's definition), never let it inherit by default · **light**: pure lookups — find a file, grep
+   a name, read a page, collect facts with sources · **mid**: building from a full brief (item 4a), mechanical edits,
+   test writing, broad searches, summaries · **top**: review (item 5), diagnosing a bug that didn't yield, planning or
+   research that has to weigh options, anything high-risk (security, money, user data) · not sure → mid ·
+   **which model a tier is**: Claude Code on Anthropic's models → `haiku` / `sonnet` / `opus` · Claude Code on another
+   provider (Bedrock, Vertex, a gateway, or a non-Claude model behind `ANTHROPIC_BASE_URL`) → still pass `haiku` /
+   `sonnet` / `opus`: they resolve through `ANTHROPIC_DEFAULT_HAIKU_MODEL` / `ANTHROPIC_DEFAULT_SONNET_MODEL` /
+   `ANTHROPIC_DEFAULT_OPUS_MODEL`, which have to name that provider's small / mid / top model — unset, the alias asks
+   the provider for a Claude model it may not serve, so check them before the first spawn and give the user the three
+   lines to add when they are missing · another harness (Codex, Cursor, Gemini CLI, …) → its own small / mid / top
+   model through its own model option · one model only, or no per-agent model choice → spawn without one and say so
+   once; the tier still decides whether the work is worth a subagent · a fork always runs on the main model; spawn a
+   fresh agent on a lower tier instead when the work doesn't need this conversation · this is the user naming the model
+   for `leancode`'s spawn rule · enforced in Claude Code by `claude/hooks/require-agent-model.py` · why: 30 days of
+   this machine's logs (2026-10-02 → 11-01) had 210 of 215 subagents on Opus because none named a model — about 515k
+   input-equivalent tokens each, 17% of all spend — the user (2026-11-01): "ทำเลย", to the proposal that search and
+   spec-driven agents run on Sonnet in every project · tiers instead of Claude names, the user (2026-11-05): "แก้ไข
+   การแยก model ทำงาน ในกรณีที่ไม่ใช่ claude ด้วย"
 4d. **Context at ~500k tokens → move to a new session** — every project · once this session's context reaches about
    500k tokens: bring the current step to a safe stop (finished, or parked), write where it stands to the repo's
    `HANDOFF.md` (`pause`), then tell the user plainly that it is time for a new session, with the line to continue
@@ -126,3 +135,11 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
     harness-specific points are worded "if the harness has X, otherwise Y" · enforcement lives in `adapters/` · every
     SKILL.md edit bumps `version` + CHANGELOG and puts the version in the commit subject —
     the user: "don't lock in the local repos' rules, keep it neutral"
+
+## UI
+
+12. **No "—" as a placeholder for a missing or unknown value** — in every project, on every screen. A column or field
+    that can't be known (e.g. an older API that doesn't send it yet) is hidden; a single missing value is said in words
+    or the cell is left empty, whichever reads clearer there · existing "—" cells are changed only when the screen is
+    being worked on, or the user asks · the user (2026-11-04), after Admin asked what a column of "—" meant: "เลี่ยงการใช้
+    —" · "จดไว้กลางเลย เพราะอยากให้ทุกระบบไม่ต้องใช้"
