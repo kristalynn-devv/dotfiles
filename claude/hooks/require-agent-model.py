@@ -40,10 +40,11 @@ def main():
         "hookEventName": "PreToolUse",
         "permissionDecision": "deny",
         "permissionDecisionReason": (
-            "No model named for this subagent (WORKING-RULES.md 4c). Call again with `model`: "
-            "haiku = lookups (find, grep, read a page, collect facts) · "
-            "sonnet = build from a full brief, mechanical edits, tests, broad search, summaries (default when unsure) · "
-            "opus = review, a bug that didn't yield, planning/research that weighs options, high-risk work."
+            "No model named for this subagent (WORKING-RULES.md 4c). Call again with `model` by tier: "
+            "haiku = light: lookups (find, grep, read a page, collect facts) · "
+            "sonnet = mid: build from a full brief, mechanical edits, tests, broad search, summaries (default when unsure) · "
+            "opus = top: review, a bug that didn't yield, planning/research that weighs options, high-risk work. "
+            "On a non-Anthropic provider the aliases resolve through ANTHROPIC_DEFAULT_{HAIKU,SONNET,OPUS}_MODEL."
         ),
     }}, sys.stdout)
 
