@@ -85,6 +85,28 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
    from (`/resume`, or the HANDOFF heading) · only the user can `/clear` or open a session, so I say it and stop
    starting new work in this one · in autopilot, finish the ticket in hand first, then stop and say it — the user
    (2026-11-05): "เมื่อ context 500k แล้วให้ สร้าง session ใหม่ทุกโปรเจค"
+4f. **Keep what enters the context small** — every project, every session and subagent · everything a tool call
+   sends or returns stays in the context until the session ends or compacts, so:
+   (a) **Bash output**: cap it where it is made — `| tail -n 40`, `| head`, `grep -c`, `--quiet`, a test runner's
+   failures-only mode · output that may run past ~5k characters → redirect it to a scratchpad file and read only the
+   part needed (`grep`, `tail`, Read with offset/limit) ·
+   (b) **no long code inline in a command**: a script over ~40 lines, or one run more than once → Write it to the
+   scratchpad once and run it by path; a change to a project file → Edit the exact spot, never a heredoc or
+   `python - <<` rewrite of the file ·
+   (c) **screenshots**: `scale: 0.5` unless the detail needs full size · take and Read only the images the check
+   needs · a UI check across several widths or states → a subagent (mid tier, item 4c) that looks at the images and
+   hands back findings plus the paths of the images that show a problem ·
+   (d) **reading**: Read a large file by offset/limit, after `grep -n` finds the place · a search across many files
+   → a subagent that returns the conclusion, not the file contents ·
+   (e) **item 4d is checked, not assumed**: look at the context size at the start of every user turn; past ~500k,
+   item 4d applies before new work starts · a request that builds on nothing in this session → say it is a good
+   moment for `/clear` (item 4) before starting it ·
+   (f) **long material from the user**: when the user pastes the same long text (a log, a spec, a table) more than
+   once, suggest keeping it as a file and passing its path —
+   why: 25 sessions of 2026-10-26 → 11-09 measured from the transcripts: sessions ran to 966k tokens with 6–10
+   compactions; Bash commands ~16% of message content (69% of it heredoc scripts, up to 33k characters each), Bash
+   output ~17% (a third from results of 5–20k characters), Read screenshots ~11% (up to 870 images in one session) —
+   the user (2026-11-09): "ร่างกฎเลย", after asking why each session's message context grows so large
 5. **Review only high-risk changes; the full test suite runs at "push"** — as `leancode` tunables:
    **`review.when: risky only`** and **`autopilot.review: by risk`** (leancode 5.12.0+) · a high-risk change (hard to
    undo, or touching security, money or user data) gets its review round before its commit — leancode's round plus the
