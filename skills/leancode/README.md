@@ -20,7 +20,7 @@ pointer into `references/` carries a short fallback in case the file can't be re
 | Kind | Name the kind of work before the plan: it decides what §3 has to show. A bug is reproduced before it is fixed; a refactor is proven by the same assertions, untouched; UI is looked at; an infra change is observed at the destination; a prototype is disposable; a review or an investigation is read-only. One row per kind, procedures in `references/kinds.md` |
 | Structure | Name the case before the edit. A new boundary is checked against that decision. A refactor keeps the structure already there |
 | §2 Build lean | Reuse before adding; no new abstraction until there are real call sites for it. Anything irreversible is confirmed first: by the user in an interactive mode, by the harness's guard in an autonomous one, and by the user in every mode for a one-way change to shared data |
-| §3 Verify with evidence | A baseline run *before* the change; the new test seen red, for the right reason; the narrowest check while iterating and the full one before done (or once at Land, `check.full_when`); the full diff read. Never "should work" |
+| §3 Verify with evidence | A baseline run *before* the change; the new test seen red, for the right reason; the narrowest check while iterating and the full one before done (or once at Land, `check.full_when`); a check already green on the same tree is not run again; the full diff read. Never "should work" |
 | §4 Self-review | A delegated review round, findings checked against the code, rejected ones named. `review.when` decides whether it runs per change, once at Land, or only on risky changes |
 | Optimize | One pass on the finished diff: remove, collapse, bound a cost this change introduced. No speed rewrite without a measurement |
 | §5 Split across agents | Subagents are authorized for speed. Analyse the risk *before* splitting; never repeat an in-flight task; fan out only onto slices that cannot touch each other; the main session owns the merge |
@@ -126,7 +126,7 @@ Codex, a shell hook for Cursor. The skill works without it.
 
 Every threshold lives in one table at the top of `SKILL.md` and is referenced by name
 from the section that uses it. Change the number there; don't hunt for it in the prose.
-The user's own rule files or a project's `CLAUDE.md` can override any of them; where both
+The user's own rule files or a project's rule file (`CLAUDE.md`, `AGENTS.md`, whatever the harness reads) can override any of them; where both
 set one, the project's value wins, except that `review.max_rounds` always wins over `review.rounds`.
 
 | Name | Default | What it gates |
