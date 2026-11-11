@@ -1,0 +1,20 @@
+---
+description: The user's global working rules, shared with Claude Code. Read them before any task that is not a quick question.
+alwaysApply: true
+---
+
+# Global rules
+
+The user's rules are the same files Claude Code loads: `~/dotfiles/claude/`, linked into `~/.claude/`. Before a task
+that is not a quick question, read and follow:
+
+- `~/.claude/IDENTITY.md` — how the user works; replies are in Thai
+- `~/.claude/WORKING-RULES.md` — tracking work, finding answers, agents, checks, UI, code, money
+- `~/.claude/GIT.md` — commit, merge and push
+- `~/.claude/WAYFINDER-LEANCODE.md` — plan versus build; every code change goes through `~/.claude/skills/leancode/SKILL.md`
+- `~/.claude/DB-ACCESS.md` — before any database connection
+- `~/.claude/CROSS-REPO-DOCS.md` — before writing into another repo
+
+The files use Claude Code's names (the `Agent` tool, the `haiku` / `sonnet` / `opus` tiers, hooks, `/clear`). Read each
+as this harness's own equivalent; where there is none, follow the rule's own fallback. A project's `CLAUDE.md` or
+`AGENTS.md` can be stricter than these rules, never looser.

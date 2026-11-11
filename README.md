@@ -23,7 +23,12 @@ The single source of truth for the rule files and skills Claude Code reads.
   - `cursor-dispatch/` — only when the user asks: hand a settled build slice to Cursor's agent CLI (`cursor-agent -p`)
     in its own git worktree, then verify the result in Claude · needs `cursor-agent` (`curl https://cursor.com/install -fsS | bash`)
     and `cursor-agent login` once
-- `sync.sh` — links every `claude/*.md` and every `skills/<name>/` into `~/.claude/`
+- `cursor/` — Cursor's side, linked only when `~/.cursor` exists · Cursor reads the skills from `~/.claude/skills`
+  itself
+  - `rules/global-rules.mdc` — an always-on user rule pointing Cursor at the same `~/.claude/*.md` rule files
+  - `rules/session-commit-and-leancode.mdc` — leancode for code work, commits staged by path
+  - `hooks.json` — leancode's `guard.sh cursor` on `beforeShellExecution`: blocks irreversible shell commands
+- `sync.sh` — links every `claude/*.md` and every `skills/<name>/` into `~/.claude/`, and `cursor/` into `~/.cursor/`
 - `install.sh` — the whole setup in one command: `sync.sh`, then `node` (Homebrew), the plugins, `playwright-cli` and
   the `antd` MCP below installed or updated to their latest version, and `skillOverrides` merged into
   `~/.claude/settings.json` (a skill already listed there keeps its value); safe to re-run

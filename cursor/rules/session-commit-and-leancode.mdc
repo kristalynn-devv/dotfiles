@@ -1,0 +1,17 @@
+---
+description: Writing code and analysis follow leancode. A commit checks and stages only this session's files.
+alwaysApply: true
+---
+
+# Session scope
+
+Writing code, or answering what the code does, starts by reading and following the leancode skill at `~/.claude/skills/leancode/SKILL.md`. Leancode decides the steps and the proof.
+
+A commit happens only when the user asks. It holds this session's change and nothing else.
+
+1. Name the files this session edited. A file already dirty when this session started, or a path this session never wrote, belongs to another session.
+2. Read `git status` and `git diff` for those paths only. The review and the check judge that diff. A failure that lives only in another session's dirty files is named and left.
+3. Stage by path. Never `git add -A` or `git add .`.
+4. A path that mixes this session's edit with another session's uncommitted edit stops the commit. Name the path and what is mixed.
+
+Another session's uncommitted files stay out of this session's edits, review, check, and commit.
