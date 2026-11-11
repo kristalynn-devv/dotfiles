@@ -7,7 +7,7 @@ alwaysApply: true
 
 Writing code, or answering what the code does, starts by reading and following the leancode skill at `~/.claude/skills/leancode/SKILL.md`. Leancode decides the steps and the proof.
 
-A commit happens only when the user asks. It holds this session's change and nothing else.
+When the work is done, ask the user whether to commit it, naming the files and the branch. Also ask before any commit on a branch that is not the repo's dev branch (e.g. `develop`, `development`). Commit only on a yes. The commit holds this session's change and nothing else. This settles the clash with `GIT.md`'s "commit on judgment" for this harness — the user, 2026-11-11: "ถามเมื่อเสร็จงานและถ้าไม่ได้อยู่ branch dev".
 
 1. Name the files this session edited. A file already dirty when this session started, or a path this session never wrote, belongs to another session.
 2. Read `git status` and `git diff` for those paths only. The review and the check judge that diff. A failure that lives only in another session's dirty files is named and left.
