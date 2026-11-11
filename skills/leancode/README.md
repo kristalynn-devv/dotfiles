@@ -126,7 +126,7 @@ Codex, a shell hook for Cursor. The skill works without it.
 
 Every threshold lives in one table at the top of `SKILL.md` and is referenced by name
 from the section that uses it. Change the number there; don't hunt for it in the prose.
-The user's own rule files or a project's `CLAUDE.md` can override any of them; where both
+The user's own rule files or a project's rule file (`CLAUDE.md`, `AGENTS.md`, whatever the harness reads) can override any of them; where both
 set one, the project's value wins, except that `review.max_rounds` always wins over `review.rounds`.
 
 | Name | Default | What it gates |
