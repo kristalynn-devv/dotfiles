@@ -45,6 +45,11 @@ again and again, with how to meet it.
   what it made stale — glossary, docs, TD/story text, code comments, UI copy — and fix it in the same piece of work,
   then say what was fixed. Ask only when the fix is a new decision or hard to undo.
 
+- **A subagent's finding is checked against the code and the data before it reaches the dev** (2026-11-09, after I
+  relayed a reviewer's "the tonnage report loses 499 kg" as a question to decide, when no ตามล้อ product is sold in กก.:
+  "มาจากไหน?"). Its example is a hypothesis until a query shows it can happen; a finding the data rules out is dropped,
+  not offered as a pick.
+
 - **A choice offered to the dev stays open until the dev picks** (2026-11-02, after I built on direction ก and removed
   ข and ค because I had recommended it, when the dev had only said "ทำทั้ง 3 กลุ่ม": "ทำไมกลับมาแบบนี้ยังไม่ได้เลือกเลย").
   An instruction about something else does not answer a pending pick. Do the work with the options still in place, and

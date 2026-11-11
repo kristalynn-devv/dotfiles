@@ -25,6 +25,11 @@ The user, 2026-10-31: "เรื่อง commit กับ push เอาตา�
   this session's own changes only, one commit per piece.
 - **Push** when a set of work is finished and the push checks pass (§What "push" runs first) — to the dev branch, by
   the rules above.
+- **Work done in a worktree → merge it into the local dev branch right away, don't push** — `git merge --no-ff
+  <branch>` into the local dev branch as soon as the work is done and light-checked, so the user can test it locally
+  first · push waits for the word "push" (this overrides push on judgment for worktree work) · then remove the
+  worktree and branch as the repo's memory says · the user (2026-11-06): "เมื่อทำใน worktree เสร็จแล้ว merge เข้า dev
+  ไปก่อน เพื่อจะเทส local ก่อนยังไม่ต้องpush"
 - **Still ask first** when: the repo's own rules say not to commit or push until told (e.g. tlt-ops `CLAUDE.md`) ·
   the remote is public and the content carries internal hosts, people's data or personal notes · the target is not
   the dev branch · a file mixes this session's changes with another session's uncommitted ones · the change is

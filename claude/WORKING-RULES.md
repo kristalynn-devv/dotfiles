@@ -81,10 +81,23 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
    การแยก model ทำงาน ในกรณีที่ไม่ใช่ claude ด้วย"
 4d. **Context at ~500k tokens → move to a new session** — every project · once this session's context reaches about
    500k tokens: bring the current step to a safe stop (finished, or parked), write where it stands to the repo's
-   `HANDOFF.md` (`pause`), then tell the user plainly that it is time for a new session, with the line to continue
-   from (`/resume`, or the HANDOFF heading) · only the user can `/clear` or open a session, so I say it and stop
-   starting new work in this one · in autopilot, finish the ticket in hand first, then stop and say it — the user
-   (2026-11-05): "เมื่อ context 500k แล้วให้ สร้าง session ใหม่ทุกโปรเจค"
+   `HANDOFF.md` (`pause`), then **fork into a nested session myself** (a session under this one, made with the
+   harness's fork / hand-off, carrying the remaining plan and the HANDOFF heading) and stop starting new work in this
+   one · plain CLI (the model can't start a session there; a forked subagent reports back into this one, so it is
+   not one) → ask the user to run `/branch` (copies this conversation into a new session, the old one stays for
+   `/resume`), or `/fork` when agent view is on, with the HANDOFF heading to continue from · in autopilot, finish the
+   ticket in hand first, then fork into the nested session · first check it is worth it (item 4e) — the user
+   (2026-11-05): "เมื่อ context 500k แล้วให้ สร้าง session ใหม่ทุกโปรเจค" · (2026-11-06): "ครบ 500k context ให้แยก
+   branch ออกไป session ใหม่" — "หมายถึงให้ fork ออกไปอีก session" ·
+   "ใช้คำว่า nested ดีกว่า"
+4e. **Before any fork into a nested session, check it is worth it** — every project, every fork (the 500k move of
+   item 4d, a task split off, a parallel step) · a nested session starts at about 80k tokens of context before it
+   does anything (the user's figure), so the work it takes over has to be worth more than that · worth it: the work
+   left is long (many steps or tickets, or more than this session's room), or it runs on its own in parallel while
+   this one goes on · not worth it: what is left is a handful of tool calls, a single edit, or a short finish that
+   fits in this session's room → finish here (past 500k too, when the finish is that short) · say the call in one
+   line: work left, roughly how much it needs, fork or stay — the user (2026-11-06): "ก่อนจะแยก fork ออกไปเช็คก่อนว่า
+   คุ้มไหมเพราะแยกออกไปต้องใช้ context เริ่มต้นประมาณ 80k"
 4f. **Keep what enters the context small** — every project, every session and subagent · everything a tool call
    sends or returns stays in the context until the session ends or compacts, so:
    (a) **Bash output**: cap it where it is made — `| tail -n 40`, `| head`, `grep -c`, `--quiet`, a test runner's
@@ -165,3 +178,28 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
     or the cell is left empty, whichever reads clearer there · existing "—" cells are changed only when the screen is
     being worked on, or the user asks · the user (2026-11-04), after Admin asked what a column of "—" meant: "เลี่ยงการใช้
     —" · "จดไว้กลางเลย เพราะอยากให้ทุกระบบไม่ต้องใช้"
+
+## Code
+
+13. **No hardcoded values in a project** — every project, every file written inside a project folder: shipped code
+    and also the helper scripts, stand-ins, seeds and probes kept there (`.leancode/`, `scripts/`, even when
+    gitignored) · hosts, ports, URLs, database and container names, usernames, passwords, secrets, tokens, IDs and
+    phone numbers come from the project's env files (`.env`, `.env.local`, `.env.example`), its config or constants
+    file, or a parameter — never typed into the file · a value the project already defines (a dev default in
+    `.env.example`, a port in `docker-compose.yml`) is read from there, not copied · test data a seed needs is made at
+    run time or read from the project's fixtures · applies to what I write from now on; an existing hardcode found
+    while working goes into that repo's `HANDOFF.md` (item 1a) — the user (2026-11-06), after a stand-in script under
+    kt-labor `.leancode/` carried its own ports, DB name, API secret and passwords: "ห้าม hardcode ค่าลงใน project"
+
+## Money
+
+14. **Money work is checked across every round and every place a figure shows, before it is called done** — every
+    project · any change to billing, payment, receipts, งวด / installments, VAT, shares or reports · before done:
+    (a) walk the money over several rounds — a payment below what is due, exactly it, above it, then the later rounds
+    (pay the rest, part of it, cancel, carry to a new receipt) — and check each round's figures agree with the round
+    before (what is owed, what is due now, which งวด) · (b) list every place the figure shows — the bill screen before
+    issuing, the printed receipt / tax invoice, the receipts list, the person's payment history, reports, exports,
+    audit — and check each says the same thing, stored and shown · (c) a figure the user may read two ways (owed by the
+    bill vs by the item, due now vs minimum) gets one name per meaning · put the round walk in a test, and say in the
+    report which places were checked · the user (2026-11-09), after the งวด of later rounds disagreed between receipts
+    and the bill screen did not name the งวด: "ถ้าเป็นเรื่องการเงินต่างๆ รอบหน้าอย่าให้ตกหล่นอะไรแบบนี้อีก"
