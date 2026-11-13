@@ -3,3 +3,6 @@
 .DS_Store
 # internal hosts and the DB map: never on the public remote; copy it to a new machine by hand
 claude/DB-ACCESS.md
+
+# internal hosts and the DB map: never on the public remote
+skills/db-access/

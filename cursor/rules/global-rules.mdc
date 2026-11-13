@@ -12,7 +12,8 @@ that is not a quick question, read and follow:
 - `~/.claude/WORKING-RULES.md` — tracking work, finding answers, agents, checks, UI, code, money
 - `~/.claude/GIT.md` — commit, merge and push
 - `~/.claude/WAYFINDER-LEANCODE.md` — plan versus build; every code change goes through `~/.claude/skills/leancode/SKILL.md`
-- `~/.claude/DB-ACCESS.md` — before any database connection
+- `~/.claude/DB-ACCESS.md` — before any database connection; then the full rules and the DB map in `~/.claude/skills/db-access/SKILL.md`
+- `~/.claude/skills/build-steps/SKILL.md` — before a build step that has its own skill (tests, a hard bug, UI, review, merge conflict)
 - `~/.claude/CROSS-REPO-DOCS.md` — before writing into another repo
 
 The files use Claude Code's names (the `Agent` tool, the `haiku` / `sonnet` / `opus` tiers, hooks, `/clear`). Read each

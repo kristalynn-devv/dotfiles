@@ -12,7 +12,9 @@ The single source of truth for the rule files and skills Claude Code reads.
   - `CROSS-REPO-DOCS.md` — sending docs to another repo: write them there + in its `HANDOFF.md`, then the sender is done
   - `WORKING-RULES.md` — general working rules (HANDOFF, finding answers, agents, auto mode, leancode), moved out of
     Claude auto-memory
-  - `WAYFINDER-LEANCODE.md`
+  - `WAYFINDER-LEANCODE.md` — plan versus build; which skill decides, `leancode` builds
+  - `RULES-HISTORY.md` — the long form of `WORKING-RULES.md` (the why, the user's words, dates); not imported
+  - `DB-ACCESS.md` — gitignored (internal hosts): the always-loaded core of the DB rules; the rest is the `db-access` skill
 - `skills/` — Claude Code skills, one folder per skill (the folder name matches the `name:` in its `SKILL.md`) ·
   `sync.sh` links each one to `~/.claude/skills/<name>` · a real folder found at a link target is moved to `.backup/`,
   not deleted
@@ -20,6 +22,9 @@ The single source of truth for the rule files and skills Claude Code reads.
     gitignored, keep yours in this folder)
   - `pause/` — `/pause`: save the context, where work stopped and any open decision to `HANDOFF.md`; also checkpoints
   - `resume/` — `/resume`: find the note, check it against reality, settle the open decision, continue
+  - `build-steps/` — which skill runs each build step under leancode, the plugin check and the fallbacks
+    (moved out of `WAYFINDER-LEANCODE.md` so it loads only when a build step needs it)
+  - `db-access/` — gitignored (internal hosts): the full DB rules and the DB map; copy it to a new machine by hand
   - `cursor-dispatch/` — only when the user asks: hand a settled build slice to Cursor's agent CLI (`cursor-agent -p`)
     in its own git worktree, then verify the result in Claude · needs `cursor-agent` (`curl https://cursor.com/install -fsS | bash`)
     and `cursor-agent login` once
@@ -78,7 +83,7 @@ mklink /D "%USERPROFILE%\.claude\skills\pause" C:\src\dotfiles\skills\pause
 
 ## What leancode works with
 
-`claude/WAYFINDER-LEANCODE.md` hands some build steps to the skills below. Each one is optional. leancode checks for
+The `build-steps` skill (pointed at from `claude/WAYFINDER-LEANCODE.md`) hands some build steps to the skills below. Each one is optional. leancode checks for
 them before the work starts, names any that are missing with the command to install it, and uses its own text for that
 step instead. `install.sh` installs all of them; the commands below are for doing it by hand.
 
