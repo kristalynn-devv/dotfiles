@@ -70,6 +70,10 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
    installment contract with month-end dates, pay/reverse and half-up late fees): all passed 31/31; sonnet 25 s,
    opus 40 s, haiku 47 s (most retries), fable 49 s. A review task with 4 planted bugs: opus, sonnet and fable found
    4/4 and haiku 3/4, missing the VAT truncation, so review stays on the main model.
+   Effort, same tasks, one run each: sonnet build at low 17.6 s, usual 25.4 s, high 35.1 s, all 31/31 (high wrote
+   more tests of its own) · opus review at low 12.3 s, usual 21.1 s, high 21.0 s, all found the 4 planted bugs, but
+   low's VAT reasoning contradicted itself. The user, asked whether builders run at low: "เร็ว ถูกต้อง" → builders
+   at `low`, review left at the usual effort.
    Earlier the same day the three-tier rule below and its hook `claude/hooks/require-agent-model.py` were removed, the user: "เอากฏตอน build ตอน review ออกว่าใช้
    model ไหน" · "เพราะตอน build ช้ามาก"; asked whether to split at all, the user picked the light form: "คืนแบบเบา" (lookups on `haiku`,
    builders on the main model; changed by the benchmark above) · why keep the lookup split: without any rule every subagent inherits the main model (210 of 215 on Opus, see below) · why drop the

@@ -37,7 +37,9 @@ Every project, every session, every subagent. The why of each rule, with the use
    hands back; no review round or full suite of its own.
 4c. **Lookups on the small model, building on the mid one, the rest on the main one** — a subagent that only finds,
    greps or reads and returns facts → small (Claude Code: `haiku`) · a builder working from a full brief → mid
-   (`sonnet`) · review and all other work → no `model`, it runs on the main model · no hook enforces this.
+   (`sonnet`) at effort `low` · review and all other work → no `model` and no `effort`, it runs on the main model
+   at its usual effort (never `low` for review) · this rule is the user's standing ask to set `effort` on builders
+   · no hook enforces this.
 4d. **Context at ~500k tokens → move to a nested session** — bring the step to a safe stop, write where it stands to
    `HANDOFF.md` (`pause`), fork into a nested session myself (harness fork / hand-off, with the remaining plan and the
    HANDOFF heading), and start no new work here · plain CLI → ask the user to run `/branch` (or `/fork` with agent
