@@ -64,10 +64,15 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
    commits on its own branch, and hands back; it does not spawn a review round or run the full suite itself · the main
    session runs the tests and the review (items 5–6) on what comes back — the user (2026-09-30): "when a subagent
    finishes, it doesn't review/test itself, send it back to the main one"
-4c. **Lookups go to a small model, everything else runs on the main one** (2026-11-17) — the three-tier rule below
-   and its hook `claude/hooks/require-agent-model.py` were removed, the user: "เอากฏตอน build ตอน review ออกว่าใช้
-   model ไหน" · "เพราะตอน build ช้ามาก"; asked whether to split at all, the user picked the light form: "คืนแบบเบา" · why keep the lookup
-   split: without any rule every subagent inherits the main model (210 of 215 on Opus, see below) · why drop the
+4c. **Lookups on the small model, building on the mid one, the rest on the main one** (2026-11-17) — builders on
+   `sonnet` after a same-day benchmark, the user: "build ใช้ sonnet". Two build tasks, one run each, four models in
+   parallel, graded by hidden tests. Small task (`parse_duration`): all passed 29/29, 18–25 s each. Larger task (an
+   installment contract with month-end dates, pay/reverse and half-up late fees): all passed 31/31; sonnet 25 s,
+   opus 40 s, haiku 47 s (most retries), fable 49 s. A review task with 4 planted bugs: opus, sonnet and fable found
+   4/4 and haiku 3/4, missing the VAT truncation, so review stays on the main model.
+   Earlier the same day the three-tier rule below and its hook `claude/hooks/require-agent-model.py` were removed, the user: "เอากฏตอน build ตอน review ออกว่าใช้
+   model ไหน" · "เพราะตอน build ช้ามาก"; asked whether to split at all, the user picked the light form: "คืนแบบเบา" (lookups on `haiku`,
+   builders on the main model; changed by the benchmark above) · why keep the lookup split: without any rule every subagent inherits the main model (210 of 215 on Opus, see below) · why drop the
    rest: the hook blocked spawns (leancode `FRICTION.md`, 2026-11-09, twice) and picking among three tiers on every
    spawn cost more than it saved for build and review. The rule as it stood until 2026-11-17:
    **Every spawn names its model tier; the top tier only where judgment is the job** — pass a model on every spawn
