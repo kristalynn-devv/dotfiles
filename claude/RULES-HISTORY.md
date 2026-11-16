@@ -64,7 +64,13 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
    commits on its own branch, and hands back; it does not spawn a review round or run the full suite itself · the main
    session runs the tests and the review (items 5–6) on what comes back — the user (2026-09-30): "when a subagent
    finishes, it doesn't review/test itself, send it back to the main one"
-4c. **Every spawn names its model tier; the top tier only where judgment is the job** — pass a model on every spawn
+4c. **Lookups go to a small model, everything else runs on the main one** (2026-11-17) — the three-tier rule below
+   and its hook `claude/hooks/require-agent-model.py` were removed, the user: "เอากฏตอน build ตอน review ออกว่าใช้
+   model ไหน" · "เพราะตอน build ช้ามาก"; asked whether to split at all, the user picked the light form: "คืนแบบเบา" · why keep the lookup
+   split: without any rule every subagent inherits the main model (210 of 215 on Opus, see below) · why drop the
+   rest: the hook blocked spawns (leancode `FRICTION.md`, 2026-11-09, twice) and picking among three tiers on every
+   spawn cost more than it saved for build and review. The rule as it stood until 2026-11-17:
+   **Every spawn names its model tier; the top tier only where judgment is the job** — pass a model on every spawn
    (or set it in the agent's definition), never let it inherit by default · **light**: pure lookups — find a file, grep
    a name, read a page, collect facts with sources · **mid**: building from a full brief (item 4a), mechanical edits,
    test writing, broad searches, summaries · **top**: review (item 5), diagnosing a bug that didn't yield, planning or
@@ -111,7 +117,7 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
    scratchpad once and run it by path; a change to a project file → Edit the exact spot, never a heredoc or
    `python - <<` rewrite of the file ·
    (c) **screenshots**: `scale: 0.5` unless the detail needs full size · take and Read only the images the check
-   needs · a UI check across several widths or states → a subagent (mid tier, item 4c) that looks at the images and
+   needs · a UI check across several widths or states → a subagent that looks at the images and
    hands back findings plus the paths of the images that show a problem ·
    (d) **reading**: Read a large file by offset/limit, after `grep -n` finds the place · a search across many files
    → a subagent that returns the conclusion, not the file contents ·

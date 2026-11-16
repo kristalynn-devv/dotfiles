@@ -35,14 +35,9 @@ Every project, every session, every subagent. The why of each rule, with the use
    commands, what done looks like · settle unknowns first (or a separate read-only research agent).
 4b. **Builders build, the main session verifies** — a builder writes the change and its tests, commits on its branch,
    hands back; no review round or full suite of its own.
-4c. **Every spawn names its model tier** — never inherit by default · **light**: lookups, grep, reading a page,
-   facts with sources · **mid**: building from a full brief, mechanical edits, tests, broad searches, summaries ·
-   **top**: review, a bug that didn't yield, planning/research weighing options, high-risk work · unsure → mid ·
-   Claude Code → `haiku` / `sonnet` / `opus` (on another provider these resolve through
-   `ANTHROPIC_DEFAULT_{HAIKU,SONNET,OPUS}_MODEL`; check they are set before the first spawn, give the user the lines
-   if not) · another harness → its own small/mid/top model · no per-agent choice → spawn without one, say so once ·
-   a fork runs on the main model; prefer a fresh lower-tier agent when the conversation isn't needed · enforced by
-   `claude/hooks/require-agent-model.py`.
+4c. **Lookups go to a small model, everything else runs on the main one** — a subagent that only finds, greps or
+   reads and returns facts → the small model (Claude Code: `haiku`) · building, review and all other work → no
+   `model`, it runs on the main model · no hook enforces this.
 4d. **Context at ~500k tokens → move to a nested session** — bring the step to a safe stop, write where it stands to
    `HANDOFF.md` (`pause`), fork into a nested session myself (harness fork / hand-off, with the remaining plan and the
    HANDOFF heading), and start no new work here · plain CLI → ask the user to run `/branch` (or `/fork` with agent
@@ -56,7 +51,7 @@ Every project, every session, every subagent. The why of each rule, with the use
    (b) a script over ~40 lines or run twice → Write it to the scratchpad, run by path; project files → Edit the exact
    spot, never a heredoc or `python - <<` rewrite ·
    (c) screenshots at `scale: 0.5` unless detail needs more; take and Read only what the check needs; a UI check
-   across widths/states → a mid-tier subagent returning findings + paths of the problem images ·
+   across widths/states → a subagent returning findings + paths of the problem images ·
    (d) large files by offset/limit after `grep -n`; a many-file search → a subagent returning the conclusion ·
    (e) check the context size at the start of every user turn; past ~500k, 4d first · a request building on nothing
    here → say it is a good moment for `/clear` ·
