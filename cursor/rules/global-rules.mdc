@@ -16,6 +16,6 @@ that is not a quick question, read and follow:
 - `~/.claude/skills/build-steps/SKILL.md` — before a build step that has its own skill (tests, a hard bug, UI, review, merge conflict)
 - `~/.claude/CROSS-REPO-DOCS.md` — before writing into another repo
 
-The files use Claude Code's names (the `Agent` tool, the `haiku` / `sonnet` / `opus` tiers, hooks, `/clear`). Read each
+The files use Claude Code's names (the `Agent` tool, hooks, `/clear`). Read each
 as this harness's own equivalent; where there is none, follow the rule's own fallback. A project's `CLAUDE.md` or
 `AGENTS.md` can be stricter than these rules, never looser.

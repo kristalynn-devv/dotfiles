@@ -64,7 +64,14 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
    commits on its own branch, and hands back; it does not spawn a review round or run the full suite itself · the main
    session runs the tests and the review (items 5–6) on what comes back — the user (2026-09-30): "when a subagent
    finishes, it doesn't review/test itself, send it back to the main one"
-4c. **Lookups on the small model, building on the mid one, the rest on the main one** (2026-11-17) — builders on
+4c. **Removed 2026-11-17: no per-task model or effort; every subagent runs on the main model at its usual effort.**
+   The user, after the kt-labor comparison below: "งั้นลบกฏแยก model". A real-repo build (เบอร์ติดต่อกลับ on a cancel
+   request, same brief, own worktrees): sonnet at low 44.8 s and opus 176.1 s, both passed `test:api` / `test:web`;
+   opus followed the repo's conventions (`feat:` subject, HANDOFF entry, a Go unit test, one shared phone rule,
+   field-level error) and sonnet did not. Real builds on this machine take 1–4 hours (leancode `FRICTION.md`), so the
+   seconds saved were small next to the fix-ups; the 5-hour quota was hit twice in four weeks (2026-11-02, 11-11).
+   What came before, the same day:
+   **Lookups on the small model, building on the mid one, the rest on the main one** (2026-11-17) — builders on
    `sonnet` after a same-day benchmark, the user: "build ใช้ sonnet". Two build tasks, one run each, four models in
    parallel, graded by hidden tests. Small task (`parse_duration`): all passed 29/29, 18–25 s each. Larger task (an
    installment contract with month-end dates, pay/reverse and half-up late fees): all passed 31/31; sonnet 25 s,
