@@ -34,7 +34,7 @@ Every project, every session, every subagent. The why of each rule, with the use
 4a. **Brief a subagent to execute, not to investigate** — exact files + lines, the exact change, decisions made,
    commands, what done looks like · settle unknowns first (or a separate read-only research agent).
 4b. **Builders build, the main session verifies** — a builder writes the change and its tests, commits on its branch,
-   hands back; no review round or full suite of its own.
+   hands back; no review round or push checks of its own.
 4d. **Context at ~500k tokens → move to a nested session** — bring the step to a safe stop, write where it stands to
    `HANDOFF.md` (`pause`), fork into a nested session myself (harness fork / hand-off, with the remaining plan and the
    HANDOFF heading), and start no new work here · plain CLI → ask the user to run `/branch` (or `/fork` with agent
@@ -53,14 +53,15 @@ Every project, every session, every subagent. The why of each rule, with the use
    (e) check the context size at the start of every user turn; past ~500k, 4d first · a request building on nothing
    here → say it is a good moment for `/clear` ·
    (f) the same long paste twice → suggest keeping it as a file and passing its path.
-5. **Review only high-risk changes; the full suite runs at "push"** — `leancode` tunables `review.when: risky only`,
+5. **Review only high-risk changes; the deploy-gating checks run at "push"** — `leancode` tunables `review.when: risky only`,
    `autopilot.review: by risk` · high-risk (hard to undo, security, money, user data) → review round before its commit
    (leancode's round + `code-review` Standards/Spec) · everything else: no review round, not per ticket, not at the
-   end of autopilot, not at push · full test suite once, on everything going up, at "push" (`GIT.md`).
+   end of autopilot, not at push · at "push", once, on everything going up: the checks the repo's CI runs before
+   deploy, nothing more (`GIT.md` §What "push" runs first).
 6. **A commit inside a skill's or agent's walk gets a light check only** — `check.full_when: at land`: it builds,
    lint/type-check of the touched code passes, the relevant tests are green, nothing errors · run by the main session.
 6a. **Work left uncommitted or unpushed → ask once, saying what each would do** — "commit → light check + commit
-   <files> on <branch>" · "push → full suite + merge `--no-ff` to <dev> + `git push origin <dev>`, plus other
+   <files> on <branch>" · "push → deploy-gating checks + merge `--no-ff` to <dev> + `git push origin <dev>`, plus other
    sessions' commits going up" · only in the cases `GIT.md` §Commit and push on judgment says to ask.
 7. **Every progress update carries a table of all summoned agents** — what each does, repo/worktree, status
    (running / done / parked), including agents a builder spawned · `ListAgents` before writing · mention other

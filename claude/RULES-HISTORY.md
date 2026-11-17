@@ -155,6 +155,9 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
    ~568k input-equivalent tokens each (the user 2026-11-01: "รีวิวทุก ticket รู้สึกนานและใช้ token เยอะ"); 5.9.0 moved
    the review to push (`at land`); the user 2026-11-02 dropped that too: "ตั้งให้ตอนบอกว่าให้ push ไม่ต้อง full review
    เทสปกติ"
+   · 2026-11-17: "เทสปกติ" had been written down as "the full test suite", so a push ran all of `make check` (e2e
+   included); the user: "ใครสั่งรัน full test suite" · "แก้เป็นรันให้ไม่ติด deploy" → push runs only the checks the
+   repo's CI runs before deploy
 6. **A commit inside a skill's or agent's walk gets a light check only** — as the `leancode` tunable
    **`check.full_when: at land`** (leancode 5.10.0+; before it, leancode ran the whole check before every commit, so 1 ticket
    = 1 `make check` — the user 2026-11-02: "1 ตั๋ว 1 commit มันดูเยอะไปเพราะต้องคอย review test ทุกครั้ง") · it builds or compiles, lint/type-check of the

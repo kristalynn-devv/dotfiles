@@ -13,9 +13,13 @@
 
 ## What "push" runs first
 
-Push is where the full test suite runs (`WORKING-RULES.md` items 5–6): before anything goes up, run it on everything
-being pushed. No review round at push — a high-risk change already had its round before its commit (item 5). A failure
-→ stop, fix through `leancode`, re-run, then push. Commits along the way only had the light check.
+Push runs **the checks that gate deploy** (`WORKING-RULES.md` items 5–6): read the repo's CI config (e.g.
+`.gitlab-ci.yml`) for the jobs that run on the target branch before its package/deploy stage, and run those same checks
+locally on everything being pushed, so the pipeline does not stop the deploy. Not the rest of the repo's suite (e2e,
+script tests, `make check`) unless CI runs them before deploy. No CI config → the light check (item 6). No review round
+at push — a high-risk change already had its round before its commit (item 5). A failure → stop, fix through
+`leancode`, re-run, then push. Commits along the way only had the light check. The user 2026-11-17, after a full
+`make check` (e2e included) ran at push: "ใครสั่งรัน full test suite" · "แก้เป็นรันให้ไม่ติด deploy".
 
 ## Commit and push on judgment
 
