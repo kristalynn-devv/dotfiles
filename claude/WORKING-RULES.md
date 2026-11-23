@@ -53,6 +53,10 @@ Every project, every session, every subagent. The why of each rule, with the use
    (e) check the context size at the start of every user turn; past ~500k, 4d first · a request building on nothing
    here → say it is a good moment for `/clear` ·
    (f) the same long paste twice → suggest keeping it as a file and passing its path.
+4g. **A session the user sets as the checking hub → skill `hub-session`** — it checks and answers; every piece of work
+   asked there goes out: small, simple work → `cursor-dispatch` (the hub's standing ask), medium to large → a brief to a
+   fresh session (worktree, leancode, 4d); findings go back to the same session · unsure → leancode (hub-session §1a) · a batch of feedback to
+   implement → skill `feedback` (runs as hub).
 5. **Review only high-risk changes; the deploy-gating checks run at "push"** — `leancode` tunables `review.when: risky only`,
    `autopilot.review: by risk` · high-risk (hard to undo, security, money, user data) → review round before its commit
    (leancode's round + `code-review` Standards/Spec) · everything else: no review round, not per ticket, not at the
@@ -80,7 +84,7 @@ Every project, every session, every subagent. The why of each rule, with the use
 10. **Every implementation goes through `leancode`** — any code change, whatever its size (features, fixes,
     refactors, one-spot edits, UI tweaks, tests, migrations, shipped scripts, resuming from HANDOFF, autopilot) · not
     leancode: questions, research, data lookups, config/docs/memory/rules edits, routine git/shell · "รันให้จบ" or
-    "ทำให้หมด" = leancode autopilot (§10).
+    "ทำให้หมด" = leancode autopilot (§10) · exception: a hub's small, simple work goes to Cursor (4g).
 11. **Edits to the `leancode` skill itself stay neutral** (`~/.claude/skills/leancode`, public repo) — any harness,
     any language (English only), no local repo rules · harness points worded "if the harness has X, otherwise Y" ·
     enforcement in `adapters/` · every SKILL.md edit bumps `version` + CHANGELOG, version in the commit subject.

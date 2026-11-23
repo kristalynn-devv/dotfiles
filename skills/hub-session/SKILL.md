@@ -1,6 +1,6 @@
 ---
 name: "hub-session"
-description: "Run this session as the checking hub: it verifies work and answers questions, and every piece of work asked here goes out as a brief to a fresh new session (start_session) that does it under the 500k rule. Use when the user sets a session as the checking / dispatching one (session นี้เอาไว้ตรวจเช็คงาน, สั่งงานแล้วส่ง brief เปิด session ใหม่, /hub-session), and again after a compaction or a hub hand-over when HANDOFF says the session is the hub."
+description: "Run this session as the checking hub: it verifies work and answers questions, and every piece of work asked here goes out: small simple work to Cursor (cursor-dispatch), medium to large work as a brief to a fresh new session (start_session) that builds it through leancode under the 500k rule. Use when the user sets a session as the checking / dispatching one (session นี้เอาไว้ตรวจเช็คงาน, สั่งงานแล้วส่ง brief เปิด session ใหม่, /hub-session), and again after a compaction or a hub hand-over when HANDOFF says the session is the hub."
 ---
 
 # hub-session — this session checks, other sessions build
@@ -17,14 +17,34 @@ Stays in the hub:
 - Recording a habit or rule the user gives (IDENTITY.md "Keep learning"), memory edits.
 - Routine git reads (`status`, `log`, `diff`).
 
-Goes out as a new session, whatever its size: any change to code, config, docs, tests, migrations or a repo's
-HANDOFF; any build, fix, refactor, UI tweak, data write, commit or push. A one-line edit goes out too: the hub does not
-edit project files.
+Goes out, whatever its size: any change to code, config, docs, tests, migrations or a repo's HANDOFF; any build, fix,
+refactor, UI tweak, data write, commit or push. A one-line edit goes out too: the hub does not edit project files.
+Where it goes depends on its size (§1a).
+
+## 1a. Small → Cursor, medium to large → a leancode session
+
+The user 2026-11-23: "ถ้างานเล็กไม่ซับซ้อนให้ใช้ /cursor-dispatch ถ้างานกลางถึงใหญ่ให้ใช้ /leancode". This role is the
+user's standing ask to send small work to Cursor, so `cursor-dispatch`'s "only on the user's ask" is met inside the hub.
+
+- **Small, not complex → skill `cursor-dispatch`**, run by the hub: every decision made, the files and exact change
+  known (about 1–3 files in one repo), no migration, no money / security / user-data logic, no new design or UX choice,
+  no boundary or module reshape. E.g. a wording or label change and its neighbours, a column moved, a toggle default,
+  a small validation, a one-spot bug whose cause is already found. The hub writes the brief (cursor-dispatch §2), makes
+  the worktree on the dev branch, dispatches, then checks the result as §4 and does the commit and `--no-ff` merge
+  itself (GIT.md).
+- **Medium to large → a fresh worker session building through `leancode`** (§2): several files or layers, a
+  migration, money / security / user data, a cause not yet found, a design question, anything that needs its own
+  tests planned, or a list of items that build on each other.
+- Unsure → medium (a leancode session). Cursor missing, not logged in, or blocked by the sandbox (cursor-dispatch §1)
+  → the same piece goes to a leancode session instead; say so in the line announcing it.
+- Say the pick in one line before sending: "→ Cursor (เล็ก: <why>)" or "→ session leancode (กลาง/ใหญ่: <why>)".
+- A Cursor result that fails the check twice, or turns out bigger than it looked → hand it to a leancode session with
+  what was found, don't dispatch it a third time.
 
 A follow-up on work a worker session already holds (a fix after the check, an answer to its question) goes to **that**
 session with `SendMessage` (its `local_…` id), not to a new one.
 
-## 2. Starting a worker session
+## 2. Starting a worker session (medium to large work)
 
 - `start_session` with `initiation: "user_asked"` (this role is the user's standing word to send work out),
   `context: "fresh"` (never `fork`: a fork copies the hub's whole context), `use_worktree: true` for anything that writes
