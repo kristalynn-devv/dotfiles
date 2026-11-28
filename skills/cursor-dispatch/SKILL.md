@@ -45,7 +45,7 @@ bash ~/.claude/skills/cursor-dispatch/dispatch.sh --workspace <worktree> --brief
 
 - Build work uses `--force` (writes and shell commands without prompts) inside the worktree only; `--ask` runs read-only (`--mode ask`, no `--force`) for a question to Cursor.
 - Long work: run it in the background and wait for the notification; don't poll.
-- Model: the account's default unless the user names one (`cursor-agent models` lists them).
+- Model: always `--model auto` (Cursor picks per task), unless the user names one in this conversation (`cursor-agent --list-models` lists them). The user 2026-11-28: "ตอน implement ของ worker ให้เลือก อัตโนมัติ".
 - The JSON log holds the final message and the session id; `--resume <session>` sends a follow-up into the same Cursor chat (a correction, a failing test to fix).
 
 ## 5. Verify what comes back

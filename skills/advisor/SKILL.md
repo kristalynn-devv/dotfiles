@@ -97,6 +97,9 @@ session with `SendMessage` (its `local_…` id), not to a new one.
 - The advisor sits in its own repo, so every worker is pointed at the project: `cwd` = the project's repo path from
   `projects.md` (absolute), and every Cursor worktree is cut in that repo (`git -C <repo> worktree add …`). The
   engineer named these folders by approving this workflow (2026-11-28); the app may still ask to trust a folder once.
+- Model, every worker (the user 2026-11-28: "ตอน implement ของ worker ให้เลือก อัตโนมัติ"): Cursor → `--model auto`
+  (cursor-dispatch); a Claude worker session → leave `model` unset so the app picks (no override), unless the user
+  names one.
 - `source_branch` = the `base` column of `projects.md`; "repo rules" there → the repo's coding base branch as its memory or CLAUDE.md names it (tlt-ops: `features/toll`, the
   user 2026-11-24), else the dev branch. The brief tells the worker to merge `--no-ff` into that branch when done, then
   remove its own worktree and return to that branch, as the repo's memory says.
