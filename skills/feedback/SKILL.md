@@ -35,14 +35,14 @@ One table, in the advisor only (not yet in HANDOFF), one row per item number as 
 
 - Find where each item lives in the code and data (read-only; a many-file search → a read-only subagent returning
   file:line). Look at the screen when the item is about UI.
-- **What the thing is** before deciding: a word in the feedback may name a different thing in the code (IDENTITY.md,
+- **What the thing is** before deciding: a word in the feedback may name a different thing in the code (`~/.claude/CLAUDE.md` › The dev,
   "what the thing is"). List the candidates and take one, saying which.
 - **Size** by advisor §1a: small → built in the advisor · medium to large → Cursor · unsure →
   Cursor.
 - **Work stream**: items touching the same screen or files go together in one stream (one worker), so two writers
   never share files. Unrelated streams run in parallel. Name each stream for its area in the user's words, e.g.
   «บัญชี feedback ข้อ 1–4, 9: ใบเสร็จ».
-- **Questions**: only what the code, docs, PRDs and earlier decisions cannot answer (WORKING-RULES 2a). Ask them all
+- **Questions**: only what the code, docs, PRDs and earlier decisions cannot answer (`~/.claude/CLAUDE.md` › Working rules 2a). Ask them all
   at once, numbered by item («ข้อ 3: …»), each with options and the pick first. An item waiting on an answer does not
   hold the others: send what is settled now.
 - An item that is already done, or that a past decision rules out, is not sent: it goes in the report with the
@@ -62,8 +62,8 @@ One table, in the advisor only (not yet in HANDOFF), one row per item number as 
   - `HANDOFF heading: # <source> feedback <date> ข้อ <n…>: <short title> (<YYYY-MM-DD>, branch `<branch>`)` with, per
     item, what was built and where, the checks run, and anything found or parked (options + pick). In a repo whose
     HANDOFF is gitignored (e.g. tlt-ops) the heading also names the module, and HANDOFF is never staged.
-  - Wording or layout items: the worker greps the old word on the screen and its neighbours (IDENTITY.md drift).
-  - Money items: WORKING-RULES 14 (round walk + every place the figure shows).
+  - Wording or layout items: the worker greps the old word on the screen and its neighbours (`~/.claude/CLAUDE.md` › The dev drift).
+  - Money items: `~/.claude/CLAUDE.md` › Working rules 14 (round walk + every place the figure shows).
 
 ## 4. Check each result
 
@@ -80,7 +80,7 @@ When every stream is checked (or parked), one consolidated answer in Thai:
   (what differs and why).
 - Every item number from `feedback.md` appears once; none is dropped or merged silently.
 - What was merged into the local dev branch, what is not pushed, other sessions still running (table of linked
-  sessions, WORKING-RULES 7).
+  sessions, `~/.claude/CLAUDE.md` › Working rules 7).
 
 A weekly report the user keeps (e.g. kt-labor's `WeekN_Report.xlsx`, «งานแก้ไขและข้อเสนอแนะ») is updated only when the
 user asks for it.

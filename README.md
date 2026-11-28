@@ -6,14 +6,10 @@ The single source of truth for the rule files and skills Claude Code reads.
 
 - `claude/` — the source files (edit here only) · `~/.claude/CLAUDE.md` is a symlink to `claude/CLAUDE.md`, and its
   `@import`s resolve from the real path in `claude/`
-  - `CLAUDE.md` — the entry point that `@import`s the others
-  - `IDENTITY.md` — how the dev works (habits learned from their messages) and how to keep learning them
-  - `GIT.md` — the word "push": put the work on the repo's dev branch (merge `--no-ff`) and push
-  - `CROSS-REPO-DOCS.md` — sending docs to another repo: write them there + in its `HANDOFF.md`, then the sender is done
-  - `WORKING-RULES.md` — general working rules (HANDOFF, finding answers, agents and the advisor, checks, building),
-    moved out of Claude auto-memory
-  - `WAYFINDER.md` — plan versus build: when to plan first, `implement` builds, run-to-the-end lists
-  - `RULES-HISTORY.md` — the long form of `WORKING-RULES.md` (the why, the user's words, dates); not imported
+  - `CLAUDE.md` — every global rule in one file (merged 2026-11-28), in sections: Workflow (plan versus build,
+    `implement` builds, run-to-the-end lists), The dev (how the dev works and how to keep learning it), Git (the word
+    "push", commit on judgment), Cross-repo docs, Working rules (numbered items); it ends with `@DB-ACCESS.md`
+  - `RULES-HISTORY.md` — the long form of the Working rules section (the why, the user's words, dates); not imported
   - `DB-ACCESS.md` — gitignored (internal hosts): the always-loaded core of the DB rules; the rest is the `db-access` skill
 - `skills/` — Claude Code skills, one folder per skill (the folder name matches the `name:` in its `SKILL.md`) ·
   `sync.sh` links each one to `~/.claude/skills/<name>` · a real folder found at a link target is moved to `.backup/`,
@@ -88,7 +84,7 @@ mklink /D "%USERPROFILE%\.claude\skills\pause" C:\src\dotfiles\skills\pause
 
 ## What the build steps use
 
-The `build-steps` skill (pointed at from `claude/WAYFINDER.md`) hands some build steps to the skills below. Each one
+The `build-steps` skill (pointed at from `~/.claude/CLAUDE.md` › Workflow) hands some build steps to the skills below. Each one
 is optional: a missing one is named with the command to install it, and the step is done by hand with its proof. `install.sh` installs all of them; the commands below are for doing it by hand.
 
 | What | From | Install |
@@ -114,11 +110,12 @@ let the agent edit its own settings; `install.sh` prints them at the end until t
 `syncClaudeAiSkills: false` also stops older copies of `pause`, `resume` and the user's retired `wayfinder` uploaded to
 claude.ai from loading beside the ones in use.
 
-## Adding a rule file
+## Adding a rule
 
-1. Write `claude/<NAME>.md` — rules that apply to every project go here, not in Claude auto-memory.
-2. Add `@<NAME>.md` to `claude/CLAUDE.md` — Claude Code picks it up from the next session; no extra link needed.
-3. Add a line under "Layout" above.
+1. Rules that apply to every project go into the right section of `claude/CLAUDE.md`, not in Claude auto-memory; the
+   why goes into `claude/RULES-HISTORY.md`.
+2. Anything with internal hosts or data goes into the gitignored `claude/DB-ACCESS.md` or a gitignored skill, never
+   into `CLAUDE.md` (the remote is public).
 
 ## Adding a skill
 

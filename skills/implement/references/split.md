@@ -34,7 +34,7 @@ Any question you can't answer concretely is a **no**: serialize, and say why in 
 
 **Three shapes, in order of how safe they are:**
 
-- **Read fan-out — always available.** Independent read-only work: searching several areas, comparing approaches, auditing multiple files, reading another repo. Run as many at once as the work needs — there is no cap (`WORKING-RULES.md` item 3). This also preserves the main session's context on long tasks, which is half the reason to reach for it.
+- **Read fan-out — always available.** Independent read-only work: searching several areas, comparing approaches, auditing multiple files, reading another repo. Run as many at once as the work needs — there is no cap (`~/.claude/CLAUDE.md` › Working rules item 3). This also preserves the main session's context on long tasks, which is half the reason to reach for it.
 - **Review fan-out — §4's round.** Same mechanics as here; §4 owns the rules for it. More than one reviewer only when the dimensions are genuinely separate (correctness vs. cross-stack contract, say), never the same brief twice for a second opinion.
 - **Build fan-out — the narrow one.** Two agents editing at once is allowed only when every condition below holds. Any one missing → serialize, and say in §8 that you did.
   - **Disjoint file sets, decided up front.** Each slice names the files it owns; one file has exactly one owner. Overlap isn't negotiated mid-flight — it's a sign the split is wrong.

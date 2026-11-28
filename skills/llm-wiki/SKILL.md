@@ -19,7 +19,7 @@ user 2026-11-28 (advisor workflow, "ใช่ทั้งหมด").
 - Called from a project session: find the project's row in `projects.md` by its repo path and use that folder. A project
   not listed yet → add its row (repo, origin default, base "repo rules", wiki = repo folder name in kebab-case).
 - No advisor repo on this machine, or the repo already has its own `wiki/` folder → use `<project root>/wiki/`.
-- Writes land in the advisor repo, not the project repo; the advisor commits them (GIT.md).
+- Writes land in the advisor repo, not the project repo; the advisor commits them (`~/.claude/CLAUDE.md` › Git).
 
 ## Layout (per wiki)
 
@@ -77,6 +77,6 @@ links, pages missing from `index.md`, gaps worth a new source or question. Log `
 - Every claim on a page traces to a source page or a raw file. Interpretations are labelled as such.
 - Never put credentials, tokens, connection strings or personal data from a source into a page; note "redacted" instead.
 - Log lines start with `## [YYYY-MM-DD] <op> |` so `grep "^## \[" wiki/log.md | tail` works.
-- Committing the wiki follows the repo it lives in (the advisor repo by default) and GIT.md; this skill does not commit.
+- Committing the wiki follows the repo it lives in (the advisor repo by default) and `~/.claude/CLAUDE.md` › Git; this skill does not commit.
 - Past a few hundred pages, `index.md` alone gets slow: suggest a local search tool (e.g. qmd) instead of building one
   unasked.

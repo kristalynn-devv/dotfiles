@@ -20,7 +20,7 @@ This skill runs two ways:
 
 A casual "wait" or "pause, let me think" is neither, so just wait. Text typed after `/pause` is the user's note for this pause; put it in the note verbatim.
 
-**This skill never commits and never pushes.** It doesn't commit the note, doesn't commit work in progress, and doesn't push any branch, even as a backup. Code is backed up as files (section 6). The only commits that happen during this work are a run-to-the-end list's own per-item commits, under `GIT.md`.
+**This skill never commits and never pushes.** It doesn't commit the note, doesn't commit work in progress, and doesn't push any branch, even as a backup. Code is backed up as files (section 6). The only commits that happen during this work are a run-to-the-end list's own per-item commits, under `~/.claude/CLAUDE.md` › Git.
 
 If a tool named here isn't available in this session (in Claude Code CLI, for example), skip that step and say what was skipped. There, the note at the project root is enough on its own.
 
@@ -36,7 +36,7 @@ If nothing at all has been done or decided, say so in one line and write nothing
 - Finish or undo the step in progress, so no file is left half-written. If the step can't finish quickly, leave it and record exactly what is half-done.
 - Start nothing new. Take no irreversible action after /pause, even if it was the next step; record it as not yet done.
 - Check background work started this session: agents, background commands, scheduled tasks. Stop what should stop; record what keeps running and when it ends.
-- If a run-to-the-end list is running (WORKING-RULES 11): finish the current item's commit if it is close to green, otherwise park it (named stash, question under Blockers). Update the queue.
+- If a run-to-the-end list is running (`~/.claude/CLAUDE.md` › Working rules 11): finish the current item's commit if it is close to green, otherwise park it (named stash, question under Blockers). Update the queue.
 - Verify state when it's cheap (run the tests, open the file, read the artifact), so the note records checked facts.
 
 ## 3. Gather the picture

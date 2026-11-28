@@ -8,8 +8,9 @@ branch: main · `git status -sb` says whether it is pushed. Rewritten 2026-11-28
 "clean leancode และอื่นๆ ใน dotfiles" → "ใช่ทั้งหมด"); the earlier note's history is in git (`git log -- HANDOFF.md`).
 
 What is in use:
-- Rule files `claude/*.md`, imported by `claude/CLAUDE.md`: `WAYFINDER.md`, `IDENTITY.md`, `GIT.md`,
-  `CROSS-REPO-DOCS.md`, `WORKING-RULES.md`, `DB-ACCESS.md` (gitignored). `RULES-HISTORY.md` is not imported.
+- Rules: `claude/CLAUDE.md` (sections Workflow, The dev, Git, Cross-repo docs, Working rules) imports
+  `DB-ACCESS.md` (gitignored) — two files loaded per session, about 11k tokens. Merged from six files 2026-11-28 [user:
+  "memory files 7ไฟล์ ให้เหลือไฟล์เดียวได้ไหม" → "1 เหลือ 2 ไฟล์"]. `RULES-HISTORY.md` is not imported.
 - Skills in `skills/`: `implement`, `advisor`, `ask-advisor`, `llm-wiki`, `feedback`, `build-steps`, `cursor-dispatch`, `pause`,
   `resume`, `db-access` (gitignored).
 - Skills outside this repo, in `~/.claude/skills`: `graphify`, `humanizer`, `impeccable`, `playwright-cli`,
@@ -24,10 +25,10 @@ What is in use:
   its gitignored friction log kept at `.backup/leancode/FRICTION.md`. Its build rules were gathered the same day into skill
   `implement` [user: "แต่กฏตอน implement ยังใช้เหมือนเดิม" → "ทำของใหม่เลย แต่รวบรวมของเดิมมาใช้"]: every section
   kept, tunables baked in (review only on high-risk work, light check per commit, deploy-gating checks at push, no cap
-  on parallel agents), commits by `GIT.md`, `.leancode/` → `.scratch/`, versioning/adapters/FRICTION dropped.
-  `WORKING-RULES.md` 10 sends every code change to it; 11 runs a list to the end. The Cursor guard
+  on parallel agents), commits by `~/.claude/CLAUDE.md` › Git, `.leancode/` → `.scratch/`, versioning/adapters/FRICTION dropped.
+  `~/.claude/CLAUDE.md` › Working rules 10 sends every code change to it; 11 runs a list to the end. The Cursor guard
   moved to `cursor/guard.sh` with `cursor/guard-patterns.txt` (tested: blocks `git reset --hard`, passes
-  `git status`). `WAYFINDER-LEANCODE.md` became `WAYFINDER.md`; `session-commit-and-leancode.mdc` became
+  `git status`). `WAYFINDER-LEANCODE.md` became `~/.claude/CLAUDE.md` › Workflow; `session-commit-and-leancode.mdc` became
   `session-commit.mdc`.
 - **Advisor workflow** [user, 2026-11-28]: engineer in a project session → `ask-advisor` → the advisor session in
   `~/WORK/advisor` (skill `advisor`, which replaced `hub-session`) answers from the wiki, claude-mem and the repo,
@@ -39,7 +40,7 @@ What is in use:
   The "classic.SessionStart hook was skipped" notes come from Claude Code's `cc-plugin-sec-default` and are harmless
   (claude-mem `docs/public/hooks-architecture.mdx`; capture checked in the DB).
 - **task-observer** [user, 2026-11-26]: installed as a skill only; its always-on activation (SessionStart hook + a
-  31-line block in `CLAUDE.md`) was not added — it would load in every session and overlaps IDENTITY.md "Keep learning".
+  31-line block in `CLAUDE.md`) was not added — it would load in every session and overlaps `~/.claude/CLAUDE.md` › The dev "Keep learning".
 - Plugins `owasp-security@agamm` and `ui-ux-pro-max@ui-ux-pro-max-skill` uninstalled 2026-11-28 (disabled since
   2026-11-13 for low use).
 - `caveman` [user, 2026-11-09]: reinstalled, hooks inject its terse-reply mode into every session and subagent. Not in
@@ -53,7 +54,7 @@ What is in use:
 - `antd` MCP [user, 2026-10-29]: from the global `@ant-design/cli`, user scope; `install.sh` step 4c adds it.
 - `wayfinder` is `mattpocock-skills:wayfinder` [user, 2026-10-16].
 - Every harness [user, 2026-11-11]: Claude Code (VS Code extension + desktop Code tab, both read `~/.claude`) and
-  Cursor (`sync.sh` §3). Cursor asks before a commit (`session-commit.mdc`); `GIT.md`'s commit on judgment stays for
+  Cursor (`sync.sh` §3). Cursor asks before a commit (`session-commit.mdc`); `~/.claude/CLAUDE.md` › Git's commit on judgment stays for
   Claude Code.
 - Hook `require-agent-model.py` removed [user, 2026-11-17]; a machine set up earlier still has its PreToolUse entry in
   `settings.json` to delete by hand.

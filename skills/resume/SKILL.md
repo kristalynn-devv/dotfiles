@@ -9,7 +9,7 @@ Pick up work saved by /pause (a pause or a checkpoint), or a HANDOFF.md written 
 
 Text after `/resume` is either the answer to the pending decision ("/resume B", "/resume ใช้แบบที่ 2") or which work or note to use.
 
-**This skill never commits and never pushes.** Restoring creates a local branch and applies a patch to the working tree, nothing more. From there, commits happen only under `GIT.md` and WORKING-RULES 5–6.
+**This skill never commits and never pushes.** Restoring creates a local branch and applies a patch to the working tree, nothing more. From there, commits happen only under `~/.claude/CLAUDE.md` › Git and `~/.claude/CLAUDE.md` › Working rules 5–6.
 
 If a tool named here isn't available in this session, skip that step and say what was skipped.
 
@@ -67,7 +67,7 @@ First set Status in the note to "in progress (resumed <time>)" and add a Log lin
 
 Then start the next action in the same turn, unless a decision is still open or the next action needs confirmation.
 
-- **implement**: load skill `implement` and continue its walk at the step marked ▶, with Decisions locked; it keeps HANDOFF.md current. If the note holds a run-to-the-end queue and the user wants it run, resume it at the first open item (WORKING-RULES 11).
+- **implement**: load skill `implement` and continue its walk at the step marked ▶, with Decisions locked; it keeps HANDOFF.md current. If the note holds a run-to-the-end queue and the user wants it run, resume it at the first open item (`~/.claude/CLAUDE.md` › Working rules 11).
 - **general**: continue from Next action, keeping Decisions and Tried & rejected closed unless the user reopens them.
 
 ## 6. Keep the note honest

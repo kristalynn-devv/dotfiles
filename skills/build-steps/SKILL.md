@@ -5,7 +5,7 @@ description: Which dedicated skill runs each build step (tdd, diagnosing-bugs, i
 
 # Build steps with a skill of their own
 
-`implement` walks the build and decides what has to be proven (WORKING-RULES 10). The steps below run through a dedicated skill: Matt Pocock's, from the `mattpocock-skills` plugin and called as `mattpocock-skills:<name>`, and for UI work `impeccable:impeccable`. The skill supplies the how; the proof in the last column is still owed.
+`implement` walks the build and decides what has to be proven (`~/.claude/CLAUDE.md` › Working rules 10). The steps below run through a dedicated skill: Matt Pocock's, from the `mattpocock-skills` plugin and called as `mattpocock-skills:<name>`, and for UI work `impeccable:impeccable`. The skill supplies the how; the proof in the last column is still owed.
 
 | Build step | Skill | Still owed (the proof) |
 |---|---|---|
@@ -19,9 +19,9 @@ description: Which dedicated skill runs each build step (tdd, diagnosing-bugs, i
 | Facts from docs or other primary sources | `research` | each claim keeps its source; no recommendations |
 | A step only a person can take | `wizard` | the evidence that has to come back |
 
-- Review runs only on a high-risk change, before its commit (`WORKING-RULES.md` items 5–6a); every other change gets no round, and "push" runs the full test suite without one.
+- Review runs only on a high-risk change, before its commit (`~/.claude/CLAUDE.md` › Working rules items 5–6a); every other change gets no round, and "push" runs the full test suite without one.
 - `code-review` takes two inputs up front: the fixed point — the commit this change started from (the commit before the high-risk change) — and the spec: the ticket or spec file, or the goal sentence when there is none.
-- When one of these skills says to ask the user, or to commit: interactive → ask, as it says. A run-to-the-end list → pick or park (WORKING-RULES 11) and log it. Commits and pushes follow `GIT.md`, never the skill.
+- When one of these skills says to ask the user, or to commit: interactive → ask, as it says. A run-to-the-end list → pick or park (`~/.claude/CLAUDE.md` › Working rules 11) and log it. Commits and pushes follow `~/.claude/CLAUDE.md` › Git, never the skill.
 - **daisyUI** (`daisyui:daisyui`) is optional on an existing project: use it where the project already uses daisyUI, or when the user asks. A new project uses it from the start — that choice is already made, so it is not a question to return. The skill's own description says to load it for any HTML or JSX; this rule is the one that holds.
 - A typo fix has none of these steps, and loads none of these skills.
 

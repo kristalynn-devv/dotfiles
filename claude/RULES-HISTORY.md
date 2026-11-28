@@ -1,6 +1,6 @@
 # Working rules — long form (history, the user's words, measurements)
 
-Not loaded into sessions. `WORKING-RULES.md` holds the rules themselves; this is the full text as of 2026-11-13,
+Not loaded into sessions. The Working rules section of `CLAUDE.md` holds the rules themselves (`WORKING-RULES.md` until 2026-11-28, when the rule files were merged into `CLAUDE.md`; names below are as they were); this is the full text as of 2026-11-13,
 kept as the record of why each rule exists. Add the why of a new rule here, and only the rule there.
 
 

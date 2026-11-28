@@ -7,7 +7,7 @@ description: "Build rules for any change to code, whatever its size: features, b
 
 The build side of plan → build: the decisions are settled and the next move is editing code. This file is the core — the goal rule, the tier ladder, the map of the walk, the safety rules and Never. Each step's detail is in `references/`, and each pointer below is a gate: read that file before the step it names. Section numbers (§0–§10) are kept from the retired `leancode` skill; the map says which file holds each one.
 
-**The user's global rules win where they differ** (`~/dotfiles/claude/`: `GIT.md`, `WORKING-RULES.md`, `IDENTITY.md`). Known differences: commits and pushes follow `GIT.md` (commit and push on judgment), not leancode's "only when asked"; stale docs, wording and drift a change causes are swept and fixed in the same piece of work (`IDENTITY.md`), not only flagged; anything found goes into `HANDOFF.md` right away (`WORKING-RULES.md` 1a); a builder commits on its own branch and the main session verifies (`WORKING-RULES.md` 4b).
+**The user's global rules win where they differ** (`~/dotfiles/claude/`: `~/.claude/CLAUDE.md` › Git, `~/.claude/CLAUDE.md` › Working rules, `~/.claude/CLAUDE.md` › The dev). Known differences: commits and pushes follow `~/.claude/CLAUDE.md` › Git (commit and push on judgment), not leancode's "only when asked"; stale docs, wording and drift a change causes are swept and fixed in the same piece of work (`~/.claude/CLAUDE.md` › The dev), not only flagged; anything found goes into `HANDOFF.md` right away (`~/.claude/CLAUDE.md` › Working rules 1a); a builder commits on its own branch and the main session verifies (`~/.claude/CLAUDE.md` › Working rules 4b).
 
 **After a compaction**, a section named below that is no longer in front of you → read this file again, and the reference for the step you are on, before the next edit.
 
@@ -53,7 +53,7 @@ The build side of plan → build: the decisions are settled and the next move is
 
 Can't read a gate's file → its step's rule here is the rule; a split or autopilot without its file doesn't happen (serialize, or walk the first task the ordinary way) and §8 says so.
 
-**Checks and review, as set for this user.** A commit inside the walk gets a light check only: it builds, lint and type-check of the touched code pass, the relevant tests are green, nothing errors. The project's whole check — the jobs its CI runs before deploy — runs once at "push" (`GIT.md` §What "push" runs first). The delegated review round runs only on a high-risk change (hard to undo, or touching security, money, or user data), before its commit; no round on other changes, at Land, at push, or at the end of an autopilot run, and §8 says those were not reviewed. A high-risk change also runs the whole check before its commit.
+**Checks and review, as set for this user.** A commit inside the walk gets a light check only: it builds, lint and type-check of the touched code pass, the relevant tests are green, nothing errors. The project's whole check — the jobs its CI runs before deploy — runs once at "push" (`~/.claude/CLAUDE.md` › Git §What "push" runs first). The delegated review round runs only on a high-risk change (hard to undo, or touching security, money, or user data), before its commit; no round on other changes, at Land, at push, or at the end of an autopilot run, and §8 says those were not reviewed. A high-risk change also runs the whole check before its commit.
 
 ## §2 Safety rules while building
 
@@ -71,7 +71,7 @@ Can't read a gate's file → its step's rule here is the rule; a split or autopi
 Only files on disk and git state survive a new session. Single-sitting work needs no note; create `HANDOFF.md` (repo root, template in `references/handoff.md`; sections Goal, Steps, State, Decisions, Next action, Blockers, Found, not fixed — `pause` and `resume` find them by name) as soon as any of these is true, whichever comes first:
 
 - more than 3 steps still open, or one step you can't finish in a single go (a long build, a deploy, a review round);
-- remaining context is under 20%, or the session has been compacted once (and `WORKING-RULES.md` 4d at ~500k tokens);
+- remaining context is under 20%, or the session has been compacted once (and `~/.claude/CLAUDE.md` › Working rules 4d at ~500k tokens);
 - about to start anything irreversible or long-running;
 - a rate limit, a context reset (`/clear`), or an interrupt already in sight.
 
@@ -89,8 +89,8 @@ A task that grew past one sitting gets its note retroactively, from `git diff` a
 - Guess past an open decision instead of returning it to the caller (§0).
 - Claim high confidence without evidence to back it, or a scope from a search you cut short.
 - Accept a weaker proof than the kind of work asks for, leave an edit behind in a read-only kind, or take a prototype to production without rebuilding it through the walk.
-- Commit, stash, revert, or tidy work that isn't yours; commit or push outside what `GIT.md` allows.
-- Edit a doc without the user's go-ahead — except the automatic split in §9, and drift this change caused (`IDENTITY.md`).
+- Commit, stash, revert, or tidy work that isn't yours; commit or push outside what `~/.claude/CLAUDE.md` › Git allows.
+- Edit a doc without the user's go-ahead — except the automatic split in §9, and drift this change caused (`~/.claude/CLAUDE.md` › The dev).
 - Rewrite for speed without a measurement named in the §8 report.
 - Invent a new folder, layer, or pattern on a refactor.
 - In autopilot: stop mid-run to ask in chat or end the turn between tasks, push, amend, rebase, or stage with `git add -A`. Turn autopilot on without being asked.
