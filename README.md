@@ -12,12 +12,15 @@ The single source of truth for the rule files and skills Claude Code reads.
   - `CROSS-REPO-DOCS.md` — sending docs to another repo: write them there + in its `HANDOFF.md`, then the sender is done
   - `WORKING-RULES.md` — general working rules (HANDOFF, finding answers, agents and the advisor, checks, building),
     moved out of Claude auto-memory
-  - `WAYFINDER.md` — plan versus build: when to plan first, how a build proves itself, run-to-the-end lists
+  - `WAYFINDER.md` — plan versus build: when to plan first, `implement` builds, run-to-the-end lists
   - `RULES-HISTORY.md` — the long form of `WORKING-RULES.md` (the why, the user's words, dates); not imported
   - `DB-ACCESS.md` — gitignored (internal hosts): the always-loaded core of the DB rules; the rest is the `db-access` skill
 - `skills/` — Claude Code skills, one folder per skill (the folder name matches the `name:` in its `SKILL.md`) ·
   `sync.sh` links each one to `~/.claude/skills/<name>` · a real folder found at a link target is moved to `.backup/`,
   not deleted
+  - `implement/` — the build rules for any code change (gathered from the retired leancode, 2026-11-28): plan and
+    goal, proof per kind, build lean, verify, review on risk, audit, land, report; a small core with `references/` read
+    at each step
   - `pause/` — `/pause`: save the context, where work stopped and any open decision to `HANDOFF.md`; also checkpoints
   - `resume/` — `/resume`: find the note, check it against reality, settle the open decision, continue
   - `build-steps/` — which skill runs each build step and the proof it still owes, the plugin check and the fallbacks
@@ -90,7 +93,7 @@ is optional: a missing one is named with the command to install it, and the step
 
 | What | From | Install |
 |---|---|---|
-| `pause`, `resume`, `advisor`, `ask-advisor`, `llm-wiki`, `feedback`, `build-steps`, `cursor-dispatch` | `skills/` in this repo | `sync.sh` |
+| `implement`, `pause`, `resume`, `advisor`, `ask-advisor`, `llm-wiki`, `feedback`, `build-steps`, `cursor-dispatch` | `skills/` in this repo | `sync.sh` |
 | `mattpocock-skills` (wayfinder, tdd, diagnosing-bugs, code-review, research, …) | plugin | `claude plugin marketplace add anthropics/claude-plugins-official` (a fresh machine may not have it yet), then `claude plugin install mattpocock-skills@claude-plugins-official` |
 | `context7` (library docs) | plugin | `claude plugin install context7@claude-plugins-official` |
 | `impeccable` (UI structure and checks) | plugin | `claude plugin marketplace add pbakaus/impeccable && claude plugin install impeccable@impeccable` |

@@ -10,7 +10,7 @@ branch: main · `git status -sb` says whether it is pushed. Rewritten 2026-11-28
 What is in use:
 - Rule files `claude/*.md`, imported by `claude/CLAUDE.md`: `WAYFINDER.md`, `IDENTITY.md`, `GIT.md`,
   `CROSS-REPO-DOCS.md`, `WORKING-RULES.md`, `DB-ACCESS.md` (gitignored). `RULES-HISTORY.md` is not imported.
-- Skills in `skills/`: `advisor`, `ask-advisor`, `llm-wiki`, `feedback`, `build-steps`, `cursor-dispatch`, `pause`,
+- Skills in `skills/`: `implement`, `advisor`, `ask-advisor`, `llm-wiki`, `feedback`, `build-steps`, `cursor-dispatch`, `pause`,
   `resume`, `db-access` (gitignored).
 - Skills outside this repo, in `~/.claude/skills`: `graphify`, `humanizer`, `impeccable`, `playwright-cli`,
   `security-audit`.
@@ -21,8 +21,11 @@ What is in use:
 
 ### Decisions
 - **leancode retired** [user, 2026-11-28]: `skills/leancode/` deleted (history in git, last at `7488c6a`, 5.14.0);
-  its gitignored friction log kept at `.backup/leancode/FRICTION.md`. Building is now `WORKING-RULES.md` 10 (build,
-  prove it, light-check, commit) and 11 (run a list to the end); review only on high-risk work (5). The Cursor guard
+  its gitignored friction log kept at `.backup/leancode/FRICTION.md`. Its build rules were gathered the same day into skill
+  `implement` [user: "แต่กฏตอน implement ยังใช้เหมือนเดิม" → "ทำของใหม่เลย แต่รวบรวมของเดิมมาใช้"]: every section
+  kept, tunables baked in (review only on high-risk work, light check per commit, deploy-gating checks at push, no cap
+  on parallel agents), commits by `GIT.md`, `.leancode/` → `.scratch/`, versioning/adapters/FRICTION dropped.
+  `WORKING-RULES.md` 10 sends every code change to it; 11 runs a list to the end. The Cursor guard
   moved to `cursor/guard.sh` with `cursor/guard-patterns.txt` (tested: blocks `git reset --hard`, passes
   `git status`). `WAYFINDER-LEANCODE.md` became `WAYFINDER.md`; `session-commit-and-leancode.mdc` became
   `session-commit.mdc`.

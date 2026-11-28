@@ -67,7 +67,7 @@ First set Status in the note to "in progress (resumed <time>)" and add a Log lin
 
 Then start the next action in the same turn, unless a decision is still open or the next action needs confirmation.
 
-- **implement**: continue at the step marked ▶, with Decisions locked, keeping HANDOFF.md current as you go (WORKING-RULES 10). If the note holds a run-to-the-end queue and the user wants it run, resume it at the first open item (WORKING-RULES 11).
+- **implement**: load skill `implement` and continue its walk at the step marked ▶, with Decisions locked; it keeps HANDOFF.md current. If the note holds a run-to-the-end queue and the user wants it run, resume it at the first open item (WORKING-RULES 11).
 - **general**: continue from Next action, keeping Decisions and Tried & rejected closed unless the user reopens them.
 
 ## 6. Keep the note honest

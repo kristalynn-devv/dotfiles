@@ -1,11 +1,11 @@
 ---
-description: A commit checks and stages only this session's files.
+description: Writing code follows the implement skill. A commit checks and stages only this session's files.
 alwaysApply: true
 ---
 
 # Session scope
 
-Writing code follows `~/.claude/WAYFINDER.md` and `~/.claude/WORKING-RULES.md` 10: say what proves the change done, build it, show that proof.
+Writing code starts by reading and following the implement skill at `~/.claude/skills/implement/SKILL.md`. It decides the steps and the proof.
 
 When the work is done, ask the user whether to commit it, naming the files and the branch. Also ask before any commit on a branch that is not the repo's dev branch (e.g. `develop`, `development`). Commit only on a yes. The commit holds this session's change and nothing else. This settles the clash with `GIT.md`'s "commit on judgment" for this harness — the user, 2026-11-11: "ถามเมื่อเสร็จงานและถ้าไม่ได้อยู่ branch dev".
 

@@ -11,7 +11,7 @@ that is not a quick question, read and follow:
 - `~/.claude/IDENTITY.md` — how the user works; replies are in Thai
 - `~/.claude/WORKING-RULES.md` — tracking work, finding answers, agents, checks, UI, code, money
 - `~/.claude/GIT.md` — commit, merge and push
-- `~/.claude/WAYFINDER.md` — plan versus build; every code change is built with its proof (`WORKING-RULES.md` 10)
+- `~/.claude/WAYFINDER.md` — plan versus build; every code change goes through `~/.claude/skills/implement/SKILL.md`
 - `~/.claude/DB-ACCESS.md` — before any database connection; then the full rules and the DB map in `~/.claude/skills/db-access/SKILL.md`
 - `~/.claude/skills/build-steps/SKILL.md` — before a build step that has its own skill (tests, a hard bug, UI, review, merge conflict)
 - `~/.claude/CROSS-REPO-DOCS.md` — before writing into another repo

@@ -87,14 +87,15 @@ Every project, every session, every subagent. The why of each rule, with the use
 
 ## Building
 
-10. **Build directly, prove it with evidence** — any code change, whatever its size: say what proves it done (a test,
-    a run, the screen), build, show that proof, then light-check and commit (5, 6, `GIT.md`) · new tests, hard bugs, UI,
-    reviews → the step's skill (`build-steps`) · medium to large work → the advisor (4g) · a question the code or the
-    rules can't answer → ask, don't guess (`WAYFINDER.md`) · `leancode` retired 2026-11-28 (the user: "clean leancode
-    และอื่นๆ ใน dotfiles" → "ใช่ทั้งหมด"); its earlier rules are in `RULES-HISTORY.md` 10–11.
+10. **Every implementation goes through skill `implement`** — any code change, whatever its size (features, fixes,
+    refactors, one-spot edits, UI tweaks, tests, migrations, shipped scripts, resuming from HANDOFF) · not `implement`:
+    questions, research, data lookups, config/docs/memory/rules edits, routine git/shell · it holds the build rules
+    gathered from the retired `leancode` (plan and goal, proof per kind, build lean, verify, review on risk, audit,
+    land, report) · medium to large work → the advisor (4g) · the user 2026-11-28: "แต่กฏตอน implement ยังใช้เหมือนเดิม"
+    → "ทำของใหม่เลย แต่รวบรวมของเดิมมาใช้".
 11. **"รันให้จบ" / "ทำให้หมด" / "autopilot" = run the whole list to the end** — blocking order, no stop between
     items; a question mid-run → pick or park, log in `HANDOFF.md`, go on; questions and parked items reach the user
-    once, in the end-of-run report (`WAYFINDER.md` item 0).
+    once, in the end-of-run report (`WAYFINDER.md` item 0; `implement` holds the run's rules).
 
 ## UI
 

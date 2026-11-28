@@ -5,7 +5,7 @@ description: Which dedicated skill runs each build step (tdd, diagnosing-bugs, i
 
 # Build steps with a skill of their own
 
-The build proves its own work (WORKING-RULES 10). The steps below run through a dedicated skill: Matt Pocock's, from the `mattpocock-skills` plugin and called as `mattpocock-skills:<name>`, and for UI work `impeccable:impeccable`. The skill supplies the how; the proof in the last column is still owed.
+`implement` walks the build and decides what has to be proven (WORKING-RULES 10). The steps below run through a dedicated skill: Matt Pocock's, from the `mattpocock-skills` plugin and called as `mattpocock-skills:<name>`, and for UI work `impeccable:impeccable`. The skill supplies the how; the proof in the last column is still owed.
 
 | Build step | Skill | Still owed (the proof) |
 |---|---|---|

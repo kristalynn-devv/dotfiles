@@ -202,7 +202,9 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
 checks; delete `skills/leancode/` (history in git, `7488c6a`); move the Cursor guard to `cursor/guard.sh`; keep
 `pause`, `resume`, `build-steps` without leancode; `WAYFINDER-LEANCODE.md` → `WAYFINDER.md`. Items 10 and 11 of
 `WORKING-RULES.md` now read "build directly, prove it" and "run a list to the end". The two items below are the
-retired rules, kept as history.
+retired rules, kept as history. **Same day**, the user: "แต่กฏตอน implement ยังใช้เหมือนเดิม" → "ทำของใหม่เลย แต่
+รวบรวมของเดิมมาใช้": leancode's rules were gathered into the new skill `implement` (tunables baked in, commits by
+`GIT.md`), and item 10 again sends every code change through a skill — now `implement`.
 
 10. **Every implementation goes through `leancode`** — any change to code, whatever its size: features, bug fixes,
     refactors, a one-spot edit, UI tweaks, tests, migrations, scripts that ship, resuming from HANDOFF, autopilot

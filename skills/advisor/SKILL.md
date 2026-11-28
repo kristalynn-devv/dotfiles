@@ -55,7 +55,7 @@ Done directly in the advisor, no worker:
 - Routine git reads (`status`, `log`, `diff`).
 
 Every change to code, config, docs, tests, migrations or a repo's HANDOFF, and every build, fix, refactor, UI tweak,
-data write, commit or push, is built with its proof (WORKING-RULES 10). Who types the code depends on its size (§1a):
+data write, commit or push, goes through skill `implement` (WORKING-RULES 10). Who types the code depends on its size (§1a):
 the advisor itself for small work, Cursor for medium to large.
 
 ## 1a. Small → built here, medium to large → Cursor
@@ -132,7 +132,7 @@ Group: <sidebar group of this work stream; a nested session you start goes into 
 Decisions already made: <each with the user's words and date>
 The change: <exact behaviour, UI copy, data rules>
 Done when: <tests / checks that must pass, screens to match, data to hold>
-Rules: build it and show its proof (WORKING-RULES 10). At ~500k context follow WORKING-RULES 4d/4e (the context-check hook
+Rules: build through skill implement (WORKING-RULES 10). At ~500k context follow WORKING-RULES 4d/4e (the context-check hook
 reminds): safe stop, HANDOFF, fresh nested session, never fork. Worktree work merges --no-ff into <base branch> when
 light-checked (GIT.md), then you remove your own worktree and return to <base branch> (repo memory); push only on the
 user's word.

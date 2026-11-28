@@ -3,10 +3,9 @@
 **Core rule: the planning side decides, the build side acts. Never swap roles, never skip a step.**
 
 Planning can come from any skill — `mattpocock-skills:wayfinder` fits best when a map already exists, but it is not the
-only way. Building is done directly: once the decisions are complete and the next move is editing code, build it,
-prove it works with evidence (a test, a run, the screen), then light-check and commit by `WORKING-RULES.md` 5–6 and
-`GIT.md`. Medium to large work goes to the advisor (`WORKING-RULES.md` 4g). `leancode` was retired 2026-11-28 (the
-user: "clean leancode และอื่นๆ ใน dotfiles" → "ใช่ทั้งหมด").
+only way. The build side is always skill **`implement`**: once the decisions are complete and the next move is editing
+code, `implement` takes it, whatever the size (`WORKING-RULES.md` 10). Medium to large work goes to the advisor
+(`WORKING-RULES.md` 4g). `implement` gathers the rules of the retired `leancode` (2026-11-28).
 
 ## Choosing a path
 
@@ -26,7 +25,7 @@ Before starting anything that isn't a quick question, check in this order:
    → Plan first, don't write code yet (`mattpocock-skills:wayfinder` in Chart mode, or another planner that fits
    better).
 3. **The way is clear — you know what to change and where**
-   → Build (small here, medium to large through the advisor).
+   → Build through `implement` (small here, medium to large through the advisor).
 
 Not sure whether it's 2 or 3 → plan first, then ask the user one question.
 
