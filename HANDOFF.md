@@ -58,6 +58,10 @@ What is in use:
 - Hook `require-agent-model.py` removed [user, 2026-11-17]; a machine set up earlier still has its PreToolUse entry in
   `settings.json` to delete by hand.
 - One real clone per machine, at `~/dotfiles` [user, 2026-10-16]; `bash ~/dotfiles/install.sh` sets a machine up.
+- Commit email for this repo [user, 2026-11-28]: `git config user.email 61614236+kristalynn-devv@users.noreply.github.com`
+  in `~/dotfiles` only (local config, not in the repo: set it again on a new clone), so commits show `kristalynn-devv`
+  on GitHub instead of `kristalynntalaadthai`. The global email stays `kristalynn@talaadthai.com` for talaadthai work.
+  The 45 earlier commits under that email are left as they are (no history rewrite).
 
 ### Found, not fixed
 - `skillOverrides` does not reach a plugin's skills (Claude Code 2.1.301); a plugin whose skills duplicate others can
