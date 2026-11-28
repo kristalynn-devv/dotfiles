@@ -5,7 +5,7 @@ description: "Hand a fully specified build slice (or a question) to Cursor's age
 
 # cursor-dispatch — Claude plans and verifies, Cursor builds
 
-**Only on the user's ask.** Dispatch when the user explicitly asks to send this work or question to Cursor. A repo's CLAUDE.md saying "Cursor implements" does not trigger it on its own; without the ask, Claude builds as usual (recorded 2026-10-20 from the user: "ถ้าไม่มีบอกส่งงานก็ไม่ต้องใช้ … ใช้แค่ตอนสั่ง"). One standing ask: a session the user set as the hub (skill `hub-session`) sends its small, simple work here (hub-session §1a, the user 2026-11-23).
+**Only on the user's ask.** Dispatch when the user explicitly asks to send this work or question to Cursor. A repo's CLAUDE.md saying "Cursor implements" does not trigger it on its own; without the ask, Claude builds as usual (recorded 2026-10-20 from the user: "ถ้าไม่มีบอกส่งงานก็ไม่ต้องใช้ … ใช้แค่ตอนสั่ง"). One standing ask: the advisor session (skill `advisor`) sends its medium to large work here (advisor §1a; the user 2026-11-24, 2026-11-28).
 
 Cursor's agent runs headless from the command line (`cursor-agent -p`). This skill turns a settled slice of work into a brief Cursor can execute without investigating, runs it in its own git worktree, and brings the result back. The main session still owns the proof: Cursor's report is a claim, the diff and the tests are the evidence.
 

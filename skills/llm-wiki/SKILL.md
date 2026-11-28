@@ -1,6 +1,6 @@
 ---
 name: "llm-wiki"
-description: "Build and keep a project's LLM-maintained knowledge wiki (Karpathy's LLM Wiki pattern): raw sources stay untouched, the agent writes and updates interlinked markdown pages, an index and a log. Use when the user asks to start a wiki, add/ingest a source into it, ask the wiki a question, or health-check it (wiki, LLM wiki, ingest, เพิ่มเข้า wiki, สรุปเข้า wiki, ถาม wiki, เช็ค wiki, /llm-wiki), and when a project has a wiki/ folder and the question is about what it covers. Works in any project."
+description: "Build and keep a project's LLM-maintained knowledge wiki (Karpathy's LLM Wiki pattern), kept centrally in the advisor repo (~/WORK/advisor/wiki/<project>/): raw sources stay untouched, the agent writes and updates interlinked markdown pages, an index and a log. Use when the user asks to start a wiki, add/ingest a source into it, ask the wiki a question, or health-check it (wiki, LLM wiki, ingest, เพิ่มเข้า wiki, สรุปเข้า wiki, ถาม wiki, เช็ค wiki, /llm-wiki), and when the advisor answers a question about what a project's wiki covers. Works for any project."
 ---
 
 # LLM Wiki
@@ -10,10 +10,21 @@ artifact: each source is read once and folded into pages that are kept current, 
 files on every question. The user curates sources and asks questions; the agent does all the writing and
 bookkeeping.
 
-## Layout (per project)
+## Where the wiki lives
+
+All project wikis live together in the advisor repo (`$ADVISOR_ROOT`, default `~/WORK/advisor`), one folder per
+project: `$ADVISOR_ROOT/wiki/<project>/`, the name from the `wiki` column of `$ADVISOR_ROOT/projects.md`. Decided by the
+user 2026-11-28 (advisor workflow, "ใช่ทั้งหมด").
+
+- Called from a project session: find the project's row in `projects.md` by its repo path and use that folder. A project
+  not listed yet → add its row (repo, origin default, base "repo rules", wiki = repo folder name in kebab-case).
+- No advisor repo on this machine, or the repo already has its own `wiki/` folder → use `<project root>/wiki/`.
+- Writes land in the advisor repo, not the project repo; the advisor commits them (GIT.md).
+
+## Layout (per wiki)
 
 ```
-wiki/
+<wiki folder>/
   SCHEMA.md     this wiki's own conventions: domain, page types, what to emphasise (co-evolved with the user)
   index.md      catalog: every page, one line each, grouped by type
   log.md        append-only timeline of ingests, queries filed back, lint passes
@@ -21,10 +32,9 @@ wiki/
   pages/        everything the agent writes: sources/, entities/, concepts/, analyses/, overview.md
 ```
 
-- The wiki lives at `<project root>/wiki/` unless the project's `CLAUDE.md`/`AGENTS.md` or an existing folder says
-  otherwise. Look for one before creating a new one.
 - `SCHEMA.md` holds the domain rules, not the project's `CLAUDE.md`, so the always-loaded context stays small. Read it
   before every operation.
+- Paths below (`raw/`, `pages/`, `index.md`, `log.md`) are relative to the wiki folder.
 
 ## Operations
 
@@ -67,6 +77,6 @@ links, pages missing from `index.md`, gaps worth a new source or question. Log `
 - Every claim on a page traces to a source page or a raw file. Interpretations are labelled as such.
 - Never put credentials, tokens, connection strings or personal data from a source into a page; note "redacted" instead.
 - Log lines start with `## [YYYY-MM-DD] <op> |` so `grep "^## \[" wiki/log.md | tail` works.
-- Whether `wiki/` is committed follows the repo's own git rules; this skill does not commit.
+- Committing the wiki follows the repo it lives in (the advisor repo by default) and GIT.md; this skill does not commit.
 - Past a few hundred pages, `index.md` alone gets slow: suggest a local search tool (e.g. qmd) instead of building one
   unasked.
