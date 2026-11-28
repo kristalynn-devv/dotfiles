@@ -36,10 +36,13 @@ Every project, every session, every subagent. The why of each rule, with the use
 4b. **Builders build, the main session verifies** — a builder writes the change and its tests, commits on its branch,
    hands back; no review round or push checks of its own.
 4d. **Context at ~500k tokens → move to a nested session** — bring the step to a safe stop, write where it stands to
-   `HANDOFF.md` (`pause`), fork into a nested session myself (harness fork / hand-off, with the remaining plan and the
-   HANDOFF heading), and start no new work here · plain CLI → ask the user to run `/branch` (or `/fork` with agent
-   view) · in autopilot, finish the ticket in hand first · check 4e first.
-4e. **Before any fork, check it is worth it** — a nested session starts at ~80k tokens · worth it: long work left,
+   `HANDOFF.md` (`pause`), start a **fresh** nested session myself (`start_session` with `context: "fresh"`: a brief
+   naming the HANDOFF heading, files, decisions and what done looks like), and start no new work here · **never a fork
+   or `hand_off_to_session`** — both copy the whole conversation, so the new session starts at the same 500k+ (the
+   user 2026-11-18 "ทำไม fork ออกไปแล้วใช้ context เดิม?", measured 560k) · plain CLI → ask the user to `/clear` then
+   `/resume` from HANDOFF (`/branch` and `/fork` copy the context too) · in a run-to-the-end list, finish the item in hand first
+   · check 4e first.
+4e. **Before any move, check it is worth it** — a fresh nested session starts at ~80k tokens · worth it: long work left,
    or work that runs in parallel · not worth it: a handful of tool calls or a short finish → stay (past 500k too) ·
    say the call in one line: work left, rough size, fork or stay.
 4f. **Keep what enters the context small** —
@@ -53,17 +56,20 @@ Every project, every session, every subagent. The why of each rule, with the use
    (e) check the context size at the start of every user turn; past ~500k, 4d first · a request building on nothing
    here → say it is a good moment for `/clear` ·
    (f) the same long paste twice → suggest keeping it as a file and passing its path.
-4g. **A session the user sets as the checking hub → skill `hub-session`** — it checks and answers; every piece of work
-   asked there goes out: small, simple work → `cursor-dispatch` (the hub's standing ask), medium to large → a brief to a
-   fresh session (worktree, leancode, 4d); findings go back to the same session · unsure → leancode (hub-session §1a) · a batch of feedback to
-   implement → skill `feedback` (runs as hub).
-5. **Review only high-risk changes; the deploy-gating checks run at "push"** — `leancode` tunables `review.when: risky only`,
-   `autopilot.review: by risk` · high-risk (hard to undo, security, money, user data) → review round before its commit
-   (leancode's round + `code-review` Standards/Spec) · everything else: no review round, not per ticket, not at the
-   end of autopilot, not at push · at "push", once, on everything going up: the checks the repo's CI runs before
+4g. **The advisor → skill `advisor`; a project session reaches it through skill `ask-advisor`** — the advisor lives
+   in its own repo `~/WORK/advisor` (every project's wiki under `wiki/<project>/`, `projects.md`, its HANDOFF) · it
+   answers from the wiki, claude-mem and the repo, researches what is unknown and files it in the wiki · work is sized
+   first: small, simple → built directly (in the project session, or in the advisor when asked there) · medium to
+   large → Cursor through `cursor-dispatch` (the advisor's standing ask): the advisor plans, slices, briefs, checks
+   and merges · unsure → Cursor · Cursor unavailable → a fresh worker session in the project repo (worktree, 4d) · findings go back to the same Cursor slice or session · a batch of feedback to implement → skill
+   `feedback` (runs in the advisor) · replaces `hub-session` (the user 2026-11-24, 2026-11-28 "ใช่ทั้งหมด").
+5. **Review only high-risk changes; the deploy-gating checks run at "push"** — high-risk (hard to undo, security,
+   money, user data) → a review round before its commit (`code-review` Standards/Spec, or `/code-review`) · everything
+   else: no review round, not per ticket, not at the end of a run-to-the-end list, not at push · at "push", once, on everything going up: the checks the repo's CI runs before
    deploy, nothing more (`GIT.md` §What "push" runs first).
-6. **A commit inside a skill's or agent's walk gets a light check only** — `check.full_when: at land`: it builds,
-   lint/type-check of the touched code passes, the relevant tests are green, nothing errors · run by the main session.
+6. **A commit gets a light check only** — it builds, lint/type-check of the touched code passes, the relevant tests
+   are green, nothing errors · for a worker's commit, run by the session that checks it (the advisor) · the full suite
+   waits for "push" (item 5).
 6a. **Work left uncommitted or unpushed → ask once, saying what each would do** — "commit → light check + commit
    <files> on <branch>" · "push → deploy-gating checks + merge `--no-ff` to <dev> + `git push origin <dev>`, plus other
    sessions' commits going up" · only in the cases `GIT.md` §Commit and push on judgment says to ask.
@@ -79,26 +85,37 @@ Every project, every session, every subagent. The why of each rule, with the use
    `permissions.ask` rule the user adds · `permissions.ask` prompts in auto mode (not for unattended runs); a
    PreToolUse hook returning "ask" does not prompt · Claude can't edit settings itself → give the user the rule.
 
-## Skill leancode
+## Building
 
-10. **Every implementation goes through `leancode`** — any code change, whatever its size (features, fixes,
-    refactors, one-spot edits, UI tweaks, tests, migrations, shipped scripts, resuming from HANDOFF, autopilot) · not
-    leancode: questions, research, data lookups, config/docs/memory/rules edits, routine git/shell · "รันให้จบ" or
-    "ทำให้หมด" = leancode autopilot (§10) · exception: a hub's small, simple work goes to Cursor (4g).
-11. **Edits to the `leancode` skill itself stay neutral** (`~/.claude/skills/leancode`, public repo) — any harness,
-    any language (English only), no local repo rules · harness points worded "if the harness has X, otherwise Y" ·
-    enforcement in `adapters/` · every SKILL.md edit bumps `version` + CHANGELOG, version in the commit subject.
+10. **Build directly, prove it with evidence** — any code change, whatever its size: say what proves it done (a test,
+    a run, the screen), build, show that proof, then light-check and commit (5, 6, `GIT.md`) · new tests, hard bugs, UI,
+    reviews → the step's skill (`build-steps`) · medium to large work → the advisor (4g) · a question the code or the
+    rules can't answer → ask, don't guess (`WAYFINDER.md`) · `leancode` retired 2026-11-28 (the user: "clean leancode
+    และอื่นๆ ใน dotfiles" → "ใช่ทั้งหมด"); its earlier rules are in `RULES-HISTORY.md` 10–11.
+11. **"รันให้จบ" / "ทำให้หมด" / "autopilot" = run the whole list to the end** — blocking order, no stop between
+    items; a question mid-run → pick or park, log in `HANDOFF.md`, go on; questions and parked items reach the user
+    once, in the end-of-run report (`WAYFINDER.md` item 0).
 
 ## UI
 
 12. **No "—" as a placeholder for a missing value**, every project and screen — hide a column that can't be known;
     say a single missing value in words or leave the cell empty · existing "—" change only when the screen is worked
     on or asked.
+12a. **antd is restyled through its tokens, never CSS or inline style** — every project on Ant Design: a colour, fill,
+    border, radius, shadow, font size/weight or padding antd sizes goes in the theme's component tokens, or a scoped
+    `ConfigProvider theme={{ components: {…} }}` when one place differs (it wraps a Tooltip/Dropdown, never sits between
+    it and its trigger) · look the token up first (`node_modules/antd/es/<component>/style/token.js`, antd MCP
+    `antd_token`) · CSS only where antd has no token (say why in a comment) or for the project's own layout · the user
+    2026-11-23: «ต้องไม่ใช้ custom token ของ css», «เอากฎไปจำไว้ด้วย».
+12b. **A name says what the thing does and the rule it follows** — menus, tabs, headings, buttons, fields: read the
+    code and rules behind it first, then name it for what it does to the user's work (e.g. a profile that makes the flat
+    price apply only to the chosen wheel counts is named for that, not a vague "แบบเหมาตามล้อ") · a rename sweeps every
+    place the old name shows (IDENTITY.md drift) · the user 2026-11-24: «ตอนตั้งชื่อให้สอดคล้องกับการทำงานและกฎ».
 
 ## Code
 
 13. **No hardcoded values in a project** — every file in a project folder, shipped code and also helper scripts,
-    stand-ins, seeds and probes (`.leancode/`, `scripts/`, even gitignored) · hosts, ports, URLs, DB and container
+    stand-ins, seeds and probes (`scripts/`, `.scratch/`, even gitignored) · hosts, ports, URLs, DB and container
     names, users, passwords, secrets, tokens, IDs, phone numbers come from env files, config/constants, or a
     parameter · a value the project already defines is read from there · test data made at run time or from fixtures ·
     an existing hardcode found → that repo's `HANDOFF.md`.

@@ -1,6 +1,6 @@
 ---
 name: "pause"
-description: "Use when the user types /pause or asks to pause and save where work stopped (พักงาน, หยุดไว้ก่อน); also on your own as a checkpoint before risky or long steps in multi-sitting work. Writes HANDOFF.md; works with leancode."
+description: "Use when the user types /pause or asks to pause and save where work stopped (พักงาน, หยุดไว้ก่อน); also on your own as a checkpoint before risky or long steps in multi-sitting work. Writes HANDOFF.md."
 ---
 
 # /pause — save where we stopped
@@ -16,17 +16,17 @@ This skill runs two ways:
   - context is getting low, or the chat has been compacted;
   - the work reaches a decision only the user can make.
 
-  A checkpoint updates the same note, says at most one line ("checkpoint saved"), and carries on. In implement mode leancode §6 already keeps HANDOFF.md current at these moments; only make sure the sections below are there.
+  A checkpoint updates the same note, says at most one line ("checkpoint saved"), and carries on. In implement mode, keep the build's own HANDOFF.md sections current too; only make sure the sections below are there.
 
 A casual "wait" or "pause, let me think" is neither, so just wait. Text typed after `/pause` is the user's note for this pause; put it in the note verbatim.
 
-**This skill never commits and never pushes.** It doesn't commit the note, doesn't commit work in progress, and doesn't push any branch, even as a backup. Code is backed up as files (section 6). The only commits that happen during this work are leancode autopilot's own local per-task commits, under leancode's rules.
+**This skill never commits and never pushes.** It doesn't commit the note, doesn't commit work in progress, and doesn't push any branch, even as a backup. Code is backed up as files (section 6). The only commits that happen during this work are a run-to-the-end list's own per-item commits, under `GIT.md`.
 
 If a tool named here isn't available in this session (in Claude Code CLI, for example), skip that step and say what was skipped. There, the note at the project root is enough on its own.
 
 ## 1. Pick the mode
 
-- **implement**: the work is code in a git repo, leancode is driving it, or a HANDOFF.md with leancode's sections (Goal, Steps, State, Decisions, Next action, Blockers) already exists at the repo root. Follow leancode §6: one HANDOFF.md at the repo root with its sections kept. This skill adds its own sections to that same file and never creates a second one.
+- **implement**: the work is code in a git repo, or a HANDOFF.md with build sections (Goal, Steps, State, Decisions, Next action, Blockers) already exists at the repo root. One HANDOFF.md at the repo root with those sections kept. This skill adds its own sections to that same file and never creates a second one.
 - **general**: everything else, such as docs, research, design, planning, a prototype, or a conversation that produced decisions. Planning-only work counts, because settled decisions and open questions are worth saving even when no file exists yet.
 
 If nothing at all has been done or decided, say so in one line and write nothing.
@@ -36,7 +36,7 @@ If nothing at all has been done or decided, say so in one line and write nothing
 - Finish or undo the step in progress, so no file is left half-written. If the step can't finish quickly, leave it and record exactly what is half-done.
 - Start nothing new. Take no irreversible action after /pause, even if it was the next step; record it as not yet done.
 - Check background work started this session: agents, background commands, scheduled tasks. Stop what should stop; record what keeps running and when it ends.
-- If leancode autopilot is running: finish the current task's commit if it is close to green, otherwise park it the autopilot way (named stash, question under Blockers). Update the queue.
+- If a run-to-the-end list is running (WORKING-RULES 11): finish the current item's commit if it is close to green, otherwise park it (named stash, question under Blockers). Update the queue.
 - Verify state when it's cheap (run the tests, open the file, read the artifact), so the note records checked facts.
 
 ## 3. Gather the picture
@@ -45,7 +45,7 @@ Gather from the conversation and the real files, not from recollection.
 
 - **Context**: what this work is, who it is for, the background a new session needs, constraints and preferences the user stated, key facts and sources found.
 - **Stopped at**: the exact point (step, file and section, the half-done item).
-- **Pending decision**, when stopped at a fork: the question; the options, each with what it gains, what it costs and what the next step would be; what is still needed to decide; Claude's pick, marked as a suggestion; what is blocked on it and what can go ahead without it. Hold only the decisions that block the next step, at most three. More than that means the work is still being planned: list them under Blockers and suggest a planning pass (the wayfinder skill, for example) instead of forcing them into a handoff (leancode §6).
+- **Pending decision**, when stopped at a fork: the question; the options, each with what it gains, what it costs and what the next step would be; what is still needed to decide; Claude's pick, marked as a suggestion; what is blocked on it and what can go ahead without it. Hold only the decisions that block the next step, at most three. More than that means the work is still being planned: list them under Blockers and suggest a planning pass (the wayfinder skill, for example) instead of forcing them into a handoff.
 - Steps done, current and not started. Decisions already locked, with reasons. Approaches tried and rejected.
 - **State**: for implement, the repo, branch, last commit, uncommitted files and test result. For general, where each piece lives (artifact URL, folder path, connected app) and its latest version.
 - **External effects already done**: messages sent, migrations applied, things published, tasks scheduled, payments. For each, record what, when, and whether it can be undone. Effects that are planned but not done go under Next action, marked "needs confirmation".
@@ -57,7 +57,7 @@ Keep provenance honest: tag each decision [user] or [Claude's pick, unconfirmed]
 
 ## 4. Write the note
 
-Get the date and time from the time tool. Keep the headings in English, because /resume and leancode find sections by name; write the content in the user's language. Record state, not the story of the session. Aim for about one page and drop empty sections. Write Stopped at, Pending decision and Next action first: if context runs out mid-write, those matter most.
+Get the date and time from the time tool. Keep the headings in English, because /resume finds sections by name; write the content in the user's language. Record state, not the story of the session. Aim for about one page and drop empty sections. Write Stopped at, Pending decision and Next action first: if context runs out mid-write, those matter most.
 
 ```markdown
 # HANDOFF — <task name>
@@ -121,7 +121,7 @@ Needed before deciding: … · Blocked on it: … · Can go ahead without it: �
 - <date> — <paused | checkpoint> at <point>
 ```
 
-If a note already exists, read it first and update it in place: keep leancode's sections and any lines written by others, carry over items that are still open, and add a Log line. Keep the last five Log lines and roll older ones into one summary line.
+If a note already exists, read it first and update it in place: keep the build sections and any lines written by others, carry over items that are still open, and add a Log line. Keep the last five Log lines and roll older ones into one summary line.
 
 If the chat holds several separate workstreams, write one note per workstream. When two share a location, the implement one keeps HANDOFF.md and the other becomes HANDOFF-<slug>.md.
 

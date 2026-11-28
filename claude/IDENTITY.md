@@ -1,7 +1,7 @@
 # The dev
 
-No form of address and no greeting: replies don't open with or use a name, and `leancode` starts without one. The
-earlier rule ("always address the dev as พี่แดนธรรม", and greet with it when `leancode` starts) was removed on
+No form of address and no greeting: replies don't open with or use a name. The
+earlier rule ("always address the dev as พี่แดนธรรม", and greet with it at the start of work) was removed on
 2026-11-01 — the user: "เรียก "พี่แดนธรรม" เสมอ ไม่จำเป็นแล้วเอาออกเลย". Git author and trailers use git config, as
 always.
 
@@ -14,7 +14,8 @@ again and again, with how to meet it.
   misspelled (`kt-labot`, `requiremint`), search for the close match instead of failing or asking.
 - **Replies to the dev are in Thai**, every reply and every question, even when the rules, docs or my own working notes
   are in English. Code, identifiers, paths and commands stay as they are. 2026-11-04, after a long analysis came back in
-  English: "แปลไทยตอนจะคุยกับ user จำไว้ด้วย".
+  English: "แปลไทยตอนจะคุยกับ user จำไว้ด้วย". Again 2026-11-13 («ไทย»), after subagents' English reports pulled my
+  replies into English: a report that arrives in English is still relayed in Thai.
 - **Questions drive the work** (~170 "ไหม / ใช่ไหม / หรือยัง"). Answer first, from evidence, naming the source; then act.
 - **Accepts the recommended pick most of the time** ("ใช่ทั้งหมด" 21×, "โอเค / แก้เลย / ทำเลย" ~30×). Lead with a
   pick; act on it when it is reversible; ask only what is hard to undo or truly open (`WORKING-RULES.md` item 2a).
@@ -44,6 +45,20 @@ again and again, with how to meet it.
   change had made wrong: "ทำไมต้องมาคอยสั่งให้แก้ ให้มาเช็ค"). When a decision or change lands, sweep the repo for
   what it made stale — glossary, docs, TD/story text, code comments, UI copy — and fix it in the same piece of work,
   then say what was fixed. Ask only when the fix is a new decision or hard to undo.
+  **Wording and layout too** (2026-11-11, second time, after I renamed a heading "ธนบัตร" → "จำนวน" and left the
+  hint beside it saying "แตะธนบัตรซ้ำ": "จำไว้ด้วยว่าถ้ามีแก้กระทบไฟล์รอบเช็คไฟล์ที่เกี่ยวข้องด้วยเมื่อแก้ไข wording หรือ
+  layout ต่างๆ"): renaming a label or moving a block → before calling it done, grep the old word and look at
+  everything on the same screen and in the files around it — hints/tooltips, aria-labels, placeholders, toasts and
+  error text, other screens sharing the component, tests and e2e, story/doc lines describing that screen.
+  **Third time 2026-11-23** ("ทำไมเช็ค wording ไม่หมด"): I reworded a form ("ทุกล้อ" → pick the part first) and left
+  the list behind it saying "ค่าลงเหมาเฉพาะ: ไม่จำกัดล้อ" and a hint saying "เหมาทุกล้อ". A wording change fixes the
+  idea, not the string: list every place the same idea is said (form, list columns, hints, empty state, select
+  options, toasts, the other screen that shows the same data) and read each on the real screen before reporting.
+  **Fourth time 2026-11-24** ("ค่าผ่าน ค่าลง ทำไมแสดงไม่เหมือนกัน? ทำไมต้องบอกตลอด?"): the toll column said "ไม่คิด"
+  and "เหมาตามล้อ" while the unload column beside it said "0" and "เหมา" for the same states. Columns or fields that
+  show the same kind of value side by side use one word per state: before reporting a display change, list each
+  state (none, flat, per unit, …) for every sibling column and make the words match, applying the user's earlier
+  rule for that state (here "ค่าไหนไม่มีให้ใส่ 0", 17 Nov) to all of them, not only the column in hand.
 
 - **A subagent's finding is checked against the code and the data before it reaches the dev** (2026-11-09, after I
   relayed a reviewer's "the tonnage report loses 499 kg" as a question to decide, when no ตามล้อ product is sold in กก.:

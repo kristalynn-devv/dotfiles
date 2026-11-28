@@ -2,7 +2,7 @@
   "version": 1,
   "hooks": {
     "beforeShellExecution": [
-      { "command": "~/.claude/skills/leancode/adapters/guard.sh cursor" }
+      { "command": "~/dotfiles/cursor/guard.sh cursor" }
     ]
   }
 }

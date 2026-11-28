@@ -10,20 +10,23 @@ The single source of truth for the rule files and skills Claude Code reads.
   - `IDENTITY.md` — how the dev works (habits learned from their messages) and how to keep learning them
   - `GIT.md` — the word "push": put the work on the repo's dev branch (merge `--no-ff`) and push
   - `CROSS-REPO-DOCS.md` — sending docs to another repo: write them there + in its `HANDOFF.md`, then the sender is done
-  - `WORKING-RULES.md` — general working rules (HANDOFF, finding answers, agents, auto mode, leancode), moved out of
-    Claude auto-memory
-  - `WAYFINDER-LEANCODE.md` — plan versus build; which skill decides, `leancode` builds
+  - `WORKING-RULES.md` — general working rules (HANDOFF, finding answers, agents and the advisor, checks, building),
+    moved out of Claude auto-memory
+  - `WAYFINDER.md` — plan versus build: when to plan first, how a build proves itself, run-to-the-end lists
   - `RULES-HISTORY.md` — the long form of `WORKING-RULES.md` (the why, the user's words, dates); not imported
   - `DB-ACCESS.md` — gitignored (internal hosts): the always-loaded core of the DB rules; the rest is the `db-access` skill
 - `skills/` — Claude Code skills, one folder per skill (the folder name matches the `name:` in its `SKILL.md`) ·
   `sync.sh` links each one to `~/.claude/skills/<name>` · a real folder found at a link target is moved to `.backup/`,
   not deleted
-  - `leancode/` — coding workflow (moved here from `kristalynn-devv/leancode` with its history; its `FRICTION.md` is
-    gitignored, keep yours in this folder)
   - `pause/` — `/pause`: save the context, where work stopped and any open decision to `HANDOFF.md`; also checkpoints
   - `resume/` — `/resume`: find the note, check it against reality, settle the open decision, continue
-  - `build-steps/` — which skill runs each build step under leancode, the plugin check and the fallbacks
-    (moved out of `WAYFINDER-LEANCODE.md` so it loads only when a build step needs it)
+  - `build-steps/` — which skill runs each build step and the proof it still owes, the plugin check and the fallbacks
+    (loads only when a build step needs it)
+  - `advisor/` — run a session in `~/WORK/advisor` as the advisor: every project's wiki and memory, research, work sent
+    to Cursor or worker sessions, checked and merged there
+  - `ask-advisor/` — from a project session: bring a question, research or medium to large work to the advisor
+  - `llm-wiki/` — Karpathy's LLM Wiki pattern; each project's wiki lives in `~/WORK/advisor/wiki/<project>/`
+  - `feedback/` — run a batch of feedback to the end from the advisor
   - `db-access/` — gitignored (internal hosts): the full DB rules and the DB map; copy it to a new machine by hand
   - `cursor-dispatch/` — only when the user asks: hand a settled build slice to Cursor's agent CLI (`cursor-agent -p`)
     in its own git worktree, then verify the result in Claude · needs `cursor-agent` (`curl https://cursor.com/install -fsS | bash`)
@@ -31,8 +34,9 @@ The single source of truth for the rule files and skills Claude Code reads.
 - `cursor/` — Cursor's side, linked only when `~/.cursor` exists · Cursor reads the skills from `~/.claude/skills`
   itself
   - `rules/global-rules.mdc` — an always-on user rule pointing Cursor at the same `~/.claude/*.md` rule files
-  - `rules/session-commit-and-leancode.mdc` — leancode for code work, commits staged by path
-  - `hooks.json` — leancode's `guard.sh cursor` on `beforeShellExecution`: blocks irreversible shell commands
+  - `rules/session-commit.mdc` — code work proves itself; ask before commit; commits staged by path
+  - `hooks.json` + `guard.sh` + `guard-patterns.txt` — `guard.sh cursor` on `beforeShellExecution`: blocks
+    irreversible shell commands (moved out of leancode 2026-11-28)
 - `sync.sh` — links every `claude/*.md` and every `skills/<name>/` into `~/.claude/`, and `cursor/` into `~/.cursor/`
 - `install.sh` — the whole setup in one command: `sync.sh`, then `node` (Homebrew), the plugins, `playwright-cli` and
   the `antd` MCP below installed or updated to their latest version, and `skillOverrides` merged into
@@ -75,21 +79,18 @@ mklink /D "%USERPROFILE%\.claude\skills\pause" C:\src\dotfiles\skills\pause
 
 **After installing**
 
-- leancode's friction log stays on each machine (gitignored); start it with
-  `cp ~/dotfiles/skills/leancode/FRICTION.template.md ~/dotfiles/skills/leancode/FRICTION.md`
-- Check: start Claude Code and type `/pause`, `/resume` or `/leancode`; if it is listed, it is installed.
+- Check: start Claude Code and type `/pause`, `/resume` or `/advisor`; if it is listed, it is installed.
 - Update: `git -C ~/dotfiles pull`. The skills are symlinks, so edits arrive without re-running anything; re-run
   `install.sh` (or the loop) only when a new skill or plugin is added.
 
-## What leancode works with
+## What the build steps use
 
-The `build-steps` skill (pointed at from `claude/WAYFINDER-LEANCODE.md`) hands some build steps to the skills below. Each one is optional. leancode checks for
-them before the work starts, names any that are missing with the command to install it, and uses its own text for that
-step instead. `install.sh` installs all of them; the commands below are for doing it by hand.
+The `build-steps` skill (pointed at from `claude/WAYFINDER.md`) hands some build steps to the skills below. Each one
+is optional: a missing one is named with the command to install it, and the step is done by hand with its proof. `install.sh` installs all of them; the commands below are for doing it by hand.
 
 | What | From | Install |
 |---|---|---|
-| `leancode`, `pause`, `resume` | `skills/` in this repo | `sync.sh` |
+| `pause`, `resume`, `advisor`, `ask-advisor`, `llm-wiki`, `feedback`, `build-steps`, `cursor-dispatch` | `skills/` in this repo | `sync.sh` |
 | `mattpocock-skills` (wayfinder, tdd, diagnosing-bugs, code-review, research, …) | plugin | `claude plugin marketplace add anthropics/claude-plugins-official` (a fresh machine may not have it yet), then `claude plugin install mattpocock-skills@claude-plugins-official` |
 | `context7` (library docs) | plugin | `claude plugin install context7@claude-plugins-official` |
 | `impeccable` (UI structure and checks) | plugin | `claude plugin marketplace add pbakaus/impeccable && claude plugin install impeccable@impeccable` |
@@ -97,8 +98,7 @@ step instead. `install.sh` installs all of them; the commands below are for doin
 | `playwright-cli` (looking at the real app from Bash) | npm + skill | `npm install -g @playwright/cli@latest`, then `playwright-cli install --skills --global` |
 | `antd` (Ant Design docs, demos and tokens, official) | npm + MCP | `npm install -g @ant-design/cli@latest`, then `claude mcp add --scope user antd -- antd mcp` |
 
-Check with `claude plugin list`. The guard against destructive commands needs nothing installed in Claude Code; see
-`skills/leancode/adapters/`.
+Check with `claude plugin list`. Claude Code blocks destructive commands itself (auto mode `soft_deny`); Cursor gets `cursor/guard.sh`.
 
 Two settings save tokens in every session. Add them to `~/.claude/settings.json` by hand, since Claude Code does not
 let the agent edit its own settings; `install.sh` prints them at the end until they are there:

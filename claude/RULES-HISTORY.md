@@ -146,6 +146,15 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
    compactions; Bash commands ~16% of message content (69% of it heredoc scripts, up to 33k characters each), Bash
    output ~17% (a third from results of 5–20k characters), Read screenshots ~11% (up to 870 images in one session) —
    the user (2026-11-09): "ร่างกฎเลย", after asking why each session's message context grows so large
+4g. **A hub session sizes each piece of work** — 2026-11-20 set up (the user: "กำหนดให้ session นี้เอาตรวจเช็คงาน …");
+   2026-11-23 split: small → Cursor, medium to large → a fresh leancode session ("ถ้างานเล็กไม่ซับซ้อนให้ใช้
+   /cursor-dispatch ถ้างานกลางถึงใหญ่ให้ใช้ /leancode"); 2026-11-24 flipped: small → leancode in the hub itself,
+   medium to large → Cursor with leancode walking it from the hub, a fresh session only when Cursor is unavailable
+   ("เปลี่ยนกฎงานใหญ่ส่ง cursor และใช้ leancode งานเล็กใช้ leancode ใน session"); 2026-11-28 the hub became the
+   advisor: its own repo `~/WORK/advisor` holding every project's wiki, project sessions consult it (`ask-advisor`),
+   it sends work to workers and checks and merges (the user's sketch "advisor codebase จะเก็บพวก memory wiki ต่างๆ
+   ของโปรเจค … ส่ง worker ทำงาน เช่น claude, cursor (รับมาจาก advisor)", then "ใช่ทั้งหมด" to: own repo, central
+   wiki, advisor checks, `hub-session` renamed `advisor`)
 5. **Review only high-risk changes; the full test suite runs at "push"** — as `leancode` tunables:
    **`review.when: risky only`** and **`autopilot.review: by risk`** (leancode 5.12.0+) · a high-risk change (hard to
    undo, or touching security, money or user data) gets its review round before its commit — leancode's round plus the
@@ -186,7 +195,14 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
    returning "ask" does not prompt · Claude can't edit settings itself (blocked as Self-Modification) → give the user
    the rule to add
 
-## Skill leancode
+## Skill leancode (retired 2026-11-28)
+
+**Retired 2026-11-28** — the user asked "ถ้าไม่ใช้ leancode แล้ว", then "clean leancode และอื่นๆ ใน dotfiles" and
+"ใช่ทั้งหมด" to: build directly with proof, keep the light check (6), review only high-risk work (5) and the push
+checks; delete `skills/leancode/` (history in git, `7488c6a`); move the Cursor guard to `cursor/guard.sh`; keep
+`pause`, `resume`, `build-steps` without leancode; `WAYFINDER-LEANCODE.md` → `WAYFINDER.md`. Items 10 and 11 of
+`WORKING-RULES.md` now read "build directly, prove it" and "run a list to the end". The two items below are the
+retired rules, kept as history.
 
 10. **Every implementation goes through `leancode`** — any change to code, whatever its size: features, bug fixes,
     refactors, a one-spot edit, UI tweaks, tests, migrations, scripts that ship, resuming from HANDOFF, autopilot
@@ -232,3 +248,8 @@ Moved out of the Claude auto-memory of workspace `~/Documents/GitLab` on 2026-09
     bill vs by the item, due now vs minimum) gets one name per meaning · put the round walk in a test, and say in the
     report which places were checked · the user (2026-11-09), after the งวด of later rounds disagreed between receipts
     and the bill screen did not name the งวด: "ถ้าเป็นเรื่องการเงินต่างๆ รอบหน้าอย่าให้ตกหล่นอะไรแบบนี้อีก"
+
+12b. Names match what the thing does and its rule — the user (2026-11-24), after asking whether flat wheel profiles
+    should move into the market-item form and deciding to keep them shared: "ไม่ต้องแก้ แต่เปลี่ยนชื่อของ เมนูให้สอดคล้องกับ
+    การทำงานด้วย จำไว้ด้วยว่าตอนตั้งชื่อให้สอดคล้องกับการทำงานและกฎ". The menu "แบบเหมาตามล้อ" did not say the flat
+    price applies only to the chosen wheel counts while other wheels are charged per unit.

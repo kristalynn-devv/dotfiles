@@ -1,6 +1,6 @@
 ---
 name: "advisor"
-description: "Run this session as the advisor: it keeps every project's knowledge (wiki, claude-mem, research), answers project sessions and the engineer, sends work to workers (small work built here through leancode, medium to large to Cursor via cursor-dispatch walked by leancode, a fresh leancode session only when Cursor is unavailable) and checks and merges what they hand back. Use in a session opened in the advisor repo (~/WORK/advisor), when the user sets a session as the advisor or the checking / dispatching one (advisor, session นี้เอาไว้ตรวจเช็คงาน, สั่งงานแล้วส่ง brief เปิด session ใหม่, /advisor, /hub-session), when a project session's ask-advisor message arrives, and again after a compaction or an advisor hand-over when HANDOFF says the session is the advisor."
+description: "Run this session as the advisor: it keeps every project's knowledge (wiki, claude-mem, research), answers project sessions and the engineer, sends work to workers (small work built here directly, medium to large to Cursor via cursor-dispatch, a fresh worker session only when Cursor is unavailable) and checks and merges what they hand back. Use in a session opened in the advisor repo (~/WORK/advisor), when the user sets a session as the advisor or the checking / dispatching one (advisor, session นี้เอาไว้ตรวจเช็คงาน, สั่งงานแล้วส่ง brief เปิด session ใหม่, /advisor, /hub-session), when a project session's ask-advisor message arrives, and again after a compaction or an advisor hand-over when HANDOFF says the session is the advisor."
 ---
 
 # advisor — knows the projects, sends the work, checks it
@@ -47,7 +47,7 @@ The advisor repo's own files (wiki, `projects.md`, HANDOFF) are docs: edited her
 
 ## 1. What the advisor does
 
-Done directly in the advisor (no leancode):
+Done directly in the advisor, no worker:
 
 - Answering questions, reading code, docs, HANDOFF and data (read-only, `DB-ACCESS.md`); keeping the wikis (§0).
 - Checking what a worker session handed back (§4).
@@ -55,35 +55,35 @@ Done directly in the advisor (no leancode):
 - Routine git reads (`status`, `log`, `diff`).
 
 Every change to code, config, docs, tests, migrations or a repo's HANDOFF, and every build, fix, refactor, UI tweak,
-data write, commit or push, goes through `leancode`. Who types the code depends on its size (§1a): the advisor itself for
-small work, Cursor for medium to large.
+data write, commit or push, is built with its proof (WORKING-RULES 10). Who types the code depends on its size (§1a):
+the advisor itself for small work, Cursor for medium to large.
 
-## 1a. Small → leancode here, medium to large → Cursor walked by leancode
+## 1a. Small → built here, medium to large → Cursor
 
 The user 2026-11-24: "เปลี่ยนกฎงานใหญ่ส่ง cursor และใช้ leancode งานเล็กใช้ leancode ใน session" (replaces the
-2026-11-23 split, which sent small work to Cursor and medium to large work to a fresh session). This role is the
+2026-11-23 split, which sent small work to Cursor and medium to large work to a fresh session). leancode itself was
+retired 2026-11-28; the split stays. This role is the
 user's standing ask to send work to Cursor, so `cursor-dispatch`'s "only on the user's ask" is met inside the advisor.
 
-- **Small, not complex → `leancode` in the advisor**: every decision made, the files and exact change known (about 1–3
+- **Small, not complex → built in the advisor**: every decision made, the files and exact change known (about 1–3
   files in one repo), no migration, no money / security / user-data logic, no new design or UX choice, no boundary or
   module reshape. E.g. a wording or label change and its neighbours, a column moved, a toggle default, a small
   validation, a one-spot bug whose cause is already found. The advisor edits, light-checks (WORKING-RULES 6) and commits /
   merges by GIT.md.
-- **Medium to large → Cursor, with `leancode` walking it from the advisor**: several files or layers, a migration, money /
+- **Medium to large → Cursor, planned and sliced by the advisor**: several files or layers, a migration, money /
   security / user data, a design question, anything that needs its own tests planned, or a list of items that build on
-  each other. leancode runs in the advisor as usual: it settles the decisions (a cause not yet found is found first, read-
+  each other. The advisor settles the decisions (a cause not yet found is found first, read-
   only), plans, and cuts the work into slices Cursor can execute without investigating. Each slice is one
   `cursor-dispatch` (brief per cursor-dispatch §2, worktree cut from the repo's coding base branch, §2), dispatched in
   blocking order; independent slices on separate files may run at once. After each slice the advisor checks it as §4
-  (leancode's proof and, for high-risk work, its review round, WORKING-RULES 5), commits and merges `--no-ff` into the
+  (the brief's proof and, for high-risk work, a review round, WORKING-RULES 5), commits and merges `--no-ff` into the
   base branch itself (GIT.md), then removes that slice's worktree and branch.
 - Unsure → medium to large (Cursor).
 - Cursor missing, not logged in, or blocked by the sandbox (cursor-dispatch §1) → the same work goes to a fresh
-  worker session building through `leancode` (§2); say so in the line announcing it.
-- Say the pick in one line before starting: "→ leancode ที่นี่ (เล็ก: <why>)" or "→ Cursor + leancode (กลาง/ใหญ่:
-  <why>, <n> slice)".
+  worker session (§2); say so in the line announcing it.
+- Say the pick in one line before starting: "→ ทำที่นี่ (เล็ก: <why>)" or "→ Cursor (กลาง/ใหญ่: <why>, <n> slice)".
 - A Cursor slice that fails the check twice → the advisor cuts it smaller or settles what Cursor missed, then dispatches
-  the smaller slice; a slice still failing after that → a fresh leancode session with what was found.
+  the smaller slice; a slice still failing after that → a fresh worker session with what was found.
 - The advisor's own context grows with this work: watch the 500k rule (§5).
 
 A follow-up on work a worker session already holds (a fix after the check, an answer to its question) goes to **that**
@@ -132,7 +132,7 @@ Group: <sidebar group of this work stream; a nested session you start goes into 
 Decisions already made: <each with the user's words and date>
 The change: <exact behaviour, UI copy, data rules>
 Done when: <tests / checks that must pass, screens to match, data to hold>
-Rules: build through leancode (WORKING-RULES 10). At ~500k context follow WORKING-RULES 4d/4e (the context-check hook
+Rules: build it and show its proof (WORKING-RULES 10). At ~500k context follow WORKING-RULES 4d/4e (the context-check hook
 reminds): safe stop, HANDOFF, fresh nested session, never fork. Worktree work merges --no-ff into <base branch> when
 light-checked (GIT.md), then you remove your own worktree and return to <base branch> (repo memory); push only on the
 user's word.

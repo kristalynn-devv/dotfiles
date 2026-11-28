@@ -1,16 +1,16 @@
 ---
 name: "feedback"
-description: "Take a batch of feedback (a numbered list from a team, a weekly review, testers, screenshots) and run it to the end from a hub: save it verbatim, split it into items, settle the questions, send each item out (small → Cursor, medium to large → a fresh leancode session), check every result, and report item by item. Use when the user pastes or forwards feedback to implement (feedback, ข้อเสนอแนะ, แก้ตาม feedback, Week N feedback, ทีมบัญชีส่งมา, /feedback). Works in any repo."
+description: "Take a batch of feedback (a numbered list from a team, a weekly review, testers, screenshots) and run it to the end from the advisor: save it verbatim, split it into items, settle the questions, build each item (small → built in the advisor, medium to large → Cursor), check every result, and report item by item. Use when the user pastes or forwards feedback to implement (feedback, ข้อเสนอแนะ, แก้ตาม feedback, Week N feedback, ทีมบัญชีส่งมา, /feedback). Works in any repo."
 ---
 
-# feedback — one batch of feedback, run from a hub to the end
+# feedback — one batch of feedback, run from the advisor to the end
 
 Built 2026-11-23 from the user's ask "Feedback ขอ skill เหมือน โปรเจค kt-labor week3" → "ทำ feedback แบบ hub". The
 model is how kt-labor ran its week 3 and 20 พ.ย. feedback (Dashboard, บัญชีและการเงิน): saved verbatim, split by item,
-one worker per work stream, the hub checking each and merging into the local dev branch.
+one worker per work stream, the advisor checking each and merging into the local dev branch.
 
-This session becomes the hub for the batch: **load skill `hub-session` first** and follow it for everything this file
-does not say (what stays in the hub, small → `cursor-dispatch` and medium to large → a `leancode` session in §1a,
+This session becomes the advisor for the batch: **load skill `advisor` first** and follow it for everything this file
+does not say (small → built in the advisor and medium to large → `cursor-dispatch` in §1a,
 sidebar groups, brief template, checking, the 500k rule).
 
 ## 1. Save the batch verbatim
@@ -29,7 +29,7 @@ Before anything else, so nothing is lost to a compaction:
 
 ## 2. Read every item before sending anything
 
-One table, in the hub only (not yet in HANDOFF), one row per item number as the user numbered it:
+One table, in the advisor only (not yet in HANDOFF), one row per item number as the user numbered it:
 
 | ข้อ | สิ่งที่ขอ (สั้น) | หน้าจอ / ไฟล์ | ขนาด | กลุ่มงาน | คำถาม |
 
@@ -37,7 +37,8 @@ One table, in the hub only (not yet in HANDOFF), one row per item number as the 
   file:line). Look at the screen when the item is about UI.
 - **What the thing is** before deciding: a word in the feedback may name a different thing in the code (IDENTITY.md,
   "what the thing is"). List the candidates and take one, saying which.
-- **Size** by hub-session §1a: small → Cursor · medium to large → leancode session · unsure → leancode.
+- **Size** by advisor §1a: small → built in the advisor · medium to large → Cursor · unsure →
+  Cursor.
 - **Work stream**: items touching the same screen or files go together in one stream (one worker), so two writers
   never share files. Unrelated streams run in parallel. Name each stream for its area in the user's words, e.g.
   «บัญชี feedback ข้อ 1–4, 9: ใบเสร็จ».
@@ -47,12 +48,14 @@ One table, in the hub only (not yet in HANDOFF), one row per item number as the 
 - An item that is already done, or that a past decision rules out, is not sent: it goes in the report with the
   evidence (file:line, commit, decision and date).
 
-## 3. Send the streams out
+## 3. Build the streams
 
-- Small items → `cursor-dispatch`, one dispatch per stream, run by the hub (hub-session §1a).
-- Medium to large → one fresh leancode session per stream (`start_session`, `context: "fresh"`, worktree), started
+- Small items → built in the advisor, one stream at a time (advisor §1a).
+- Medium to large → Cursor, sliced by the advisor: each stream cut into slices, one `cursor-dispatch` per
+  slice; streams on separate files may dispatch at once (advisor §1a).
+- Cursor unavailable → one fresh worker session per stream (`start_session`, `context: "fresh"`, worktree), started
   together; sidebar group = the batch, e.g. «week3 feedback» or «บัญชี feedback 20 พ.ย.».
-- Every brief (hub-session template) adds:
+- Every Cursor brief (cursor-dispatch §2) and session brief (advisor template) adds:
   - `Feedback verbatim: .scratch/<…>/feedback.md, ข้อ <n…>` (the worker reads the user's own words, not only the
     summary), plus which items are a sibling's so it leaves them alone.
   - The answers the user gave for its items, verbatim with the date.
@@ -64,7 +67,7 @@ One table, in the hub only (not yet in HANDOFF), one row per item number as the 
 
 ## 4. Check each result
 
-As hub-session §4, per item, against the verbatim text in `feedback.md`, not against the worker's summary of it. An
+As advisor §4, per item, against the verbatim text in `feedback.md`, not against the worker's summary of it. An
 item that does what the worker understood but not what the user wrote goes back to the same worker.
 
 ## 5. Report, item by item

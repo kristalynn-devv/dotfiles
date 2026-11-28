@@ -12,7 +12,7 @@ and merges what they return.
 ## What goes to the advisor, what stays here
 
 - **Stays here**: questions this repo answers (code, its HANDOFF, docs), and small work with every decision made
-  (about 1–3 files, no migration, no money / security / user data, no design choice) — built here through `leancode`.
+  (about 1–3 files, no migration, no money / security / user data, no design choice) — built here (WORKING-RULES 10).
 - **Goes to the advisor**:
   - a question that needs research, or what the project knew or decided before (the wiki, past sessions);
   - medium to large work, or unsure of the size: the advisor slices it and sends it to Cursor or a worker session;

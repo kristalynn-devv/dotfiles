@@ -1,15 +1,15 @@
 ---
 name: "resume"
-description: "Use when the user types /resume or asks to continue paused or interrupted work (ทำต่อจากที่หยุด) from a HANDOFF note or an earlier chat. Verifies state, settles the pending decision, continues; code goes to leancode. Not for CVs."
+description: "Use when the user types /resume or asks to continue paused or interrupted work (ทำต่อจากที่หยุด) from a HANDOFF note or an earlier chat. Verifies state, settles the pending decision, continues the build. Not for CVs."
 ---
 
 # /resume — continue from where we stopped
 
-Pick up work saved by /pause (a pause or a checkpoint), or a HANDOFF.md written by leancode, and continue without the user re-explaining anything. When the work stopped before any note was written, rebuild one from the earlier chat.
+Pick up work saved by /pause (a pause or a checkpoint), or a HANDOFF.md written during a build, and continue without the user re-explaining anything. When the work stopped before any note was written, rebuild one from the earlier chat.
 
 Text after `/resume` is either the answer to the pending decision ("/resume B", "/resume ใช้แบบที่ 2") or which work or note to use.
 
-**This skill never commits and never pushes.** Restoring creates a local branch and applies a patch to the working tree, nothing more. From there, commits happen only under leancode's own rules (autopilot's local per-task commits).
+**This skill never commits and never pushes.** Restoring creates a local branch and applies a patch to the working tree, nothing more. From there, commits happen only under `GIT.md` and WORKING-RULES 5–6.
 
 If a tool named here isn't available in this session, skip that step and say what was skipped.
 
@@ -26,7 +26,7 @@ If several notes turn up, list them (task · updated · status) and ask which on
 
 Also gather what Resume with lists. If something listed is missing (a bundle, a patch, a file), ask for it before relying on it; bundles and patches were sent in the earlier chat, so the user can download them from there.
 
-A note written by leancode alone has no Mode line; treat it as implement.
+A note with build sections and no Mode line is implement.
 
 ## 2. Restore code if needed (implement)
 
@@ -39,7 +39,7 @@ If the repo in this session doesn't have the paused work:
 
 Read the whole note. It is a record, not proof: things may have changed since, and a run may have been cut off before it updated the note.
 
-- **implement**: run leancode's §6 check: `git status`, `git diff`, `git log -5`, and the tests. Where the repo and the note disagree, the repo wins, so correct the note first.
+- **implement**: check the repo: `git status`, `git diff`, `git log -5`, and the tests. Where the repo and the note disagree, the repo wins, so correct the note first.
 - **general**: open what State lists, such as artifacts, files and items in connected apps. Where a tool can see them, check External effects read-only (did the migration apply, was the email sent).
 - **Running in background**: check whether those jobs finished and what they produced.
 - If Status says "in progress (resumed …)" within the last few hours, another session may still be working on it; ask before continuing.
@@ -67,11 +67,11 @@ First set Status in the note to "in progress (resumed <time>)" and add a Log lin
 
 Then start the next action in the same turn, unless a decision is still open or the next action needs confirmation.
 
-- **implement**: load the leancode skill and continue its walk at the step marked ▶, with Decisions locked. From there leancode keeps HANDOFF.md current. If the note holds an autopilot queue and the user wants autopilot, resume it the leancode way (`autopilot: resume`).
+- **implement**: continue at the step marked ▶, with Decisions locked, keeping HANDOFF.md current as you go (WORKING-RULES 10). If the note holds a run-to-the-end queue and the user wants it run, resume it at the first open item (WORKING-RULES 11).
 - **general**: continue from Next action, keeping Decisions and Tried & rejected closed unless the user reopens them.
 
 ## 6. Keep the note honest
 
 - From here on, /pause's checkpoint rules apply: update the note at the same moments, in the same place.
-- When the work is finished: in implement mode, leancode's rule applies (once every step is ✅, remove this work's part of the note; delete the file only when nothing else is left in it). In general mode, say the note is no longer needed and delete it (file or artifact) only if the user agrees; in a connected folder, deletion follows that folder's permission flow.
+- When the work is finished: in implement mode, once every step is ✅, remove this work's part of the note; delete the file only when nothing else is left in it). In general mode, say the note is no longer needed and delete it (file or artifact) only if the user agrees; in a connected folder, deletion follows that folder's permission flow.
 - Pausing again: /pause updates this same note.

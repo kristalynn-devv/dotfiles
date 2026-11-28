@@ -32,7 +32,7 @@ for s in "$D"/skills/*/; do
   link "$s" "$HOME/.claude/skills/$(basename "$s")" "$D/.backup/claude-skills"
 done
 
-# 3. Cursor, when installed: global rules that point at the files above, and leancode's guard on shell commands.
+# 3. Cursor, when installed: global rules that point at the files above, and the guard on shell commands (cursor/guard.sh).
 #    Cursor reads skills from ~/.claude/skills itself, so they need no link here
 if [ -d "$HOME/.cursor" ]; then
   for r in "$D"/cursor/rules/*.mdc; do

@@ -50,7 +50,7 @@ bash ~/.claude/skills/cursor-dispatch/dispatch.sh --workspace <worktree> --brief
 
 ## 5. Verify what comes back
 
-Read the full diff yourself. Run the checks yourself (narrow, then full). Review it as the repo's workflow says (leancode §3–§4 where leancode drives the work). Files outside the brief's list are a finding: revert them or send them back. A failure goes back to Cursor with `--resume` and the exact output, or gets fixed in the main session — say which.
+Read the full diff yourself. Run the checks yourself (narrow, then full). Review it as the repo's workflow says (WORKING-RULES 5: a review round only on high-risk work). Files outside the brief's list are a finding: revert them or send them back. A failure goes back to Cursor with `--resume` and the exact output, or gets fixed in the main session — say which.
 
 ## 6. Land and clean up
 
